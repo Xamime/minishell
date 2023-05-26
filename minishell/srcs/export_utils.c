@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/03/28 15:57:49 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:11:16 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,20 @@ void	set_var_line(char *line, char **name, char **var)
 	int	equal_index;
 	int	var_size;
 
-	equal_index = ft_strchrlen(line, '='); // =taille jusquau egal
+	equal_index = ft_strchrlen(line, '=');
 	if (equal_index != -1)
 	{
-		var_size = ft_strlen(ft_strchr(line, '=') + 1);// = taille apres le egal
+		var_size = ft_strlen(ft_strchr(line, '=') + 1);
 		if (line[equal_index - 1] != '+')
-			*name = ft_substr(line, 0, equal_index); // name = variable to egal
+			*name = ft_substr(line, 0, equal_index);
 		else
 			*name = ft_substr(line, 0, equal_index - 1);
-		if (line[equal_index + 1]) // si il ya qq chose apres le egal
-			*var = ft_substr(line, equal_index + 1, var_size); // var = le reste
+		if (line[equal_index + 1])
+			*var = ft_substr(line, equal_index + 1, var_size);
 		else
 			*var = "";
 	}
-	else // si aucun egal trouver
+	else
 	{
 		*name = ft_strdup(line);
 		*var = NULL;

@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/25 17:03:25 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:58:21 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	listen(int sig, siginfo_t *info, void *unused)
 	}
 }
 
-void	sig_info()
+void	sig_info(void)
 {
 	struct sigaction	act;
 
@@ -96,7 +96,7 @@ int	main(int ac, char **av, char **env)
 		cmds = init_cmds(cmd);
 		split_pipe(data, cmds);
 		// printf("\n%s\n", make_dollars(str, data, 0));
-		free(cmds->cmd);
+		//free(cmds->cmd);
 	}
 	rl_clear_history();
 	freelist(*export);

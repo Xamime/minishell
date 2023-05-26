@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/25 16:50:56 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:46:47 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,74 @@ typedef struct s_expansion
 }	t_expansion;
 
 void	freelist(t_expv *export);
-char	*skip_to_char(char *str, char c);
-void	free_array(char **array);
-int		ft_len_in_quotes(char *s);
-void	init_redir(t_redir **redirs);
-void	set_heredocs(t_cmd cmds);
-void	replace_address(char **addr1, char *addr2);
-int		nbwords(char *s, char c);
+char	**ft_split_quotes(char *s, char c);
+
+/////////////////////////////////////////////////////
+///					expand.c					  ///
+/////////////////////////////////////////////////////
+
 char	*set_without_quotes(char *str);
 char	*make_dollars(char *str, t_data *data, int mode);
-char	**ft_split_v2(char *s, char c);
-int		check_plus_one(char c);
-int		skip_and_copy(char *str, char *new_str, char c, int *j);
-char	*set_new_str(t_expansion *exp, char *str);
-void	add_var_value(t_expansion *exp, char *new_str, int *i, int *j);
-void	set_double_quotes(t_expansion *exp);
-t_cmd	*init_cmds(char *cmd_line);
-char	*new_string(t_expansion *exp, char *str);
-int		is_in_set(char c, char *set);
-int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd);
+
+/////////////////////////////////////////////////////
+///					parsing2.c					  ///
+/////////////////////////////////////////////////////
+
+char	*get_access(t_cmd cmd, t_data *data);
+int		is_builtin(char *cmd);
+
+/////////////////////////////////////////////////////
+///					utils2.c					  ///
+/////////////////////////////////////////////////////
+
+char	*get_filename(char *str);
+void	better_lstclear(t_list *lst);
+char	*get_path(t_data *data);
 void	free_redirects(t_redir *redirs);
+void	close_fds(t_list *lst);
+
+/////////////////////////////////////////////////////
+///					redirs.c					  ///
+/////////////////////////////////////////////////////
+
+int		secure_open(char *mode, char *filename);
+int		heredoc_name(t_cmd cmds, char *filename);
+int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd);
+
+/////////////////////////////////////////////////////
+///					redirs_utils.c				  ///
+/////////////////////////////////////////////////////
+
+void	set_heredocs(t_cmd cmds);
+void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc);
+void	make_list(t_cmd *cmds, int *fd);
+int		*open_list(char *type, int *fd, char *filename, t_redir *redirs);
+
+/////////////////////////////////////////////////////
+///					expand2.c					  ///
+/////////////////////////////////////////////////////
+
+char	*new_string(t_expansion *exp, char *str);
+char	*set_new_str(t_expansion *exp, char *str);
+void	set_double_quotes(t_expansion *exp);
+void	add_var_value(t_expansion *exp, char *new_str, int *i, int *j);
+int		skip_and_copy(char *str, char *new_str, char c, int *j);
+
+/////////////////////////////////////////////////////
+///					split_quotes_utils.c		  ///
+/////////////////////////////////////////////////////
+
+int		nbwords(char *s, char c);
+int		is_in_set(char c, char *set);
+int		is_paired(char *str, char quote);
+char	*skip_to_char(char *str, char c);
 
 /////////////////////////////////////////////////////
 ///					parsing.c					  ///
 /////////////////////////////////////////////////////
 
-int		parse_cmd(t_cmd cmd, t_data *data);
+int		parse_cmd(t_cmd *cmd, t_data *data);
+void	replace_address(char **addr1, char *addr2);
 void	split_pipe(t_data *data, t_cmd *cmds);
 
 /////////////////////////////////////////////////////
@@ -95,6 +137,8 @@ void	split_pipe(t_data *data, t_cmd *cmds);
 /////////////////////////////////////////////////////
 
 t_expv	**init_env(char **expv);
+void	init_redir(t_redir **redirs);
+t_cmd	*init_cmds(char *cmd_line);
 
 /////////////////////////////////////////////////////
 ///					builtins.c					  ///
@@ -125,6 +169,8 @@ int		check_forbidden_caracter(char *str);
 void	remove_last_nl(char *str);
 int		is_in(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
+int		check_plus_one(char c);
+void	free_array(char **array);
 
 /////////////////////////////////////////////////////
 ///					unset.c						  ///

@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   split_quotes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 18:07:54 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/26 12:10:25 by mdesrose         ###   ########.fr       */
+/*   Created: 2023/05/26 12:37:21 by mdesrose          #+#    #+#             */
+/*   Updated: 2023/05/26 12:37:54 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	unset(t_cmd cmd, t_data *data)
+int	is_in_set(char c, char *set)
 {
-	int		i;
-	t_expv	*tmp;
+	while (*set && *set != c)
+		set++;
+	if (*set)
+		return (1);
+	return (0);
+}
 
-	i = 1;
-	while (cmd.words[i])
-	{
-		tmp = data->export;
-		while (tmp)
-		{
-			if (!ft_strcmp(cmd.words[i], tmp->name))
-			{
-				del_one(data->export, tmp);
-				break ;
-			}
-			tmp = tmp->next;
-		}
-		i++;
-	}
+int	is_paired(char *str, char quote)
+{
+	str++;
+	while (*str && *str != quote)
+		str++;
+	if (*str)
+		return (1);
+	return (0);
+}
+
+char	*skip_to_char(char *str, char c)
+{
+	str++;
+	while (*str && *str != c)
+		str++;
+	return (str);
 }

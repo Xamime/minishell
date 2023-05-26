@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/25 16:11:17 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:04:48 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,35 @@ t_expv	**init_env(char **env)
 		i++;
 	}
 	return (export);
+}
+
+void	init_redir(t_redir **redirs)
+{
+	(*redirs)->heredocs = NULL;
+	(*redirs)->infiles = NULL;
+	(*redirs)->outfiles = NULL;
+}
+
+t_cmd	*init_cmds(char *cmd_line)
+{
+	t_cmd	*cmds;
+	char	**sub_shells;
+	int		i;
+
+	i = 0;
+	sub_shells = ft_split(cmd_line, '|');
+	while (sub_shells[i])
+		i++;
+	cmds = malloc(sizeof(t_cmd) * (i + 1));
+	i = 0;
+	while (sub_shells[i])
+	{
+		cmds[i].cmd = sub_shells[i];
+		cmds[i].infile = 0;
+		cmds[i].outfile = 1;
+		i++;
+	}
+	cmds[i].cmd = NULL;
+	free(sub_shells);
+	return (cmds);
 }

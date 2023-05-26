@@ -6,38 +6,11 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:03:09 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/17 17:50:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 12:38:02 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	is_in_set(char c, char *set)
-{
-	while (*set && *set != c)
-		set++;
-	if (*set)
-		return (1);
-	return (0);
-}
-
-int	is_paired(char *str, char quote)
-{
-	str++;
-	while (*str && *str != quote)
-		str++;
-	if (*str)
-		return (1);
-	return (0);
-}
-
-char	*skip_to_char(char *str, char c)
-{
-	str++;
-	while (*str && *str != c)
-		str++;
-	return (str);
-}
 
 static int	ft_len(char *s, char *set)
 {
@@ -126,7 +99,7 @@ static void	fill_array(char **str, char *s, char c)
 	}
 }
 
-char	**ft_split_v2(char *s, char c)
+char	**ft_split_quotes(char *s, char c)
 {
 	int		i;
 	char	**str;

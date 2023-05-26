@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/25 16:22:39 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/05/26 11:12:41 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,21 +99,21 @@ void	print_env(t_data *data)
 
 void	exec_builtin(t_cmd cmd, t_data *data)
 {
-	if (!ft_strncmp(cmd.cmd_name, "pwd", 3))
+	if (!ft_strcmp(cmd.cmd_name, "pwd"))
 		pwd();
-	else if (!ft_strncmp(cmd.cmd_name, "cd", 2))
+	else if (!ft_strcmp(cmd.cmd_name, "cd"))
 		cd(cmd.words[1], data);
-	else if (!ft_strncmp(cmd.cmd_name, "echo", 4))
+	else if (!ft_strcmp(cmd.cmd_name, "echo"))
 		echo(cmd);
-	else if (!ft_strncmp(cmd.cmd_name, "exit", 4))
+	else if (!ft_strcmp(cmd.cmd_name, "exit"))
 	{
 		freelist(data->export);
 		exit(0);
 	}
-	else if (!ft_strncmp(cmd.cmd_name, "env", 3))
+	else if (!ft_strcmp(cmd.cmd_name, "env"))
 		print_env(data);
-	else if (!ft_strncmp(cmd.cmd_name, "export", 6))
+	else if (!ft_strcmp(cmd.cmd_name, "export"))
 		export(cmd, data);
-	else if (!ft_strncmp(cmd.cmd_name, "unset", 5))
+	else if (!ft_strcmp(cmd.cmd_name, "unset"))
 		unset(cmd, data);
 }
