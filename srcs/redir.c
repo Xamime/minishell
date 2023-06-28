@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/16 19:05:46 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:46:01 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	heredoc_name(t_cmd cmds, char *filename)
 	fd = open(try, O_CREAT | O_RDONLY, 0644);
 	free(try);
 	free(filename);
-	printf("heredoc fd : %d\n", fd);
 	return (fd);
 }
 
@@ -83,11 +82,11 @@ void	add_redirect(t_redir *redirs, char *str)
 	fd = malloc(sizeof(int));
 	*fd = 0;
 	if (*str == '>' && *(str + 1) != '>')
-		open_list("outfile", fd, filename, redirs);
+		open_last_file("outfile", fd, filename, redirs);
 	else if (*str == '>' && *(str + 1) == '>')
-		open_list("append", fd, filename, redirs);
+		open_last_file("append", fd, filename, redirs);
 	else if (*str == '<' && *(str + 1) != '<')
-		open_list("infile", fd, filename, redirs);
+		open_last_file("infile", fd, filename, redirs);
 	free(filename);
 	if (*fd == 0)
 		free(fd);

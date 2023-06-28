@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:15:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/16 19:38:18 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 20:04:38 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_builtin(char *cmd)
 	return (builtin);
 }
 
-char	*get_access(t_cmd cmd, t_data *data)
+char	*get_access(t_cmd *cmd, t_data *data)
 {
 	char	*path;
 	int		i;
@@ -41,11 +41,11 @@ char	*get_access(t_cmd cmd, t_data *data)
 
 	i = 0;
 	path = get_path(data);
-	cmd.path = ft_split(path, ':');
-	while (cmd.path[i])
+	cmd->path = ft_split(path, ':');
+	while (cmd->path[i])
 	{
-		tmp = ft_strjoin(cmd.path[i], "/");
-		command = ft_strjoin(tmp, cmd.cmd_name);
+		tmp = ft_strjoin(cmd->path[i], "/");
+		command = ft_strjoin(tmp, cmd->cmd_name);
 		free(tmp);
 		if (access(command, F_OK) == 0)
 			return (command);

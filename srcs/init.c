@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/15 17:20:38 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 14:44:46 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,24 @@ t_expv	**init_env(char **env)
 	return (export);
 }
 
-void	init_redir(t_redir **redirs)
+void	init_heredoc(t_cmd *cmds)
 {
-	(*redirs)->heredocs = NULL;
-	(*redirs)->infiles = NULL;
-	(*redirs)->outfiles = NULL;
+	int	i;
+
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		cmds[i].redirs = malloc(sizeof(t_redir));
+		cmds[i].redirs->infiles = NULL;
+		cmds[i].redirs->outfiles = NULL;
+		cmds[i].redirs->heredocs = NULL;
+		i++;
+	}
 }
+
+// void	init_redir(t_redir **redirs)
+// {
+// }
 
 t_cmd	*init_cmds(char *cmd_line)
 {

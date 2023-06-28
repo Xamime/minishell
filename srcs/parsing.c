@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/20 13:40:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 20:10:43 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,24 @@ char	**ft_get_env(t_data *data)
 	return (env);
 }
 
-void	execution(t_cmd cmd, t_data *data)
+void	execution(t_cmd *cmd, t_data *data)
 {
 	char	*command;
 
 	command = get_access(cmd, data);
-	execve(command, cmd.words, ft_get_env(data));
+	if (!command)
+	{
+		printf("Command not found\n");
+		free(command);
+	}
+	else
+		execve(command, cmd->words, ft_get_env(data));
 }
 
-void	exec_cmd(t_cmd cmd, t_data *data)
+void	exec_cmd(t_cmd *cmd, t_data *data)
 {
-	if (is_builtin(cmd.cmd_name))
-		exec_builtin(cmd, data);
+	if (is_builtin(cmd->cmd_name))
+		exec_builtin(*cmd, data);
 	else
 		execution(cmd, data);
 }
@@ -58,18 +64,38 @@ void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
 		dup2(p_out, 0);
 		close(p_out);
 	}
-	
 	dup2(pfd[1], 1);
 	close(pfd[1]);
 	close(pfd[0]);
-
 	if (fd_in > -1)
 		dup2(fd_in, 0);
 	close(fd_in);
-
 	if (fd_out > -1)
 		dup2(fd_out, 1);
 	close(fd_out);
+}
+
+void	free_command(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	while (cmd->words && cmd->words[i])
+	{
+		free(cmd->words[i]);
+		i++;
+	}
+	i = 0;
+	while (cmd->path && cmd->path[i])
+	{
+		free(cmd->path[i]);
+		i++;
+	}
+	free(cmd->cmd);
+	cmd->cmd = NULL;
+	free(cmd->words);
+	free(cmd->path);
+	cmd->words = NULL;
 }
 
 void	split_pipe(t_data *data, t_cmd *cmds)
@@ -82,7 +108,8 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 
 	i = 0;
 	p_out = 0;
-	set_heredocs(cmds[i]);
+	init_heredoc(cmds);
+	set_heredocs(cmds);
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)
@@ -94,12 +121,14 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 			perror("fork");
 		else if (pid == 0)
 		{
-			cmds[i].redirs = malloc(sizeof(t_redir));
-			init_redir(&cmds[i].redirs);
+			//init_redir(&cmds[i].redirs);
 			parse_cmd(&cmds[i], data);
-			//printf("fd_in : %d / fd_out : %d\n", cmds[i].infile, cmds[i].outfile);
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
-			exec_cmd(cmds[i], data);
+			exec_cmd(&cmds[i], data);
+			free_command(&cmds[i]);
+			freelist(data->export);
+			free(cmds);
+			free(data);
 			exit(0);
 		}
 		if (p_out != 0)
@@ -116,6 +145,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	}
 	if (p_out != 0)
 		close(p_out);
+	i = 0;
 }
 
 /*Replace addr1 by addr2, free addr1.*/
@@ -127,7 +157,6 @@ void	replace_address(char **addr1, char *addr2)
 	*addr1 = addr2;
 	free(tmp);
 }
-
 
 int	parse_cmd(t_cmd	*cmd, t_data *data)
 {

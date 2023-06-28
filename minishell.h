@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/16 19:32:58 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 20:06:13 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*make_dollars(char *str, t_data *data, int mode);
 ///					parsing2.c					  ///
 /////////////////////////////////////////////////////
 
-char	*get_access(t_cmd cmd, t_data *data);
+char	*get_access(t_cmd *cmd, t_data *data);
 int		is_builtin(char *cmd);
 
 /////////////////////////////////////////////////////
@@ -99,12 +99,12 @@ int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd);
 ///					redirs_utils.c				  ///
 /////////////////////////////////////////////////////
 
-void	set_heredocs(t_cmd cmds);
+void	set_heredocs(t_cmd *cmds);
 void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc);
 void	make_list(t_cmd *cmds, int *fd);
-void		open_list(char *type, int *fd, char *filename, t_redir *redirs);
+void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs);
 char	*remove_redir(t_cmd	*cmd, t_data *data);
-char	*change_str(char *str, char* cmd);
+char	*str_without_redir(char *str, char* cmd, int redirs_size);
 
 /////////////////////////////////////////////////////
 ///					expand2.c					  ///
@@ -137,6 +137,7 @@ void	split_pipe(t_data *data, t_cmd *cmds);
 ///					init.c						  ///
 /////////////////////////////////////////////////////
 
+void	init_heredoc(t_cmd *cmds);
 t_expv	**init_env(char **expv);
 void	init_redir(t_redir **redirs);
 t_cmd	*init_cmds(char *cmd_line);

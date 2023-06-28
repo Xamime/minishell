@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/20 13:39:59 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/06/28 19:22:51 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,38 +17,46 @@ void	make_list(t_cmd *cmds, int *fd)
 	ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
 }
 
-void	set_heredocs(t_cmd cmds)
+void	set_heredocs(t_cmd *cmds)
 {
 	int		*fd;
 	char	*filename;
 	char	*tmp;
 	char	*tmp2;
+	int		i;
+	int		j;
 
-	while (*cmds.cmd)
+	i = 0;
+	while (cmds[i].cmd)
 	{
-		if (*cmds.cmd == '<' && *(cmds.cmd + 1) == '<')
+		j = 0;
+		while (cmds[i].cmd[j])
 		{
-			fd = malloc(sizeof(int));
-			filename = get_filename(cmds.cmd);
-			tmp2 = get_filename(cmds.cmd);
-			*fd = heredoc_name(cmds, filename);
-			while (1)
+			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
-				tmp = readline("> ");
-				if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2)))
-					break ;
-				ft_putstr_fd(tmp, *fd);
+				fd = malloc(sizeof(int));
+				filename = get_filename(&cmds[i].cmd[j]);
+				tmp2 = get_filename(&cmds[i].cmd[j]);
+				*fd = heredoc_name(cmds[i], filename);
+				while (1)
+				{
+					tmp = readline("> ");
+					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2)))
+						break ;
+					ft_putstr_fd(tmp, *fd);
+					free(tmp);
+				}
 				free(tmp);
+				free(tmp2);
+				make_list(cmds, fd);
 			}
-			free(tmp);
-			free(tmp2);
-			make_list(&cmds, fd);
+			j++;
 		}
-		cmds.cmd++;
+		i++;
 	}
 }
 
-void	open_list(char *type, int *fd, char *filename, t_redir *redirs)
+void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 {
 	*fd = secure_open(type, filename);
 	if (!ft_strcmp(type, "outfile"))
@@ -67,13 +75,14 @@ void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc)
 		close(*(int *)heredoc->content);
 }
 
-char	*change_str(char *str, char* cmd)
+char	*str_without_redir(char *str, char* cmd, int redirs_size)
 {
 	int	i;
 	int	j;
 	
 	i = 0;
 	j = 0;
+	str = malloc(sizeof(char) * ft_strlen(cmd) - redirs_size + 1);
 	while (cmd[i + j])
 	{
 		if (cmd[i + j] == '<' || cmd[i + j] == '>')
@@ -90,8 +99,8 @@ char	*change_str(char *str, char* cmd)
 			str[i] = cmd[i + j];
 			i++;
 		}
-		str[i] = '\0';
 	}
+	str[i] = '\0';
 	return (str);
 }
 
@@ -120,7 +129,6 @@ char	*remove_redir(t_cmd	*cmd, t_data *data)
 		if (*str && !is_in_set(*str, "<>"))
 			str++;
 	}
-	str = malloc(sizeof(char) * ft_strlen(cmd->cmd) - redirs_size);
-	str = change_str(str, cmd->cmd);
+	str = str_without_redir(str, cmd->cmd, redirs_size);
 	return (str);
 }
