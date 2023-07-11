@@ -6,12 +6,14 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/20 13:29:36 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:07:11 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <signal.h>
+
+int	EXIT_CODE;
 
 void	ctrl_d(t_data *data, t_expv **export, t_cmd *cmds)
 {
@@ -89,7 +91,7 @@ int	main(int ac, char **av, char **env)
 	{
 		sig_info();
 		cmd = readline("Minishell -> ");
-		if (!cmd || cmd[0] == '\0')
+		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
 			ctrl_d(data, export, cmds);
 		add_history(cmd);
 		cmds = init_cmds(cmd);

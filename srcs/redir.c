@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 17:46:01 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:30:48 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,22 +53,15 @@ int	secure_open(char *mode, char *filename)
 
 	fd = 0;
 	if (!ft_strcmp(mode, "outfile"))
-	{
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd == -1)
-			perror(filename);
-	}
 	else if (!ft_strcmp(mode, "append"))
-	{
 		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (fd == -1)
-			perror(filename);
-	}
 	else if (!ft_strcmp(mode, "infile"))
-	{
 		fd = open(filename, O_RDONLY);
-		if (fd == -1)
-			perror(filename);
+	if (fd == -1)
+	{
+		perror(filename);
+		exit(1);
 	}
 	return (fd);
 }

@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 20:06:13 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/11 16:02:15 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 
+extern int	EXIT_CODE;
 
 typedef struct s_redir
 {

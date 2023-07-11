@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 16:41:29 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:27:33 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ char	*get_filename(char *str)
 	int		size;
 	char	*filename;
 
-	printf("get filename, str = %s\n", str);
 	while (is_in_set(*str, "<>"))
 		str++;
 	while (is_in_set(*str, " \t\n"))
@@ -40,7 +39,6 @@ char	*get_filename(char *str)
 	while (str[size] && !is_in_set(str[size], " \t\n<>"))
 		size++;
 	filename = ft_substr(str, 0, size);
-	printf("get filename, filename = %s\n", filename);
 	return (filename);
 }
 

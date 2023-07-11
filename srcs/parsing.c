@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 20:10:43 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:39:27 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	execution(t_cmd *cmd, t_data *data)
 	{
 		printf("Command not found\n");
 		free(command);
+		exit(127);
 	}
 	else
 		execve(command, cmd->words, ft_get_env(data));
@@ -141,6 +142,8 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		close(pfd[1]);
 		close(pfd[0]);
 		wait(&chld_status);
+		//waitpid(pid, &EXIT_CODE, 0);
+		EXIT_CODE = WEXITSTATUS(chld_status);
 		i++;
 	}
 	if (p_out != 0)
