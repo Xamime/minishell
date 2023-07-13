@@ -22,7 +22,7 @@ char	**ft_get_env(t_data *data)
 	i = 0;
 	tmp = data->export;
 	size = ft_expv_size(data->export);
-	env = malloc(sizeof(char *) * size + 1);
+	env = malloc(sizeof(char *) * (size + 1));
 	while (tmp)
 	{
 		env[i] = ft_strdup(tmp->name);
@@ -35,27 +35,33 @@ char	**ft_get_env(t_data *data)
 	return (env);
 }
 
-void	execution(t_cmd *cmd, t_data *data)
+void	execution(t_cmd *cmd, char **env, t_data *data)
 {
 	char	*command;
 
 	command = get_access(cmd, data);
 	if (!command)
 	{
-		printf("Command not found\n");
+		printf("%s: command not found\n", cmd->cmd_name);
 		free(command);
+		free_array(cmd->words);
+		free(cmd->cmd);
+		free(cmd);
+		freelist(data->export);
+		free_array(env);
+		free(data);
 		exit(127);
 	}
 	else
-		execve(command, cmd->words, ft_get_env(data));
+		execve(command, cmd->words, env);
 }
 
-void	exec_cmd(t_cmd *cmd, t_data *data)
+void	exec_cmd(t_cmd *cmd, char **env, t_data *data)
 {
 	if (is_builtin(cmd->cmd_name))
 		exec_builtin(*cmd, data);
 	else
-		execution(cmd, data);
+		execution(cmd, env, data);
 }
 
 void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
@@ -69,11 +75,15 @@ void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
 	close(pfd[1]);
 	close(pfd[0]);
 	if (fd_in > -1)
+	{
 		dup2(fd_in, 0);
-	close(fd_in);
+		close(fd_in);
+	}
 	if (fd_out > -1)
+	{
 		dup2(fd_out, 1);
-	close(fd_out);
+		close(fd_out);
+	}
 }
 
 void	free_command(t_cmd *cmd)
@@ -106,10 +116,12 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	pid_t	pid;
 	int		p_out;
 	int		chld_status;
+	char	**env;
 
 	i = 0;
 	p_out = 0;
-	init_heredoc(cmds);
+	env = ft_get_env(data);
+	init_redirs(cmds);
 	set_heredocs(cmds);
 	while (cmds[i].cmd)
 	{
@@ -122,17 +134,16 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 			perror("fork");
 		else if (pid == 0)
 		{
-			//init_redir(&cmds[i].redirs);
 			parse_cmd(&cmds[i], data);
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
-			exec_cmd(&cmds[i], data);
+			exec_cmd(&cmds[i], env, data);
 			free_command(&cmds[i]);
 			freelist(data->export);
 			free(cmds);
 			free(data);
 			exit(0);
 		}
-		if (p_out != 0)
+		if (p_out > 0)
 			close(p_out);
 		if (cmds[i].infile > -1)
 			close(cmds[i].infile);
@@ -141,13 +152,16 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		p_out = dup(pfd[0]);
 		close(pfd[1]);
 		close(pfd[0]);
+		free_redirects(cmds[i].redirs);
+		free(cmds[i].cmd);
 		wait(&chld_status);
 		//waitpid(pid, &EXIT_CODE, 0);
 		EXIT_CODE = WEXITSTATUS(chld_status);
 		i++;
 	}
-	if (p_out != 0)
+	if (p_out > 0)
 		close(p_out);
+	free_array(env);
 	i = 0;
 }
 
@@ -173,7 +187,7 @@ int	parse_cmd(t_cmd	*cmd, t_data *data)
 	if (parse_redir(cmd->cmd, &cmd->redirs, cmd) == -1)
 		return (1);
 	replace_address(&cmd->cmd, remove_redir(cmd, data));
-	cmd->cmd = make_dollars(cmd->cmd, data, 0);
+	replace_address(&cmd->cmd, make_dollars(cmd->cmd, data, 0));
 	splitted = ft_split_quotes(cmd->cmd, ' ');
 	if (!splitted[0])
 		return (2);
@@ -189,6 +203,6 @@ int	parse_cmd(t_cmd	*cmd, t_data *data)
 	//if (splitted[1])
 	// free(cmd->cmd);
 	if (cmd->redirs)
-		free_redirects(cmd->redirs);
+		free_redirects(cmd->redirs); // peut etre pas besoin
 	return (0);
 }

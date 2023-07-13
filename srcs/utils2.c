@@ -19,9 +19,8 @@ void	close_fds(t_list *lst)
 	tmp = lst;
 	while (tmp)
 	{
-		if (tmp->next)
-			if (tmp->content)
-				close(*(int *)tmp->content);
+		if (tmp->next && tmp->content && *(int *)tmp->content > 0)
+			close(*(int *)tmp->content);
 		tmp = tmp->next;
 	}
 }

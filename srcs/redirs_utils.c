@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 19:22:51 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/13 22:40:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	set_heredocs(t_cmd *cmds)
 				while (1)
 				{
 					tmp = readline("> ");
-					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2)))
+					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
 					free(tmp);

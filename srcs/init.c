@@ -12,30 +12,31 @@
 
 #include "../minishell.h"
 
-t_expv	**init_env(char **env)
+t_expv	*init_env(char **env)
 {
 	t_expv	*tmp;
-	t_expv	**export;
+	t_expv	*export;
 	char	*name;
 	char	*var;
 	int		i;
 
 	i = 0;
-	export = malloc(sizeof(t_expv *));
-	*export = NULL;
+	// export = malloc(sizeof(t_expv *));
+	// *export = NULL;
+	export = NULL;
 	while (env[i])
 	{
 		name = ft_substr(env[i], 0, ft_strchrlen(env[i], '='));
 		var = ft_substr(env[i], ft_strchrlen(env[i], '=') + 1,
 				ft_strlen(ft_strchr(env[i], '=') + 1));
 		tmp = ft_expv_new(var, name);
-		ft_expv_add_back(export, tmp);
+		ft_expv_add_back(&export, tmp);
 		i++;
 	}
 	return (export);
 }
 
-void	init_heredoc(t_cmd *cmds)
+void	init_redirs(t_cmd *cmds)
 {
 	int	i;
 
@@ -49,10 +50,6 @@ void	init_heredoc(t_cmd *cmds)
 		i++;
 	}
 }
-
-// void	init_redir(t_redir **redirs)
-// {
-// }
 
 t_cmd	*init_cmds(char *cmd_line)
 {
@@ -75,5 +72,6 @@ t_cmd	*init_cmds(char *cmd_line)
 	}
 	cmds[i].cmd = NULL;
 	free(sub_shells);
+	free(cmd_line);
 	return (cmds);
 }

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/11 16:02:15 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/13 22:37:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
+# include "libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -138,9 +138,8 @@ void	split_pipe(t_data *data, t_cmd *cmds);
 ///					init.c						  ///
 /////////////////////////////////////////////////////
 
-void	init_heredoc(t_cmd *cmds);
-t_expv	**init_env(char **expv);
-void	init_redir(t_redir **redirs);
+void	init_redirs(t_cmd *cmds);
+t_expv	*init_env(char **env);
 t_cmd	*init_cmds(char *cmd_line);
 
 /////////////////////////////////////////////////////
@@ -164,6 +163,10 @@ t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_data **data, char *name, char *var, int mode);
 int		check_forbidden_caracter(char *str);
+
+/* ------------------------------ syntax_check ------------------------------ */
+
+int		syntax_errors(char *cmd_line);
 
 /////////////////////////////////////////////////////
 ///					utils1.c					  ///

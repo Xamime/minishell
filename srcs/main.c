@@ -15,17 +15,19 @@
 
 int	EXIT_CODE;
 
-void	ctrl_d(t_data *data, t_expv **export, t_cmd *cmds)
+void	ctrl_d(t_data *data, t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
 	printf("exit\n");
-	freelist(*export);
-	free(export);
+	// while (cmds && cmds[i].cmd)
+	// {
+	// 	free(cmds[i].cmd);
+	// 	i++;
+	// }
+	// free(cmds);
+	freelist(export);
+	// free(export);
 	free(data);
-	if (cmds)
-		while (cmds[i++].cmd)
-			free(cmds[i].cmd);
-	free(cmds);
 	exit(0);
 }
 
@@ -77,7 +79,7 @@ int	main(int ac, char **av, char **env)
 {
 	char	*cmd;
 	t_data	*data;
-	t_expv	**export;
+	t_expv	*export;
 	t_cmd	*cmds;
 
 	(void)av;
@@ -86,7 +88,7 @@ int	main(int ac, char **av, char **env)
 	cmds = NULL;
 	data = malloc(sizeof(t_data));
 	export = init_env(env);
-	data->export = *export;
+	data->export = export;
 	while (1)
 	{
 		sig_info();
@@ -94,12 +96,18 @@ int	main(int ac, char **av, char **env)
 		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
 			ctrl_d(data, export, cmds);
 		add_history(cmd);
-		cmds = init_cmds(cmd);
-		split_pipe(data, cmds);
+		if (!syntax_errors(cmd))
+		{
+			cmds = init_cmds(cmd);
+			split_pipe(data, cmds);
+			free(cmds);
+		}
+		else
+			free(cmd);
 		// printf("\n%s\n", make_dollars(str, data, 0));
 		//free(cmds->cmd);
 	}
 	rl_clear_history();
-	freelist(*export);
+	freelist(export);
 	free(data);
 }

@@ -52,5 +52,6 @@ char	*get_access(t_cmd *cmd, t_data *data)
 		free(command);
 		i++;
 	}
+	free_array(cmd->path);
 	return (NULL);
 }
