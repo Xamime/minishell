@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/11 17:39:27 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/14 15:55:11 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	exec_cmd(t_cmd *cmd, char **env, t_data *data)
 
 void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
 {
-	if (p_out > -1)
+	if (p_out > 0)
 	{
 		dup2(p_out, 0);
 		close(p_out);
@@ -143,6 +143,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 			free(data);
 			exit(0);
 		}
+		cmds[i].pid = pid;
 		if (p_out > 0)
 			close(p_out);
 		if (cmds[i].infile > -1)
@@ -154,15 +155,26 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		close(pfd[0]);
 		free_redirects(cmds[i].redirs);
 		free(cmds[i].cmd);
-		wait(&chld_status);
+		// wait(&chld_status);
 		//waitpid(pid, &EXIT_CODE, 0);
-		EXIT_CODE = WEXITSTATUS(chld_status);
+		// EXIT_CODE = WEXITSTATUS(chld_status);
 		i++;
 	}
 	if (p_out > 0)
 		close(p_out);
-	free_array(env);
 	i = 0;
+	while (cmds[i].cmd)
+	{
+		waitpid(cmds[i].pid, &cmds[i].status, 0);
+		i++;
+	}
+	i = 0;
+	while (cmds[i + 1].cmd)
+		i++;
+	// printf("exit code : %d\n", cmds[i].status % 255);
+	// pas sur que ce soit 255 mais ca a l'air de correspondre a bash
+	// peut etre pas besoin de variable globale ? jsp
+	free_array(env);
 }
 
 /*Replace addr1 by addr2, free addr1.*/

@@ -6,7 +6,7 @@
 /*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/13 22:37:36 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/14 15:29:01 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct s_cmd
 	char	**path;
 	int		infile;
 	int		outfile;
+	pid_t	pid;
+	int		status;
 	t_redir	*redirs;
 }				t_cmd;
 
