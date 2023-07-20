@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/26 11:12:41 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:50:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,20 @@ void	cd(char *cmd, t_data *data)
 	free(oldpwd); // a tcheck
 }
 
+int	check_n(t_cmd cmd)
+{
+	int	i;
+
+	i = 1;
+	while (cmd.words[1][i])
+	{
+		if (cmd.words[1][i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	echo(t_cmd cmd)
 {
 	int	i;
@@ -71,8 +85,9 @@ void	echo(t_cmd cmd)
 		printf("\n");
 		return ;
 	}
-	if (!ft_strcmp(cmd.words[1], "-n"))
-		i = 2;
+	if (!ft_strncmp(cmd.words[1], "-n", 2))
+		if (check_n(cmd))
+			i = 2;
 	while (cmd.words[i])
 	{
 		ft_printf("%s", cmd.words[i]);

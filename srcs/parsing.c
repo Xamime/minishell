@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/14 15:55:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/20 14:12:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	i = 0;
 	while (cmds[i + 1].cmd)
 		i++;
-	// printf("exit code : %d\n", cmds[i].status % 255);
+	printf("exit code : %d\n", cmds[i].status % 255);
 	// pas sur que ce soit 255 mais ca a l'air de correspondre a bash
 	// peut etre pas besoin de variable globale ? jsp
 	free_array(env);

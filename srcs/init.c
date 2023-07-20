@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/14 15:34:19 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/20 14:21:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ t_cmd	*init_cmds(char *cmd_line)
 		cmds[i].cmd = sub_shells[i];
 		cmds[i].infile = -1;
 		cmds[i].outfile = -1;
+		cmds[i].path = NULL;
 		i++;
 	}
 	cmds[i].cmd = NULL;
