@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 15:04:00 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 15:21:56 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <errno.h>
 
 // Set Heredoc name, open and return fd
-int	heredoc_name(t_cmd cmds, char *filename)
+int	heredoc_name(t_cmd *cmd, char *filename)
 {
 	int			fd;
 	int			i;
@@ -41,18 +41,21 @@ int	heredoc_name(t_cmd cmds, char *filename)
 		free(try);
 		i++;
 	}
-	fd = open(try, O_RDWR | O_CREAT, 0644);
-	printf("fd : %d\n", fd);
-	ft_putstr_fd("coucou\n", fd);
-	printf("gnl340 : %s\n", get_next_line(fd));
+	fd = open(try, O_CREAT | O_WRONLY, 0644);
+	// close(fd);
+	// fd = open("jsplol", O_CREAT | O_WRONLY | O_APPEND, 0777);
+	// printf("fd : %d\n", fd);
+	// ft_putstr_fd("coucou\n", fd);
+	// close(fd);
+	// fd = open("jsplol", O_RDONLY);
+	// printf("gnl340 : %s\n", get_next_line(fd));
 
-	char	buff[8];
+	// char	*buff;
 
-	ft_bzero(buff, 8);
-	read(fd, buff, 8);
-	printf("buff : %s\n", buff);
-
-	free(try);
+	// buff = ft_calloc(8, 1);
+	// read(fd, buff, 8);
+	// printf("buff : %s\n", buff);
+	cmd->heredoc_name = try;
 	free(filename);
 	return (fd);
 }

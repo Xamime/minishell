@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
+#    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/05/16 19:23:55 by mdesrose         ###   ########.fr        #
+#    Updated: 2023/07/22 15:42:52 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = 	$(wildcard srcs/*.c)
-		
+
 
 NAME = minishell
 LIBFT_SRC = libft
@@ -31,7 +31,7 @@ $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT)
 	@echo "\033[0mDone !"
 
-${LIBFT}: 
+${LIBFT}:
 	make -C ${LIBFT_SRC} all
 
 clean:

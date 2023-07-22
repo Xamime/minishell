@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 14:49:31 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 15:46:21 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,29 +31,34 @@ void	set_heredocs(t_cmd *cmds)
 	while (cmds[i].cmd)
 	{
 		j = 0;
-		while (cmds[i].cmd[j])
+		printf("cmd : %s\n", cmds[i].cmd);
+		while (cmds[i].cmd[j]) // dans remove redir mettre au moins une chaine vide mdr
 		{
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
 				filename = get_filename(&cmds[i].cmd[j]);
 				tmp2 = get_filename(&cmds[i].cmd[j]);
-				*fd = heredoc_name(cmds[i], filename);
+				*fd = heredoc_name(&cmds[i], filename);
 				while (1)
 				{
 					tmp = readline("> ");
 					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
-					printf("gnl2 : %s\n", get_next_line(*fd));
+					// printf("gnl2 : %s\n", get_next_line(*fd));
 					free(tmp);
 				}
 				close(*fd);
-				*fd = open(filename, O_RDONLY, 0644);
+				*fd = open(cmds[i].heredoc_name, O_RDONLY, 0644);
 				free(tmp);
 				free(tmp2);
-				make_list(cmds, fd);
+				printf("coucou\n");
+				ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
+				// make_list(cmds, fd);
+				printf("coucou2\n");
 			}
+			printf("c : %d\n", cmds[i].cmd[j]);
 			j++;
 		}
 		i++;
