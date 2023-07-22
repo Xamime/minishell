@@ -6,24 +6,19 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 15:46:21 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:15:51 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <fcntl.h>
 
-void	make_list(t_cmd *cmds, int *fd)
-{
-	ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
-}
-
 void	set_heredocs(t_cmd *cmds)
 {
 	int		*fd;
 	char	*filename;
 	char	*tmp;
-	char	*tmp2;
+	char	*limiter;
 	int		i;
 	int		j;
 
@@ -31,34 +26,29 @@ void	set_heredocs(t_cmd *cmds)
 	while (cmds[i].cmd)
 	{
 		j = 0;
-		printf("cmd : %s\n", cmds[i].cmd);
-		while (cmds[i].cmd[j]) // dans remove redir mettre au moins une chaine vide mdr
+		while (cmds[i].cmd[j])
 		{
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
 				filename = get_filename(&cmds[i].cmd[j]);
-				tmp2 = get_filename(&cmds[i].cmd[j]);
+				limiter = ft_strdup(filename); // bizarre
 				*fd = heredoc_name(&cmds[i], filename);
 				while (1)
 				{
 					tmp = readline("> ");
-					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2) + 1))
+					if (!ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
-					// printf("gnl2 : %s\n", get_next_line(*fd));
+					ft_putchar_fd('\n', *fd);
 					free(tmp);
 				}
 				close(*fd);
 				*fd = open(cmds[i].heredoc_name, O_RDONLY, 0644);
 				free(tmp);
-				free(tmp2);
-				printf("coucou\n");
+				free(limiter);
 				ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
-				// make_list(cmds, fd);
-				printf("coucou2\n");
 			}
-			printf("c : %d\n", cmds[i].cmd[j]);
 			j++;
 		}
 		i++;
@@ -68,7 +58,7 @@ void	set_heredocs(t_cmd *cmds)
 void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 {
 	*fd = secure_open(type, filename);
-	printf("%d fd, %s gnl\n", *fd, get_next_line(*fd));
+	// printf("%d fd, %s gnl\n", *fd, get_next_line(*fd));
 	if (!ft_strcmp(type, "outfile"))
 		ft_lstadd_back(&redirs->outfiles, ft_lstnew(fd));
 	if (!ft_strcmp(type, "append"))

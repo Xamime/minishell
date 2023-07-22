@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 14:33:48 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:13:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,7 @@ void	execution(t_cmd *cmd, char **env, t_data *data)
 		exit(127);
 	}
 	else
-	{
-		printf("%s\n", cmd->words[1]);
 		execve(command, cmd->words, env);
-
-	}
 }
 
 void	exec_cmd(t_cmd *cmd, char **env, t_data *data)
@@ -127,7 +123,6 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	env = ft_get_env(data);
 	init_redirs(cmds);
 	set_heredocs(cmds);
-	printf("gnl : %s\n", get_next_line(3));
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)

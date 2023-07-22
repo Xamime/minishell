@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 15:21:56 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:13:51 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,6 @@ int	heredoc_name(t_cmd *cmd, char *filename)
 		i++;
 	}
 	fd = open(try, O_CREAT | O_WRONLY, 0644);
-	// close(fd);
-	// fd = open("jsplol", O_CREAT | O_WRONLY | O_APPEND, 0777);
-	// printf("fd : %d\n", fd);
-	// ft_putstr_fd("coucou\n", fd);
-	// close(fd);
-	// fd = open("jsplol", O_RDONLY);
-	// printf("gnl340 : %s\n", get_next_line(fd));
-
-	// char	*buff;
-
-	// buff = ft_calloc(8, 1);
-	// read(fd, buff, 8);
-	// printf("buff : %s\n", buff);
 	cmd->heredoc_name = try;
 	free(filename);
 	return (fd);
@@ -77,7 +64,6 @@ int	secure_open(char *mode, char *filename)
 		exit(1);
 	}
 	printf("%d, %s\n",fd,  get_next_line(fd));
-
 	return (fd);
 }
 
@@ -117,13 +103,11 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	heredoc = ft_lstlast((*redirs)->heredocs);
 	outfile = ft_lstlast((*redirs)->outfiles);
 	i = ft_strlen(str) - 1;
-	printf("%s set redirect\n", get_next_line(*(int *)(heredoc->content)));
 	while (str[i] && str[i] != '<' && i > 0)
 		i--;
 	if (i > 0 && str[i - 1] && str[i - 1] == '<')
 	{
 		cmd->infile = *(int *)heredoc->content;
-		printf("%d \n", cmd->infile);
 		if (infile)
 			close(*(int *)infile->content);
 	}
@@ -132,10 +116,7 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	cmd->outfile = *(int *)heredoc->content;
 
 	if (outfile)
-	{
-		printf("lololol\n");
 		cmd->outfile = *(int *)outfile->content;
-	}
 	close_fds((*redirs)->outfiles);
 	close_fds((*redirs)->heredocs);
 	close_fds((*redirs)->infiles);
