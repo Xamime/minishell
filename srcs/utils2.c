@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:29:09 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:58:25 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,26 @@ void	better_lstclear(t_list *lst)
 	}
 }
 
+static void	unlink_heredocs(t_list *lst)
+{
+	t_list	*ptr;
+
+	ptr = lst;
+	while (ptr)
+	{
+		unlink((char *)ptr->content);
+		ptr = ptr->next;
+	}
+}
+
 void	free_redirects(t_redir *redirs)
 {
 	better_lstclear(redirs->heredocs);
 	better_lstclear(redirs->infiles);
 	better_lstclear(redirs->outfiles);
+	unlink_heredocs(redirs->heredoc_names);
+	better_lstclear(redirs->heredoc_names);
 	free(redirs);
-}
-
-void	unlink_heredocs(t_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		unlink(cmds[i].heredoc_name);
-		free(cmds[i].heredoc_name);
-		i++;
-	}
 }
 
 char	*get_path(t_data *data)

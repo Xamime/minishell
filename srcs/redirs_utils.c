@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:21:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:59:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	set_heredocs(t_cmd *cmds)
 				fd = malloc(sizeof(int));
 				filename = get_filename(&cmds[i].cmd[j]);
 				limiter = ft_strdup(filename); // bizarre
-				*fd = heredoc_name(&cmds[i], filename);
+				*fd = heredoc_name(&cmds[i], &filename);
 				while (1)
 				{
 					tmp = readline("> ");
@@ -44,10 +44,11 @@ void	set_heredocs(t_cmd *cmds)
 					free(tmp);
 				}
 				close(*fd);
-				*fd = open(cmds[i].heredoc_name, O_RDONLY, 0644);
+				*fd = open(filename, O_RDONLY, 0644);
 				free(tmp);
 				free(limiter);
 				ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
+				ft_lstadd_back(&cmds->redirs->heredoc_names, ft_lstnew(filename));
 			}
 			j++;
 		}

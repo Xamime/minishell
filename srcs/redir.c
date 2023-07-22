@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:13:51 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:59:15 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <errno.h>
 
 // Set Heredoc name, open and return fd
-int	heredoc_name(t_cmd *cmd, char *filename)
+int	heredoc_name(t_cmd *cmd, char **filename)
 {
 	int			fd;
 	int			i;
@@ -27,11 +27,11 @@ int	heredoc_name(t_cmd *cmd, char *filename)
 
 	fd = 1;
 	i = 0;
-	replace_address(&filename, ft_strjoin("/tmp/", filename));
+	replace_address(filename, ft_strjoin("/tmp/", *filename));
 	while (1)
 	{
 		tmp = ft_itoa(i);
-		try = ft_strjoin(filename, tmp);
+		try = ft_strjoin(*filename, tmp);
 		fd = open(try, O_RDONLY);
 		free(tmp);
 		if (fd == -1 && errno == ENOENT)
@@ -42,8 +42,7 @@ int	heredoc_name(t_cmd *cmd, char *filename)
 		i++;
 	}
 	fd = open(try, O_CREAT | O_WRONLY, 0644);
-	cmd->heredoc_name = try;
-	free(filename);
+	*filename = try;
 	return (fd);
 }
 

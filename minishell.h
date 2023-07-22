@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:29:31 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:59:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_redir
 {
 	t_list	*infiles;
 	t_list	*heredocs;
+	t_list	*heredoc_names;
 	t_list	*outfiles;
 }	t_redir;
 
@@ -36,7 +37,6 @@ typedef struct s_cmd
 	char	**path;
 	int		infile;
 	int		outfile;
-	char	*heredoc_name;
 	pid_t	pid;
 	int		status;
 	t_redir	*redirs;
@@ -96,7 +96,7 @@ void	close_fds(t_list *lst);
 /////////////////////////////////////////////////////
 
 int		secure_open(char *mode, char *filename);
-int		heredoc_name(t_cmd *cmd, char *filename);
+int		heredoc_name(t_cmd *cmd, char **filename);
 int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd);
 
 /////////////////////////////////////////////////////
@@ -180,7 +180,6 @@ int		is_in(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
 int		check_plus_one(char c);
 void	free_array(char **array);
-void	unlink_heredocs(t_cmd *cmds);
 
 /////////////////////////////////////////////////////
 ///					unset.c						  ///

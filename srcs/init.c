@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/20 14:21:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/22 16:50:29 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_redirs(t_cmd *cmds)
 		cmds[i].redirs->infiles = NULL;
 		cmds[i].redirs->outfiles = NULL;
 		cmds[i].redirs->heredocs = NULL;
+		cmds[i].redirs->heredoc_names = NULL;
 		i++;
 	}
 }
