@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/14 15:45:53 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 13:17:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	set_heredocs(t_cmd *cmds)
 void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 {
 	*fd = secure_open(type, filename);
+	printf("%d fd, %s gnl\n", *fd, get_next_line(*fd));
 	if (!ft_strcmp(type, "outfile"))
 		ft_lstadd_back(&redirs->outfiles, ft_lstnew(fd));
 	if (!ft_strcmp(type, "append"))

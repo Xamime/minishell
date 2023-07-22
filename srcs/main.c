@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/20 14:19:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/22 13:16:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,10 @@ int	main(int ac, char **av, char **env)
 			split_pipe(data, cmds);
 			free(cmds);
 		}
+		if (cmds->infile)
+			printf("%d   infile\n", cmds->infile);
+		if (cmds->outfile)
+			printf("%d   outfile\n", cmds->outfile);
 		else
 			free(cmd);
 		// printf("\n%s\n", make_dollars(str, data, 0));

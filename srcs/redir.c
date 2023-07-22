@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/11 17:30:48 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/22 14:20:16 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	secure_open(char *mode, char *filename)
 		perror(filename);
 		exit(1);
 	}
+	printf("%d, %s\n",fd,  get_next_line(fd));
+
 	return (fd);
 }
 
@@ -102,18 +104,25 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	heredoc = ft_lstlast((*redirs)->heredocs);
 	outfile = ft_lstlast((*redirs)->outfiles);
 	i = ft_strlen(str) - 1;
+	printf("%s set redirect\n", get_next_line(*(int *)(heredoc->content)));
 	while (str[i] && str[i] != '<' && i > 0)
 		i--;
 	if (i > 0 && str[i - 1] && str[i - 1] == '<')
 	{
 		cmd->infile = *(int *)heredoc->content;
+		printf("%d \n", cmd->infile);
 		if (infile)
 			close(*(int *)infile->content);
 	}
 	else if (i > 0)
 		check_redirect(infile, cmd, heredoc);
+	cmd->outfile = *(int *)heredoc->content;
+	
 	if (outfile)
+	{
+		printf("lololol\n");
 		cmd->outfile = *(int *)outfile->content;
+	}
 	close_fds((*redirs)->outfiles);
 	close_fds((*redirs)->heredocs);
 	close_fds((*redirs)->infiles);

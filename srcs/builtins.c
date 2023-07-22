@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/20 14:50:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/20 20:06:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,18 @@ void	cd(char *cmd, t_data *data)
 	free(oldpwd); // a tcheck
 }
 
-int	check_n(t_cmd cmd)
+int	check_n(t_cmd cmd, int i)
 {
-	int	i;
+	int	j;
 
-	i = 1;
-	while (cmd.words[1][i])
+	j = 1;
+	if (ft_strncmp(cmd.words[i], "-n", 2))
+		return (0);
+	while (cmd.words[i][j])
 	{
-		if (cmd.words[1][i] != 'n')
+		if (cmd.words[i][j] != 'n')
 			return (0);
-		i++;
+		j++;
 	}
 	return (1);
 }
@@ -78,24 +80,32 @@ int	check_n(t_cmd cmd)
 void	echo(t_cmd cmd)
 {
 	int	i;
+	int	j;
 
+	j = 1;
 	i = 1;
 	if (!cmd.words[1])
 	{
 		printf("\n");
 		return ;
 	}
-	if (!ft_strncmp(cmd.words[1], "-n", 2))
-		if (check_n(cmd))
-			i = 2;
 	while (cmd.words[i])
 	{
-		ft_printf("%s", cmd.words[i]);
-		if (cmd.words[i + 1])
-			ft_printf(" ");
+		if (check_n(cmd, i))
+			j++;
+		else
+			break;
 		i++;
 	}
-	if (ft_strncmp(cmd.words[1], "-n", 2))
+	i = j;
+	while (cmd.words[j])
+	{
+		ft_printf("%s", cmd.words[j]);
+		if (cmd.words[j + 1])
+			ft_printf(" ");
+		j++;
+	}
+	if (i < 2)
 		ft_printf("\n");
 }
 
