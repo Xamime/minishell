@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 14:20:16 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/22 15:04:00 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,17 @@ int	heredoc_name(t_cmd cmds, char *filename)
 		free(try);
 		i++;
 	}
-	fd = open(try, O_CREAT | O_RDONLY, 0644);
+	fd = open(try, O_RDWR | O_CREAT, 0644);
+	printf("fd : %d\n", fd);
+	ft_putstr_fd("coucou\n", fd);
+	printf("gnl340 : %s\n", get_next_line(fd));
+
+	char	buff[8];
+
+	ft_bzero(buff, 8);
+	read(fd, buff, 8);
+	printf("buff : %s\n", buff);
+
 	free(try);
 	free(filename);
 	return (fd);
@@ -117,7 +127,7 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	else if (i > 0)
 		check_redirect(infile, cmd, heredoc);
 	cmd->outfile = *(int *)heredoc->content;
-	
+
 	if (outfile)
 	{
 		printf("lololol\n");

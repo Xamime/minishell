@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 13:59:38 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/22 14:33:48 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	env = ft_get_env(data);
 	init_redirs(cmds);
 	set_heredocs(cmds);
+	printf("gnl : %s\n", get_next_line(3));
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 13:17:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/22 14:49:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <fcntl.h>
 
 void	make_list(t_cmd *cmds, int *fd)
 {
@@ -44,8 +45,11 @@ void	set_heredocs(t_cmd *cmds)
 					if (!ft_strncmp(tmp, tmp2, ft_strlen(tmp2) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
+					printf("gnl2 : %s\n", get_next_line(*fd));
 					free(tmp);
 				}
+				close(*fd);
+				*fd = open(filename, O_RDONLY, 0644);
 				free(tmp);
 				free(tmp2);
 				make_list(cmds, fd);
@@ -80,7 +84,7 @@ char	*str_without_redir(char *str, char* cmd, int redirs_size)
 {
 	int	i;
 	int	j;
-	
+
 	i = 0;
 	j = 0;
 	str = malloc(sizeof(char) * ft_strlen(cmd) - redirs_size + 1);

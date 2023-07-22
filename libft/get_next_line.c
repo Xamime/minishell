@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 20:26:00 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/03/21 17:37:32 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/22 14:32:30 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	ft_buftrim(char *buf)
 			buf[i] = '\0';
 			i++;
 		}
-	}	
+	}
 	else
 		ft_bzero(buf, BUFFER_SIZE + 1);
 }
