@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/11 17:27:33 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:29:09 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,19 @@ void	free_redirects(t_redir *redirs)
 	better_lstclear(redirs->infiles);
 	better_lstclear(redirs->outfiles);
 	free(redirs);
+}
+
+void	unlink_heredocs(t_cmd *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		unlink(cmds[i].heredoc_name);
+		free(cmds[i].heredoc_name);
+		i++;
+	}
 }
 
 char	*get_path(t_data *data)

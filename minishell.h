@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 15:19:32 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:29:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ int		is_in(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
 int		check_plus_one(char c);
 void	free_array(char **array);
+void	unlink_heredocs(t_cmd *cmds);
 
 /////////////////////////////////////////////////////
 ///					unset.c						  ///

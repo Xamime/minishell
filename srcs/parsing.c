@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:13:06 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/22 16:29:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		close(pfd[1]);
 		close(pfd[0]);
 		free_redirects(cmds[i].redirs);
+		unlink_heredocs(cmds);
 		free(cmds[i].cmd);
 		// wait(&chld_status);
 		//waitpid(pid, &EXIT_CODE, 0);
