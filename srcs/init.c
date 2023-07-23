@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:50:29 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/23 14:02:58 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ t_expv	*init_env(char **env)
 	int		i;
 
 	i = 0;
-	// export = malloc(sizeof(t_expv *));
-	// *export = NULL;
 	export = NULL;
 	while (env[i])
 	{
@@ -70,6 +68,8 @@ t_cmd	*init_cmds(char *cmd_line)
 		cmds[i].infile = -1;
 		cmds[i].outfile = -1;
 		cmds[i].path = NULL;
+		cmds[i].pid = -1; // a verif
+		cmds[i].status = 0; // a verif
 		i++;
 	}
 	cmds[i].cmd = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/20 20:06:56 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/23 13:05:23 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	exec_builtin(t_cmd cmd, t_data *data)
 		cd(cmd.words[1], data);
 	else if (!ft_strcmp(cmd.cmd_name, "echo"))
 		echo(cmd);
-	else if (!ft_strcmp(cmd.cmd_name, "exit"))
+	else if (!ft_strcmp(cmd.cmd_name, "exit")) // a changer
 	{
 		freelist(data->export);
 		exit(0);

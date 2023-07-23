@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/26 12:11:16 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/23 12:53:42 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	change_var(t_data **data, char *name, char *var, int mode)
 	}
 }
 
-int	check_forbidden_caracter(char *str)
+int	check_forbidden_character(char *str)
 {
 	int	i;
 

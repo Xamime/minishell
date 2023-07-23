@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:58:39 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/23 14:51:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac; // erreur si args
 	cmd = NULL;
 	cmds = NULL;
-	data = malloc(sizeof(t_data));
+	data = malloc(sizeof(t_data *));
 	export = init_env(env);
 	data->export = export;
 	while (1)
@@ -99,15 +99,22 @@ int	main(int ac, char **av, char **env)
 		if (!syntax_errors(cmd))
 		{
 			cmds = init_cmds(cmd);
-			split_pipe(data, cmds);
-			free(cmds);
+			init_redirs(cmds);
+			set_heredocs(cmds);
+			for (int i = 0; cmds[i].cmd; i++)
+				parse_cmd(&cmds[i], data);
+			if (!cmds[1].cmd && is_builtin(cmds[0].cmd_name))
+				only_one_builtin(data, cmds);
+			else
+				split_pipe(data, cmds);
+			free(cmds); // ?? normalement ca free toutes les commandes
 		}
-		if (cmds->infile)
-			printf("%d   infile\n", cmds->infile);
-		if (cmds->outfile)
-			printf("%d   outfile\n", cmds->outfile);
 		else
 			free(cmd);
+		// if (cmds->infile)
+		// 	printf("%d   infile\n", cmds->infile);
+		// if (cmds->outfile)
+		// 	printf("%d   outfile\n", cmds->outfile);
 		// printf("\n%s\n", make_dollars(str, data, 0));
 		//free(cmds->cmd);
 	}

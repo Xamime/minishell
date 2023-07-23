@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:59:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/23 13:55:16 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,11 +165,15 @@ void	print_export_var(char *name, char *var);
 t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_data **data, char *name, char *var, int mode);
-int		check_forbidden_caracter(char *str);
+int		check_forbidden_character(char *str);
 
 /* ------------------------------ syntax_check ------------------------------ */
 
 int		syntax_errors(char *cmd_line);
+
+/* ---------------------------------- exec ---------------------------------- */
+
+void	only_one_builtin(t_data *data, t_cmd *cmd);
 
 /////////////////////////////////////////////////////
 ///					utils1.c					  ///
@@ -180,6 +184,7 @@ int		is_in(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
 int		check_plus_one(char c);
 void	free_array(char **array);
+void	free_command(t_cmd *cmd);
 
 /////////////////////////////////////////////////////
 ///					unset.c						  ///

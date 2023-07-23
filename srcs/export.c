@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/26 11:13:57 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/23 14:48:46 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	parse_export(t_cmd cmd, t_data *data)
 	i = 1;
 	while (cmd.words[i])
 	{
-		if (!check_forbidden_caracter(cmd.words[i]))
+		if (!check_forbidden_character(cmd.words[i]))
 		{
 			set_var_line(cmd.words[i], &name, &var);
 			if (!is_in(data->export, name))

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:59:07 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/23 14:51:30 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	set_heredocs(t_cmd *cmds)
 				*fd = open(filename, O_RDONLY, 0644);
 				free(tmp);
 				free(limiter);
-				ft_lstadd_back(&cmds->redirs->heredocs, ft_lstnew(fd));
-				ft_lstadd_back(&cmds->redirs->heredoc_names, ft_lstnew(filename));
+				ft_lstadd_back(&cmds[i].redirs->heredocs, ft_lstnew(fd));
+				ft_lstadd_back(&cmds[i].redirs->heredoc_names, ft_lstnew(filename));
 			}
 			j++;
 		}
@@ -71,9 +71,11 @@ void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc)
 {
 	if (infile)
+	{
 		cmd->infile = *(int *)infile->content;
-	if (heredoc)
-		close(*(int *)heredoc->content);
+		if (heredoc)
+			close(*(int *)heredoc->content);
+	}
 }
 
 char	*str_without_redir(char *str, char* cmd, int redirs_size)

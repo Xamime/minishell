@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/11 15:40:46 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/23 12:41:47 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"	
+#include "../minishell.h"
 
 static char	*get_expanded_str(t_expansion *exp, char *tmp, t_data *data)
 {
@@ -41,7 +41,7 @@ char	*get_var_name(char *str)
 	return (name);
 }
 
-void	remove_quotes(char *str, char *new_str, char quote)
+void	remove_quotes(char *str, char *new_str, char quote) // oui y'a tjrs ce truc déguelasse
 {
 	char	*tmp;
 
@@ -111,6 +111,7 @@ char	*str_exit_code(char *str, t_data *data, t_expansion *exp)
 	new_str = malloc(sizeof(char) * ft_strlen(str) + ft_strlen(exit_code));
 	exp->found_dollar = 0;
 	exp->in_double = 0;
+	printf("exit_code : %s\n", exit_code);
 	while (str[i])
 	{
 		if ((str[i] == '\"' && exp->mode == 0)
@@ -153,7 +154,7 @@ char	*make_dollars(char *str, t_data *data, int mode)
 			in_double = 0;
 		if (*str == '$' && *(str + 1) == '?')
 			new_str = str_exit_code(new_str, data, exp);
-		else if (*str == '$' && check_plus_one(*(str + 1)))
+		else if (*str == '$' && check_plus_one(*(str + 1))) // is in charset
 		{
 			exp->name = get_var_name(str);
 			new_str = get_expanded_str(exp, new_str, data);

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/22 16:53:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/23 14:51:42 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	free_command(t_cmd *cmd)
 	free(cmd->words);
 	free(cmd->path);
 	cmd->words = NULL;
+	// rajouter free(cmd)
 }
 
 void	split_pipe(t_data *data, t_cmd *cmds)
@@ -121,8 +122,6 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	i = 0;
 	p_out = 0;
 	env = ft_get_env(data);
-	init_redirs(cmds);
-	set_heredocs(cmds);
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)
@@ -134,7 +133,6 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 			perror("fork");
 		else if (pid == 0)
 		{
-			parse_cmd(&cmds[i], data);
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
 			exec_cmd(&cmds[i], env, data);
 			free_command(&cmds[i]);
@@ -155,9 +153,6 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		close(pfd[0]);
 		free_redirects(cmds[i].redirs);
 		free(cmds[i].cmd);
-		// wait(&chld_status);
-		//waitpid(pid, &EXIT_CODE, 0);
-		// EXIT_CODE = WEXITSTATUS(chld_status);
 		i++;
 	}
 	if (p_out > 0)
@@ -171,7 +166,8 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	i = 0;
 	while (cmds[i + 1].cmd)
 		i++;
-	printf("exit code : %d\n", cmds[i].status % 255);
+	// printf("exit code : %d\n", cmds[i].status % 255);
+	EXIT_CODE = cmds[i].status % 255;
 	// pas sur que ce soit 255 mais ca a l'air de correspondre a bash
 	// peut etre pas besoin de variable globale ? jsp
 	free_array(env);
