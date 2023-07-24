@@ -6,45 +6,49 @@
 #    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/07/22 15:42:52 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/07/24 03:08:38 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = 	$(wildcard srcs/*.c)
 
-
 NAME = minishell
 LIBFT_SRC = libft
 LIBFT = ${LIBFT_SRC}/libft.a
 CC = clang
-CFLAGS =  -g -lreadline #-Wall -Wextra -Werror -g
+CFLAGS = -g #-lreadline #-Wall -Wextra -Werror -g
 OBJ = $(SRC:c=o)
+
+YELLOW=\033[0;33m
+GREEN=\033[0;32m
+RED=\033[0;31m
+DEFAULT=\033[39m
+CLEANL=\r\033[K
 
 all: $(NAME)
 
 %.o: %.c
-	@printf "\033[0;33mGenerating minishell objects... %-10.10s\r" $@
+	@echo -n "$(CLEANL)$(YELLOW)Generating $(NAME) objects... $@$(DEFAULT)"
 	@${CC} ${CFLAGS} -c $< -o $@
 
-$(NAME): $(OBJ) $(LIBFT)
-	@echo "\033[0;32m\nCompiling minishell..."
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBFT)
-	@echo "\033[0mDone !"
+$(NAME): $(LIBFT) $(OBJ)
+	@echo "$(CLEANL)$(GREEN)Done generating $(NAME) objects !$(DEFAULT)"
+	@echo -n "$(GREEN)Compiling $(NAME)...$(DEFAULT)"
+	@$(CC) $(CFLAGS) -lreadline $(OBJ) -o $(NAME) $(LIBFT)
+	@echo "$(CLEANL)$(GREEN)Done compiling $(NAME) !$(DEFAULT)"
 
 ${LIBFT}:
-	make -C ${LIBFT_SRC} all
+	@make all -C ${LIBFT_SRC} -s
 
 clean:
-	@echo "\033[0;31mDeleting objects..."
+	@echo "$(RED)Deleting $(NAME) objects...$(DEFAULT)"
 	@rm -f $(OBJ)
-	@make clean -C ${LIBFT_SRC}
-	@echo "\033[0m"
+	@make clean -C ${LIBFT_SRC} -s
 
 fclean: clean
-	@echo "Deleting executable..."
+	@echo "$(RED)Deleting $(NAME) executable...$(DEFAULT)"
 	@rm -f $(NAME)
-	@make fclean -C ${LIBFT_SRC}
-	@echo "\033[0m"
+	@make fclean -C ${LIBFT_SRC} -s
 
 re: fclean all
 

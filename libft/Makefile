@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
+#    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/04 09:28:12 by mmarks            #+#    #+#              #
-#    Updated: 2023/05/16 19:12:36 by mdesrose         ###   ########.fr        #
+#    Updated: 2023/07/24 03:09:25 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,25 +73,31 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -f
 NAME = libft.a
 
+YELLOW=\033[0;33m
+GREEN=\033[0;32m
+RED=\033[0;31m
+DEFAULT=\033[39m
+CLEANL=\r\033[K
+
 %.o : %.c
+		@echo -n "$(CLEANL)$(YELLOW)Generating libft objects... $@$(DEFAULT)"
 		@$(CC) ${CFLAGS} -c $< -o $@
 
 ${NAME}: ${OBJS}
-		@echo "\033[0;32m\n\nCompiling libft..."
+		@echo "$(CLEANL)$(GREEN)Done generating libft objects !$(DEFAULT)"
+		@echo -n "$(GREEN)Compiling libft...$(DEFAULT)"
 		@ar rcs $@ $^
-		@echo "\n\033[0mDone !"
-		
+		@echo "$(CLEANL)$(GREEN)Done compiling libft !$(DEFAULT)"
+
 all : ${NAME}
 
 clean:
-		@echo "\033[0;31m\nDeleting objects..."
+		@echo "$(RED)Deleting libft objects...$(DEFAULT)"
 		@${RM} ${OBJS}
-		@echo "\033[0m"
 
 fclean: clean
-		@echo "\nDeleting executable..."
+		@echo "$(RED)Deleting libft executable...$(DEFAULT)"
 		@${RM} ${NAME}
-		@echo "\033[0m"
 
 re : fclean all
 
