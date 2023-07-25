@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:07:54 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/26 12:10:25 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:20:53 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	unset(t_cmd cmd, t_data *data)
 		{
 			if (!ft_strcmp(cmd.words[i], tmp->name))
 			{
-				del_one(data->export, tmp);
+				del_one(&data->export, tmp);
 				break ;
 			}
 			tmp = tmp->next;

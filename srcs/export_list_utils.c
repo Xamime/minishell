@@ -3,25 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   export_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:51:44 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/03/28 14:40:29 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/25 17:20:39 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	del_one(t_expv *list, t_expv *to_del)
+void	del_one(t_expv **list, t_expv *to_del)
 {
 	t_expv	*tmp;
 
-	if (!list || !to_del)
+	if (!list || !*list || !to_del)
 		return ;
-	tmp = list;
-	while (tmp && tmp->next != to_del)
-		tmp = tmp->next;
-	tmp->next = to_del->next;
+	tmp = *list;
+	if (to_del == tmp)
+		*list = to_del->next;
+	else
+	{
+		while (tmp && tmp->next != to_del)
+			tmp = tmp->next;
+		tmp->next = to_del->next;
+	}
 	if (to_del->name)
 		free(to_del->name);
 	if (to_del->var && to_del->var[0])

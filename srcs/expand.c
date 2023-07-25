@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 12:41:47 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 16:09:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ void	remove_quotes(char *str, char *new_str, char quote) // oui y'a tjrs ce truc
 		{
 			quote = *str;
 			str++;
-			while (str && *str != quote)
+			while (*str && *str != quote)
 			{
 				*new_str = *str;
 				str++;
 				new_str++;
 			}
-			if (str)
+			if (*str)
 				str++;
 		}
-		if (str && !is_in_set(*str, "\"\'"))
+		if (*str && !is_in_set(*str, "\"\'"))
 		{
 			*new_str = *str;
 			str++;

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 14:51:07 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 16:07:09 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac; // erreur si args
 	cmd = NULL;
 	cmds = NULL;
-	data = malloc(sizeof(t_data *));
+	data = malloc(sizeof(t_data));
 	export = init_env(env);
 	data->export = export;
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 13:55:16 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 18:26:50 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ t_cmd	*init_cmds(char *cmd_line);
 ///					builtins.c					  ///
 /////////////////////////////////////////////////////
 
-void	exec_builtin(t_cmd cmd, t_data *data);
+int		exec_builtin(t_cmd cmd, t_data *data);
 
 /////////////////////////////////////////////////////
 ///					export.c					  ///
@@ -196,13 +196,13 @@ void	unset(t_cmd cmd, t_data *data);
 ///				export_list_utils.c				  ///
 /////////////////////////////////////////////////////
 
-void	del_one(t_expv *list, t_expv *to_del);
+void	del_one(t_expv **list, t_expv *to_del);
 t_expv	*ft_expv_last(t_expv *expv);
 t_expv	*ft_expv_new(char *var, char *name);
 void	ft_expv_add_back(t_expv **expv, t_expv *new);
 int		ft_expv_size(t_expv *expv);
 
-char	*ft_getenv(char *str, t_data *data);
+char	*ft_getenv(char *str, t_data *data); // on a une autre fonction avec le meme nom mdr
 void	update_pwd(t_data *data, char *oldpwd);
 
 #endif

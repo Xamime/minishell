@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 13:05:23 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 18:06:42 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,11 @@ void	print_env(t_data *data)
 	}
 }
 
-void	exec_builtin(t_cmd cmd, t_data *data)
+int	exec_builtin(t_cmd cmd, t_data *data)
 {
+	int	ret;
+
+	ret = 0;
 	if (!ft_strcmp(cmd.cmd_name, "pwd"))
 		pwd();
 	else if (!ft_strcmp(cmd.cmd_name, "cd"))
@@ -141,4 +144,5 @@ void	exec_builtin(t_cmd cmd, t_data *data)
 		export(cmd, data);
 	else if (!ft_strcmp(cmd.cmd_name, "unset"))
 		unset(cmd, data);
+	return (ret);
 }

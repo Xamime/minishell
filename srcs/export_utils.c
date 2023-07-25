@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 12:53:42 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 17:26:09 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	check_forbidden_character(char *str)
 
 	if (str[0] != '_' && !ft_isalpha(str[0]))
 	{
-		ft_printf("%s: not a valid identifier\n", str);
+		ft_printf("minishell: export: `%s': not a valid identifier\n", str);
 		return (1);
 	}
 	i = 1;
@@ -103,7 +103,7 @@ int	check_forbidden_character(char *str)
 		if (!(str[i] == '+' && str[i + 1] == '=')
 			&& str[i] != '_' && !ft_isalnum(str[i]))
 		{
-			ft_printf("%s: not a valid identifier\n", str);
+			ft_printf("minishell: export: `%s': not a valid identifier\n", str);
 			return (1);
 		}
 		i++;

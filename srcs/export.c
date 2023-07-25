@@ -6,11 +6,23 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 14:48:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 17:23:12 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	free_sorted(t_expv *sorted)
+{
+	t_expv *tmp;
+
+	while (sorted)
+	{
+		tmp = sorted;
+		sorted = sorted->next;
+		free(tmp);
+	}
+}
 
 static void	export_print(t_expv *export)
 {
@@ -30,6 +42,7 @@ static void	export_print(t_expv *export)
 		print_export_var(min->name, min->var);
 		i++;
 	}
+	free_sorted(sorted);
 }
 
 static void	parse_export(t_cmd cmd, t_data *data)

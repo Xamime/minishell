@@ -6,13 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 14:51:42 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 18:27:22 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**ft_get_env(t_data *data)
+char	**ft_get_env(t_expv *export)
 {
 	int		size;
 	char	**env;
@@ -20,8 +20,8 @@ char	**ft_get_env(t_data *data)
 	int		i;
 
 	i = 0;
-	tmp = data->export;
-	size = ft_expv_size(data->export);
+	tmp = export;
+	size = ft_expv_size(export);
 	env = malloc(sizeof(char *) * (size + 1));
 	while (tmp)
 	{
@@ -42,7 +42,7 @@ void	execution(t_cmd *cmd, char **env, t_data *data)
 	command = get_access(cmd, data);
 	if (!command)
 	{
-		printf("%s: command not found\n", cmd->cmd_name);
+		printf("minishell: %s: command not found\n", cmd->cmd_name);
 		free(command);
 		free_array(cmd->words);
 		free(cmd->cmd);
@@ -106,6 +106,7 @@ void	free_command(t_cmd *cmd)
 	cmd->cmd = NULL;
 	free(cmd->words);
 	free(cmd->path);
+	free_redirects(cmd->redirs);
 	cmd->words = NULL;
 	// rajouter free(cmd)
 }
@@ -121,7 +122,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 
 	i = 0;
 	p_out = 0;
-	env = ft_get_env(data);
+	env = ft_get_env(data->export);
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)
@@ -135,11 +136,17 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		{
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
 			exec_cmd(&cmds[i], env, data);
-			free_command(&cmds[i]);
+			int	j = 0;
+			while (cmds[j].cmd)
+			{
+				free_command(&cmds[j]);
+				j++;
+			}
 			freelist(data->export);
 			free(cmds);
+			free_array(env);
 			free(data);
-			exit(0);
+			exit(0); // exit code erreur du builtin
 		}
 		cmds[i].pid = pid;
 		if (p_out > 0)
