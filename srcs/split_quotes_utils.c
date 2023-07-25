@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:37:21 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 17:38:46 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/25 15:03:10 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // Return True if in set
 int	is_in_set(char c, char *set)
 {
+	if (!c)
+		return (0);
 	while (*set && *set != c)
 		set++;
 	if (*set)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 12:41:47 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 15:43:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char	*str_exit_code(char *str, t_data *data, t_expansion *exp)
 	new_str = malloc(sizeof(char) * ft_strlen(str) + ft_strlen(exit_code));
 	exp->found_dollar = 0;
 	exp->in_double = 0;
-	printf("exit_code : %s\n", exit_code);
+	//printf("exit_code : %s\n", exit_code);
 	while (str[i])
 	{
 		if ((str[i] == '\"' && exp->mode == 0)
