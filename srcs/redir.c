@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 14:49:44 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 19:28:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	secure_open(char *mode, char *filename)
 		perror(filename);
 		exit(1);
 	}
-	printf("%d, %s\n",fd,  get_next_line(fd));
+	//printf("%d, %s\n",fd,  get_next_line(fd));
 	return (fd);
 }
 

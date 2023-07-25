@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/07/25 16:07:09 by jfarkas          ###   ########.fr       */
+=======
+/*   Updated: 2023/07/25 12:24:04 by marvin           ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +114,10 @@ int	main(int ac, char **av, char **env)
 			free(cmds); // ?? normalement ca free toutes les commandes
 		}
 		else
+		{
+			printf("syntax error\n");
 			free(cmd);
-		// if (cmds->infile)
-		// 	printf("%d   infile\n", cmds->infile);
-		// if (cmds->outfile)
-		// 	printf("%d   outfile\n", cmds->outfile);
+		}
 		// printf("\n%s\n", make_dollars(str, data, 0));
 		//free(cmds->cmd);
 	}

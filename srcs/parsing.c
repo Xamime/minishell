@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/07/25 18:27:22 by jfarkas          ###   ########.fr       */
+=======
+/*   Updated: 2023/07/25 19:40:57 by marvin           ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +46,11 @@ void	execution(t_cmd *cmd, char **env, t_data *data)
 	command = get_access(cmd, data);
 	if (!command)
 	{
+<<<<<<< HEAD
 		printf("minishell: %s: command not found\n", cmd->cmd_name);
+=======
+		ft_putstr_fd(" command not found\n", 2);
+>>>>>>> refs/remotes/origin/master
 		free(command);
 		free_array(cmd->words);
 		free(cmd->cmd);
