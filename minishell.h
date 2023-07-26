@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 18:26:50 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/26 18:19:00 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,6 @@ typedef struct s_expv
 	char	*var;
 }				t_expv;
 
-typedef struct s_data
-{
-	void	*next;
-	t_expv	*export;
-}				t_data;
-
 typedef struct s_expansion
 {
 	char	*name;
@@ -64,7 +58,7 @@ typedef struct s_expansion
 	int		mode;
 }	t_expansion;
 
-void	freelist(t_expv *export);
+void	freelist(t_expv *expv);
 char	**ft_split_quotes(char *s, char c);
 
 /////////////////////////////////////////////////////
@@ -72,13 +66,13 @@ char	**ft_split_quotes(char *s, char c);
 /////////////////////////////////////////////////////
 
 char	*set_without_quotes(char *str);
-char	*make_dollars(char *str, t_data *data, int mode);
+char	*make_dollars(char *str, t_expv *expv, int mode);
 
 /////////////////////////////////////////////////////
 ///					parsing2.c					  ///
 /////////////////////////////////////////////////////
 
-char	*get_access(t_cmd *cmd, t_data *data);
+char	*get_access(t_cmd *cmd, t_expv *expv);
 int		is_builtin(char *cmd);
 
 /////////////////////////////////////////////////////
@@ -87,7 +81,7 @@ int		is_builtin(char *cmd);
 
 char	*get_filename(char *str);
 void	better_lstclear(t_list *lst);
-char	*get_path(t_data *data);
+char	*get_path(t_expv *expv);
 void	free_redirects(t_redir *redirs);
 void	close_fds(t_list *lst);
 
@@ -107,7 +101,7 @@ void	set_heredocs(t_cmd *cmds);
 void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc);
 void	make_list(t_cmd *cmds, int *fd);
 void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs);
-char	*remove_redir(t_cmd	*cmd, t_data *data);
+char	*remove_redir(t_cmd	*cmd);
 char	*str_without_redir(char *str, char* cmd, int redirs_size);
 
 /////////////////////////////////////////////////////
@@ -133,9 +127,9 @@ char	*skip_to_char(char *str, char c);
 ///					parsing.c					  ///
 /////////////////////////////////////////////////////
 
-int		parse_cmd(t_cmd *cmd, t_data *data);
+int		parse_cmd(t_cmd *cmd, t_expv *expv);
 void	replace_address(char **addr1, char *addr2);
-void	split_pipe(t_data *data, t_cmd *cmds);
+void	split_pipe(t_expv *expv, t_cmd *cmds);
 
 /////////////////////////////////////////////////////
 ///					init.c						  ///
@@ -149,13 +143,13 @@ t_cmd	*init_cmds(char *cmd_line);
 ///					builtins.c					  ///
 /////////////////////////////////////////////////////
 
-int		exec_builtin(t_cmd cmd, t_data *data);
+void	exec_builtin(t_cmd *cmd, t_expv *expv);
 
 /////////////////////////////////////////////////////
 ///					export.c					  ///
 /////////////////////////////////////////////////////
 
-void	export(t_cmd cmd, t_data *data);
+void	export(t_cmd *cmd, t_expv **expv);
 
 /////////////////////////////////////////////////////
 ///					export_utils.c				  ///
@@ -164,7 +158,7 @@ void	export(t_cmd cmd, t_data *data);
 void	print_export_var(char *name, char *var);
 t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
-void	change_var(t_data **data, char *name, char *var, int mode);
+void	change_var(t_expv *export, char *name, char *var, int mode);
 int		check_forbidden_character(char *str);
 
 /* ------------------------------ syntax_check ------------------------------ */
@@ -173,7 +167,7 @@ int		syntax_errors(char *cmd_line);
 
 /* ---------------------------------- exec ---------------------------------- */
 
-void	only_one_builtin(t_data *data, t_cmd *cmd);
+void	only_one_builtin(t_expv *expv, t_cmd *cmd);
 
 /////////////////////////////////////////////////////
 ///					utils1.c					  ///
@@ -190,7 +184,7 @@ void	free_command(t_cmd *cmd);
 ///					unset.c						  ///
 /////////////////////////////////////////////////////
 
-void	unset(t_cmd cmd, t_data *data);
+void	unset(t_cmd *cmd, t_expv **export);
 
 /////////////////////////////////////////////////////
 ///				export_list_utils.c				  ///
@@ -202,7 +196,9 @@ t_expv	*ft_expv_new(char *var, char *name);
 void	ft_expv_add_back(t_expv **expv, t_expv *new);
 int		ft_expv_size(t_expv *expv);
 
-char	*ft_getenv(char *str, t_data *data); // on a une autre fonction avec le meme nom mdr
-void	update_pwd(t_data *data, char *oldpwd);
+char	*ft_getenv(char *str, t_expv *export); // on a une autre fonction avec le meme nom mdr
+void	update_pwd(t_expv *export, char *oldpwd);
+
+void	free_fork(t_expv *expv, t_cmd *cmds, char **env);
 
 #endif

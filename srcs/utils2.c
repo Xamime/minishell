@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 12:12:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 23:04:24 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ void	free_redirects(t_redir *redirs)
 	free(redirs);
 }
 
-char	*get_path(t_data *data)
+char	*get_path(t_expv *expv)
 {
 	t_expv	*tmp;
 
-	tmp = data->export;
+	tmp = expv;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->name, "PATH"))

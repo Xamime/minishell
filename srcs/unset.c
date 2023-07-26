@@ -6,26 +6,26 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:07:54 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 17:20:53 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 20:32:27 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	unset(t_cmd cmd, t_data *data)
+void	unset(t_cmd *cmd, t_expv **export)
 {
 	int		i;
 	t_expv	*tmp;
 
 	i = 1;
-	while (cmd.words[i])
+	while (cmd->words[i])
 	{
-		tmp = data->export;
+		tmp = *export;
 		while (tmp)
 		{
-			if (!ft_strcmp(cmd.words[i], tmp->name))
+			if (!ft_strcmp(cmd->words[i], tmp->name))
 			{
-				del_one(&data->export, tmp);
+				del_one(export, tmp);
 				break ;
 			}
 			tmp = tmp->next;

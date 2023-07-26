@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:15:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/06/28 20:04:38 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:03:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_builtin(char *cmd)
 	return (builtin);
 }
 
-char	*get_access(t_cmd *cmd, t_data *data)
+char	*get_access(t_cmd *cmd, t_expv *expv)
 {
 	char	*path;
 	int		i;
@@ -40,7 +40,7 @@ char	*get_access(t_cmd *cmd, t_data *data)
 	char	*command;
 
 	i = 0;
-	path = get_path(data);
+	path = get_path(expv);
 	cmd->path = ft_split(path, ':');
 	while (cmd->path[i])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:11:45 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/05/25 16:11:17 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/26 15:39:46 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_strchrlen(char *str, char c)
 
 int	check_plus_one(char c)
 {
-	if (c != ' ')
+	if (!is_in_set(c, " \t\n"))
 		return (1);
 	return (0);
 }

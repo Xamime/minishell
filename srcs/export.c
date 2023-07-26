@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 17:23:12 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/26 18:43:38 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	free_sorted(t_expv *sorted)
 	}
 }
 
-static void	export_print(t_expv *export)
+static void	export_print(t_expv *expv)
 {
 	t_expv	*sorted;
 	t_expv	*ptr;
@@ -33,11 +33,11 @@ static void	export_print(t_expv *export)
 	int		i;
 
 	i = 0;
-	expv_size = ft_expv_size(export);
+	expv_size = ft_expv_size(expv);
 	sorted = NULL;
 	while (i < expv_size)
 	{
-		min = find_min_ascii(export, sorted);
+		min = find_min_ascii(expv, sorted);
 		ft_expv_add_back(&sorted, ft_expv_new(min->var, min->name));
 		print_export_var(min->name, min->var);
 		i++;
@@ -45,32 +45,34 @@ static void	export_print(t_expv *export)
 	free_sorted(sorted);
 }
 
-static void	parse_export(t_cmd cmd, t_data *data)
+static void	parse_export(t_cmd *cmd, t_expv **expv)
 {
 	int		i;
 	char	*name;
 	char	*var;
 
 	i = 1;
-	while (cmd.words[i])
+	while (cmd->words[i])
 	{
-		if (!check_forbidden_character(cmd.words[i]))
+		if (!check_forbidden_character(cmd->words[i]))
 		{
-			set_var_line(cmd.words[i], &name, &var);
-			if (!is_in(data->export, name))
-				ft_expv_add_back(&data->export, ft_expv_new(var, name));
-			else if (var && ft_strstr(cmd.words[i], "+="))
-				change_var(&data, name, var, 1);
+			set_var_line(cmd->words[i], &name, &var);
+			if (!is_in(*expv, name))
+				ft_expv_add_back(expv, ft_expv_new(var, name));
+			else if (var && ft_strstr(cmd->words[i], "+="))
+				change_var(*expv, name, var, 1);
 			else if (var)
-				change_var(&data, name, var, 0);
+				change_var(*expv, name, var, 0);
 		}
+		else
+			cmd->status = 1;
 		i++;
 	}
 }
 
-void	export(t_cmd cmd, t_data *data)
+void	export(t_cmd *cmd, t_expv **expv)
 {
-	parse_export(cmd, data);
-	if (!cmd.words[1])
-		export_print(data->export);
+	parse_export(cmd, expv);
+	if (!cmd->words[1])
+		export_print(*expv);
 }

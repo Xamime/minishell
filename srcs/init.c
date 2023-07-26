@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 15:56:08 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 22:52:12 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 t_expv	*init_env(char **env)
 {
 	t_expv	*tmp;
-	t_expv	*export;
+	t_expv	*expv;
 	char	*name;
 	char	*var;
 	int		i;
 
 	i = 0;
-	export = NULL;
+	expv = NULL;
 	while (env[i])
 	{
 		name = ft_substr(env[i], 0, ft_strchrlen(env[i], '='));
 		var = ft_substr(env[i], ft_strchrlen(env[i], '=') + 1,
 				ft_strlen(ft_strchr(env[i], '=') + 1));
 		tmp = ft_expv_new(var, name);
-		ft_expv_add_back(&export, tmp);
+		ft_expv_add_back(&expv, tmp);
 		i++;
 	}
-	return (export);
+	return (expv);
 }
 
 void	init_redirs(t_cmd *cmds)

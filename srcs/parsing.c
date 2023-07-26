@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/25 18:27:22 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/07/25 19:40:57 by marvin           ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/26 18:38:01 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,37 +35,27 @@ char	**ft_get_env(t_expv *export)
 	return (env);
 }
 
-void	execution(t_cmd *cmd, char **env, t_data *data)
+void	execution(t_cmd *cmd, char **env, t_expv *expv)
 {
 	char	*command;
 
-	command = get_access(cmd, data);
+	command = get_access(cmd, expv);
 	if (!command)
 	{
-<<<<<<< HEAD
 		printf("minishell: %s: command not found\n", cmd->cmd_name);
-=======
-		ft_putstr_fd(" command not found\n", 2);
->>>>>>> refs/remotes/origin/master
-		free(command);
-		free_array(cmd->words);
-		free(cmd->cmd);
-		free(cmd);
-		freelist(data->export);
-		free_array(env);
-		free(data);
-		exit(127);
+		cmd->status = 127;
+		return ;
 	}
 	else
 		execve(command, cmd->words, env);
 }
 
-void	exec_cmd(t_cmd *cmd, char **env, t_data *data)
+void	exec_cmd(t_cmd *cmd, char **env, t_expv *expv)
 {
 	if (is_builtin(cmd->cmd_name))
-		exec_builtin(*cmd, data);
+		exec_builtin(cmd, expv);
 	else
-		execution(cmd, env, data);
+		execution(cmd, env, expv);
 }
 
 void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
@@ -116,10 +102,24 @@ void	free_command(t_cmd *cmd)
 	free(cmd->path);
 	free_redirects(cmd->redirs);
 	cmd->words = NULL;
-	// rajouter free(cmd)
 }
 
-void	split_pipe(t_data *data, t_cmd *cmds)
+void	free_fork(t_expv *expv, t_cmd *cmds, char **env)
+{
+	int	i;
+
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		free_command(&cmds[i]);
+		i++;
+	}
+	freelist(expv);
+	free(cmds);
+	free_array(env);
+}
+
+void	split_pipe(t_expv *expv, t_cmd *cmds)
 {
 	int		i;
 	int		pfd[2];
@@ -130,7 +130,7 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 
 	i = 0;
 	p_out = 0;
-	env = ft_get_env(data->export);
+	env = ft_get_env(expv);
 	while (cmds[i].cmd)
 	{
 		if (pipe(pfd) == -1)
@@ -143,31 +143,20 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 		else if (pid == 0)
 		{
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
-			exec_cmd(&cmds[i], env, data);
-			int	j = 0;
-			while (cmds[j].cmd)
-			{
-				free_command(&cmds[j]);
-				j++;
-			}
-			freelist(data->export);
-			free(cmds);
-			free_array(env);
-			free(data);
-			exit(0); // exit code erreur du builtin
+			exec_cmd(&cmds[i], env, expv);
+			free_fork(expv, cmds, env);
+			exit(cmds[i].status); // exit code erreur du builtin
 		}
 		cmds[i].pid = pid;
 		if (p_out > 0)
 			close(p_out);
-		if (cmds[i].infile > -1)
+		if (cmds[i].infile > -1) // si infile ou outfile = 0 ou 1 ?
 			close(cmds[i].infile);
 		if (cmds[i].outfile > -1)
 			close(cmds[i].outfile);
 		p_out = dup(pfd[0]);
 		close(pfd[1]);
 		close(pfd[0]);
-		free_redirects(cmds[i].redirs);
-		free(cmds[i].cmd);
 		i++;
 	}
 	if (p_out > 0)
@@ -182,9 +171,13 @@ void	split_pipe(t_data *data, t_cmd *cmds)
 	while (cmds[i + 1].cmd)
 		i++;
 	// printf("exit code : %d\n", cmds[i].status % 255);
-	EXIT_CODE = cmds[i].status % 255;
-	// pas sur que ce soit 255 mais ca a l'air de correspondre a bash
-	// peut etre pas besoin de variable globale ? jsp
+	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		free_command(&cmds[i]);
+		i++;
+	}
 	free_array(env);
 }
 
@@ -198,7 +191,7 @@ void	replace_address(char **addr1, char *addr2)
 	free(tmp);
 }
 
-int	parse_cmd(t_cmd	*cmd, t_data *data)
+int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 {
 	char	**splitted;
 	char	*tmp;
@@ -209,23 +202,18 @@ int	parse_cmd(t_cmd	*cmd, t_data *data)
 	// initialiser new_cmd
 	if (parse_redir(cmd->cmd, &cmd->redirs, cmd) == -1)
 		return (1);
-	replace_address(&cmd->cmd, remove_redir(cmd, data));
-	replace_address(&cmd->cmd, make_dollars(cmd->cmd, data, 0));
+	replace_address(&cmd->cmd, remove_redir(cmd));
+	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
 	splitted = ft_split_quotes(cmd->cmd, ' ');
 	if (!splitted[0])
 		return (2);
 	while (splitted[i])
 	{
-		replace_address(&splitted[i], make_dollars(splitted[i], data, 1));
+		replace_address(&splitted[i], make_dollars(splitted[i], expv, 1));
 		replace_address(&splitted[i], set_without_quotes(splitted[i]));
 		i++;
 	}
 	cmd->cmd_name = splitted[0];
 	cmd->words = splitted;
-	// free_array(splitted);
-	//if (splitted[1])
-	// free(cmd->cmd);
-	// if (cmd->redirs)
-		// free_redirects(cmd->redirs); // peut etre pas besoin
 	return (0);
 }

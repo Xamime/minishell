@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/25 16:07:09 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/07/25 12:24:04 by marvin           ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/26 18:30:41 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +15,7 @@
 
 int	EXIT_CODE;
 
-void	ctrl_d(t_data *data, t_expv *export, t_cmd *cmds)
+void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
 	printf("exit\n");
@@ -31,7 +27,7 @@ void	ctrl_d(t_data *data, t_expv *export, t_cmd *cmds)
 	// free(cmds);
 	freelist(export);
 	// free(export);
-	free(data);
+	// free(data);
 	exit(0);
 }
 
@@ -82,46 +78,47 @@ void	freelist(t_expv *export)
 int	main(int ac, char **av, char **env)
 {
 	char	*cmd;
-	t_data	*data;
 	t_expv	*export;
 	t_cmd	*cmds;
+	int		error;
 
 	(void)av;
 	(void)ac; // erreur si args
 	cmd = NULL;
 	cmds = NULL;
-	data = malloc(sizeof(t_data));
 	export = init_env(env);
-	data->export = export;
 	while (1)
 	{
 		sig_info();
 		cmd = readline("Minishell -> ");
 		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
-			ctrl_d(data, export, cmds);
+			ctrl_d(export, cmds);
 		add_history(cmd);
-		if (!syntax_errors(cmd))
+		error = syntax_errors(cmd);
+		if (!error)
 		{
 			cmds = init_cmds(cmd);
 			init_redirs(cmds);
 			set_heredocs(cmds);
 			for (int i = 0; cmds[i].cmd; i++)
-				parse_cmd(&cmds[i], data);
+				parse_cmd(&cmds[i], export);
 			if (!cmds[1].cmd && is_builtin(cmds[0].cmd_name))
-				only_one_builtin(data, cmds);
+				only_one_builtin(export, cmds);
 			else
-				split_pipe(data, cmds);
+				split_pipe(export, cmds);
 			free(cmds); // ?? normalement ca free toutes les commandes
 		}
-		else
+		else if (error > 0)
 		{
 			printf("syntax error\n");
 			free(cmd);
 		}
+		else
+			free(cmd);
 		// printf("\n%s\n", make_dollars(str, data, 0));
 		//free(cmds->cmd);
 	}
 	rl_clear_history();
 	freelist(export);
-	free(data);
+	// free(data);
 }

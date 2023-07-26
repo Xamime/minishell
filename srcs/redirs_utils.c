@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/23 14:51:30 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/26 18:18:16 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*str_without_redir(char *str, char* cmd, int redirs_size)
 	return (str);
 }
 
-char	*remove_redir(t_cmd	*cmd, t_data *data)
+char	*remove_redir(t_cmd	*cmd)
 {
 	int		redirs_size;
 	int		j;

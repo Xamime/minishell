@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/25 15:41:13 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/26 18:18:02 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,39 @@ int	syntax_redir(char *cmd_line)
 	return (0);
 }
 
+int		is_empty(char *cmd_line)
+{
+	int	i;
+
+	i = 0;
+	while (cmd_line[i])
+	{
+		if (!is_in_set(cmd_line[i], " \t\n"))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 /*Return 1 if there is syntax error */
 int	syntax_errors(char *cmd_line)
 {
 	int	i;
-	int	is_empty;
+	int	error;
 
 	i = 0;
-	is_empty = syntax_redir(cmd_line);
-	if (is_empty && !is_in_set(cmd_line[0], "&|);"))
-		is_empty = 1;
+	if (is_empty(cmd_line))
+		return (-1);
+	error = syntax_redir(cmd_line);
+	if (error && !is_in_set(cmd_line[0], "&|);"))
+		error = 1;
 	// while(cmd_line && cmd_line[i])
 	// {
-	// 	if (!is_empty && !is_in_set(cmd_line[i], " \t\n"))
-	// 		is_empty = 1;
+	// 	if (!error && !is_in_set(cmd_line[i], " \t\n"))
+	// 		error = 1;
 	// 	i++;
 	// }
-	if (is_empty)
+	if (error)
 		EXIT_CODE = 2;
-	return (is_empty);
+	return (error);
 }

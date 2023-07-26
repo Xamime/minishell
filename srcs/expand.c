@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/25 16:09:05 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/07/25 15:43:32 by marvin           ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/26 18:30:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*get_expanded_str(t_expansion *exp, char *tmp, t_data *data)
+static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 {
 	char	*new_str;
 
-	exp->var = ft_getenv(exp->name, data);
+	exp->var = ft_getenv(exp->name, expv);
 	if (exp->var)
 		new_str = new_string(exp, tmp);
 	else
@@ -102,7 +98,7 @@ char	*set_without_quotes(char *str)
 	return (new_str);
 }
 
-char	*str_exit_code(char *str, t_data *data, t_expansion *exp)
+char	*str_exit_code(char *str, t_expv *expv, t_expansion *exp)
 {
 	char	*new_str;
 	char	*exit_code;
@@ -138,7 +134,19 @@ char	*str_exit_code(char *str, t_data *data, t_expansion *exp)
 	return (new_str);
 }
 
-char	*make_dollars(char *str, t_data *data, int mode)
+static char	*get_expanded_str2(t_expansion *exp, char *tmp)
+{
+	char	*new_str;
+
+	exp->name = "?";
+	exp->var = ft_itoa(EXIT_CODE);
+	new_str = new_string(exp, tmp);
+	free(tmp);
+	free(exp->var);
+	return (new_str);
+}
+
+char	*make_dollars(char *str, t_expv *expv, int mode)
 {
 	char		*new_str;
 	t_expansion	*exp;
@@ -157,11 +165,12 @@ char	*make_dollars(char *str, t_data *data, int mode)
 		else if (*str == '\"' && mode == 1 && in_double)
 			in_double = 0;
 		if (*str == '$' && *(str + 1) == '?')
-			new_str = str_exit_code(new_str, data, exp);
-		else if (*str == '$' && check_plus_one(*(str + 1))) // is in charset
+			// new_str = str_exit_code(new_str, expv, exp);
+			new_str = get_expanded_str2(exp, new_str);
+		else if (*str == '$' && *(str + 1) && !is_in_set(*(str + 1), " \t\n\"\'<>|")) // is in charset
 		{
 			exp->name = get_var_name(str);
-			new_str = get_expanded_str(exp, new_str, data);
+			new_str = get_expanded_str(exp, new_str, expv);
 		}
 		str++;
 	}

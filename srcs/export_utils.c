@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 17:26:09 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/26 18:54:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	print_export_var(char *name, char *var)
 		ft_printf("declare -x %s\n", name);
 }
 
-t_expv	*find_min_ascii(t_expv *export, t_expv *sorted)
+t_expv	*find_min_ascii(t_expv *expv, t_expv *sorted)
 {
 	t_expv	*ptr;
 	t_expv	*min;
 
-	ptr = export;
+	ptr = expv;
 	while (is_in(sorted, ptr->name))
 		ptr = ptr->next;
 	min = ptr;
@@ -64,12 +64,12 @@ void	set_var_line(char *line, char **name, char **var)
 	}
 }
 
-void	change_var(t_data **data, char *name, char *var, int mode)
+void	change_var(t_expv *expv, char *name, char *var, int mode)
 {
 	t_expv	*tmp;
 	char	*to_free;
 
-	tmp = (*data)->export;
+	tmp = expv;
 	while (tmp && ft_strncmp(tmp->name, name, ft_strlen(name)))
 		tmp = tmp->next;
 	if (tmp && mode == 0)
@@ -85,6 +85,8 @@ void	change_var(t_data **data, char *name, char *var, int mode)
 		tmp->var = ft_strjoin(tmp->var, var);
 		if (to_free && to_free[0])
 			free(to_free);
+		free(var);
+		free(name);
 	}
 }
 

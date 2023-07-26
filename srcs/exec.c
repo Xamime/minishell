@@ -6,13 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:24:32 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/23 14:47:45 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/26 17:50:55 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	only_one_builtin(t_data *data, t_cmd *cmd)
+void	only_one_builtin(t_expv *expv, t_cmd *cmd)
 {
 	int	real_in;
 	int	real_out;
@@ -23,9 +23,8 @@ void	only_one_builtin(t_data *data, t_cmd *cmd)
 		dup2(cmd->infile, 0);
 	if (cmd->outfile > -1)
 		dup2(cmd->outfile, 1);
-	exec_builtin(*cmd, data);
+	exec_builtin(cmd, expv);
 	free_command(cmd);
-	free_redirects(cmd->redirs);
 	dup2(real_in, 0);
 	close(real_in);
 	dup2(real_out, 1);

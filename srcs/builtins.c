@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 18:06:42 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/25 22:53:10 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ void	pwd(void)
 	free(buf); // a tcheck
 }
 
-void	cd(char *cmd, t_data *data)
+void	cd(char *cmd, t_expv *expv)
 {
 	char	*home;
 	char	*oldpwd;
 
-	home = ft_getenv("HOME", data);
+	home = ft_getenv("HOME", expv);
 	oldpwd = malloc(sizeof(char) * 4096);
 	oldpwd = getcwd(oldpwd, 4096); // a changer
 	if (cmd == NULL)
@@ -47,7 +47,7 @@ void	cd(char *cmd, t_data *data)
 		if (home)
 		{
 			chdir(home);// a voir
-			update_pwd(data, oldpwd);
+			update_pwd(expv, oldpwd);
 		}
 		else
 			printf("cd: HOME not set\n");
@@ -57,39 +57,39 @@ void	cd(char *cmd, t_data *data)
 	if (chdir(cmd) == -1)
 		ft_printf("no dir\n");
 	else
-		update_pwd(data, oldpwd);
+		update_pwd(expv, oldpwd);
 	free(oldpwd); // a tcheck
 }
 
-int	check_n(t_cmd cmd, int i)
+int	check_n(t_cmd *cmd, int i)
 {
 	int	j;
 
 	j = 1;
-	if (ft_strncmp(cmd.words[i], "-n", 2))
+	if (ft_strncmp(cmd->words[i], "-n", 2))
 		return (0);
-	while (cmd.words[i][j])
+	while (cmd->words[i][j])
 	{
-		if (cmd.words[i][j] != 'n')
+		if (cmd->words[i][j] != 'n')
 			return (0);
 		j++;
 	}
 	return (1);
 }
 
-void	echo(t_cmd cmd)
+void	echo(t_cmd *cmd)
 {
 	int	i;
 	int	j;
 
 	j = 1;
 	i = 1;
-	if (!cmd.words[1])
+	if (!cmd->words[1])
 	{
 		printf("\n");
 		return ;
 	}
-	while (cmd.words[i])
+	while (cmd->words[i])
 	{
 		if (check_n(cmd, i))
 			j++;
@@ -98,10 +98,10 @@ void	echo(t_cmd cmd)
 		i++;
 	}
 	i = j;
-	while (cmd.words[j])
+	while (cmd->words[j])
 	{
-		ft_printf("%s", cmd.words[j]);
-		if (cmd.words[j + 1])
+		ft_printf("%s", cmd->words[j]);
+		if (cmd->words[j + 1])
 			ft_printf(" ");
 		j++;
 	}
@@ -109,11 +109,11 @@ void	echo(t_cmd cmd)
 		ft_printf("\n");
 }
 
-void	print_env(t_data *data)
+void	print_env(t_expv *expv)
 {
 	t_expv	*tmp;
 
-	tmp = data->export;
+	tmp = expv;
 	while (tmp)
 	{
 		if (tmp->var)
@@ -122,27 +122,23 @@ void	print_env(t_data *data)
 	}
 }
 
-int	exec_builtin(t_cmd cmd, t_data *data)
+void	exec_builtin(t_cmd *cmd, t_expv *expv)
 {
-	int	ret;
-
-	ret = 0;
-	if (!ft_strcmp(cmd.cmd_name, "pwd"))
+	if (!ft_strcmp(cmd->cmd_name, "pwd"))
 		pwd();
-	else if (!ft_strcmp(cmd.cmd_name, "cd"))
-		cd(cmd.words[1], data);
-	else if (!ft_strcmp(cmd.cmd_name, "echo"))
+	else if (!ft_strcmp(cmd->cmd_name, "cd"))
+		cd(cmd->words[1], expv);
+	else if (!ft_strcmp(cmd->cmd_name, "echo"))
 		echo(cmd);
-	else if (!ft_strcmp(cmd.cmd_name, "exit")) // a changer
+	else if (!ft_strcmp(cmd->cmd_name, "exit")) // a changer
 	{
-		freelist(data->export);
+		freelist(expv);
 		exit(0);
 	}
-	else if (!ft_strcmp(cmd.cmd_name, "env"))
-		print_env(data);
-	else if (!ft_strcmp(cmd.cmd_name, "export"))
-		export(cmd, data);
-	else if (!ft_strcmp(cmd.cmd_name, "unset"))
-		unset(cmd, data);
-	return (ret);
+	else if (!ft_strcmp(cmd->cmd_name, "env"))
+		print_env(expv);
+	else if (!ft_strcmp(cmd->cmd_name, "export"))
+		export(cmd, &expv);
+	else if (!ft_strcmp(cmd->cmd_name, "unset"))
+		unset(cmd, &expv);
 }
