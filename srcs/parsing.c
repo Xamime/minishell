@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 13:06:08 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:35:43 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void	execution(t_cmd *cmd, char **env, t_expv *expv)
 	command = get_access(cmd, expv);
 	if (!command)
 	{
-		printf("minishell: %s: command not found\n", cmd->cmd_name);
+		ft_putstr_fd(cmd->cmd_name, 2);
+		ft_putstr_fd(": command not found\n", 2);
 		cmd->status = 127;
 		return ;
 	}
@@ -137,18 +138,21 @@ void	split_pipe(t_expv *expv, t_cmd *cmds)
 			ft_putstr_fd("error pipe 1\n", 2);
 		if (!cmds[i + 1].cmd)
 			dup2(1, pfd[1]);
-		pid = fork();
-		if (pid == -1)
-			perror("fork");
-		else if (pid == 0)
+		if (!cmds[i].error)
 		{
-			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
-			exec_cmd(&cmds[i], env, expv);
-			chld_status = cmds[i].status;
-			free_fork(expv, cmds, env);
-			exit(chld_status); // exit code erreur du builtin
+			pid = fork();
+			if (pid == -1)
+				perror("fork");
+			else if (pid == 0)
+			{
+				set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
+				exec_cmd(&cmds[i], env, expv);
+				chld_status = cmds[i].status;
+				free_fork(expv, cmds, env);
+				exit(chld_status); // exit code erreur du builtin
+			}
+			cmds[i].pid = pid;
 		}
-		cmds[i].pid = pid;
 		if (p_out > 0)
 			close(p_out);
 		if (cmds[i].infile > -1) // si infile ou outfile = 0 ou 1 ?
@@ -165,7 +169,8 @@ void	split_pipe(t_expv *expv, t_cmd *cmds)
 	i = 0;
 	while (cmds[i].cmd)
 	{
-		waitpid(cmds[i].pid, &cmds[i].status, 0);
+		if (!cmds[i].error)
+			waitpid(cmds[i].pid, &cmds[i].status, 0);
 		i++;
 	}
 	i = 0;
@@ -201,20 +206,23 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 	i = 0;
 	// parse syntax errors
 	// initialiser new_cmd
-	if (parse_redir(cmd->cmd, &cmd->redirs, cmd) == -1)
-		return (1);
+	if (parse_redir(cmd->cmd, &cmd->redirs, cmd))
+		cmd->error = 1;
 	replace_address(&cmd->cmd, remove_redir(cmd));
 	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
 	splitted = ft_split_quotes(cmd->cmd, ' ');
 	if (!splitted[0])
-		return (2);
+		cmd->error = 2;
 	while (splitted[i])
 	{
 		replace_address(&splitted[i], make_dollars(splitted[i], expv, 1));
 		replace_address(&splitted[i], set_without_quotes(splitted[i]));
 		i++;
 	}
-	cmd->cmd_name = splitted[0];
+	if (splitted[0])
+		cmd->cmd_name = splitted[0];
+	else
+		cmd->cmd_name = "";
 	cmd->words = splitted;
 	return (0);
 }

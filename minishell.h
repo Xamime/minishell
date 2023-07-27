@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:39:31 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 14:56:00 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_cmd
 	int		outfile;
 	pid_t	pid;
 	int		status;
+	int		error;
 	t_redir	*redirs;
 }				t_cmd;
 

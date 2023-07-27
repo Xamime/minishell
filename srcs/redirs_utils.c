@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 13:06:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 16:44:08 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	set_heredocs(t_cmd *cmds)
 		j = 0;
 		while (cmds[i].cmd[j])
 		{
+			// mettre de quoi skip les quotes aussi
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
@@ -59,7 +60,8 @@ void	set_heredocs(t_cmd *cmds)
 void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 {
 	*fd = secure_open(type, filename);
-	// printf("%d fd, %s gnl\n", *fd, get_next_line(*fd));
+	if (*fd == -1)
+		return ;
 	if (!ft_strcmp(type, "outfile"))
 		ft_lstadd_back(&redirs->outfiles, ft_lstnew(fd));
 	if (!ft_strcmp(type, "append"))

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:22:08 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:11:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,13 @@ t_cmd	*init_cmds(char *cmd_line)
 	while (sub_shells[i])
 	{
 		cmds[i].cmd = sub_shells[i];
+		cmds[i].cmd_name = NULL;
 		cmds[i].infile = -1;
 		cmds[i].outfile = -1;
 		cmds[i].path = NULL;
 		cmds[i].pid = -1; // a verif
 		cmds[i].status = 0; // a verif
+		cmds[i].error = 0;
 		i++;
 	}
 	cmds[i].cmd = NULL;

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 11:49:17 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:12:25 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	main(int ac, char **av, char **env)
 			set_heredocs(cmds);
 			for (int i = 0; cmds[i].cmd; i++)
 				parse_cmd(&cmds[i], export);
-			if (!cmds[1].cmd && is_builtin(cmds[0].cmd_name))
+			if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
 				only_one_builtin(export, cmds);
 			else
 				split_pipe(export, cmds);
@@ -110,15 +110,12 @@ int	main(int ac, char **av, char **env)
 		}
 		else if (error > 0)
 		{
-			printf("syntax error\n");
+			ft_putstr_fd("syntax error\n", 2);
 			free(cmd);
 		}
 		else
 			free(cmd);
-		// printf("\n%s\n", make_dollars(str, data, 0));
-		//free(cmds->cmd);
 	}
 	rl_clear_history();
 	freelist(export);
-	// free(data);
 }

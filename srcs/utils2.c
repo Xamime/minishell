@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 23:04:24 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:47:20 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ char	*get_filename(char *str)
 	while (is_in_set(*str, "<>"))
 		str++;
 	while (is_in_set(*str, " \t\n"))
+	{
+		// if (is_in_set(*str, "\"\'"))
+		// 	str = skip_to_char(str, *str);
 		str++;
+	}
 	size = 0;
 	while (str[size] && !is_in_set(str[size], " \t\n<>"))
 		size++;

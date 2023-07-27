@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 11:54:44 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:47:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,23 @@ int	heredoc_name(t_cmd *cmd, char **filename)
 
 	fd = 1;
 	i = 0;
+	try = NULL;
 	replace_address(filename, ft_strjoin("/tmp/", *filename));
 	while (1)
 	{
 		tmp = ft_itoa(i);
 		try = ft_strjoin(*filename, tmp);
+		replace_address(&try, ft_strjoin(*filename, tmp));
 		fd = open(try, O_RDONLY);
 		free(tmp);
 		if (fd == -1 && errno == ENOENT)
 			break ;
 		else if (errno != EACCES)
 			close(fd);
-		free(try);
 		i++;
 	}
 	fd = open(try, O_CREAT | O_WRONLY, 0644);
+	free(*filename);
 	*filename = try;
 	return (fd);
 }
@@ -59,14 +61,14 @@ int	secure_open(char *mode, char *filename)
 		fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror(filename);
-		exit(1);
 	}
 	//printf("%d, %s\n",fd,  get_next_line(fd));
 	return (fd);
 }
 
-void	add_redirect(t_redir *redirs, char *str)
+int	add_redirect(t_redir *redirs, char *str)
 {
 	int		*fd;
 	char	*filename;
@@ -81,14 +83,14 @@ void	add_redirect(t_redir *redirs, char *str)
 	else if (*str == '<' && *(str + 1) != '<')
 		open_last_file("infile", fd, filename, redirs);
 	free(filename);
+	if (*fd == -1)
+	{
+		free(fd);
+		return (1);
+	}
 	if (*fd == 0)
 		free(fd);
-	// if (*fd == 0)
-	// {
-	// 	free(fd);
-	// 	return (0);
-	// }
-	// return (*fd);
+	return (0);
 }
 
 void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
@@ -128,21 +130,22 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd)
 	tmp = str;
 	while (*str)
 	{
+		// mettre de quoi skip les quotes
 		if (*str == '<' || *str == '>')
 		{
 			bool = 1;
-			// if (add_redirect(*redirs, str) == -1)
-			// {
-			// 	//free_redirects(*redirs);
-			// 	return (-1);
-			// }
-			add_redirect(*redirs, str);
+			if (add_redirect(*redirs, str))
+				return (1);
 			while (*str && is_in_set(*str, "<>"))
 				str++;
 			while (*str && is_in_set(*str, " \t\n"))
 				str++;
 			while (*str && !is_in_set(*str, " \t\n<>"))
+			{
+				// if (is_in_set(*str, "\"\'"))
+				// 	str = skip_to_char(str, *str);
 				str++;
+			}
 		}
 		if (*str && !is_in_set(*str, "<>"))
 			str++;

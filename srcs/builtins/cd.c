@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:37:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 12:01:35 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 15:25:03 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ void	cd(char *directory, t_expv *expv)
 			update_pwd(expv, oldpwd);
 		}
 		else
-			printf("minishell: cd: HOME not set\n");
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return ;
 	}
 	remove_last_nl(directory);
 	if (chdir(directory) == -1)
 	{
-		ft_printf("minishell: cd: %s: No such file or directory\n", directory);
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(directory, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		free(oldpwd);
 	}
 	else

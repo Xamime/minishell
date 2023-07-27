@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:45:51 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 15:23:22 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ static void	parse_export(char *str, t_cmd *cmd, t_expv **expv)
 	}
 	else
 	{
-		ft_printf("minishell: export: `%s': not a valid identifier\n", str);
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		cmd->status = 1;
 	}
 }

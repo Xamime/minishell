@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:15:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:55:01 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 17:37:27 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 	char	*command;
 
 	i = 0;
+	if (!cmd->cmd_name || !cmd->cmd_name[0])
+		return (NULL);
 	path = get_path(expv);
 	cmd->path = ft_split(path, ':');
 	while (cmd->path[i])
@@ -47,7 +49,7 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 		tmp = ft_strjoin(cmd->path[i], "/");
 		command = ft_strjoin(tmp, cmd->cmd_name);
 		free(tmp);
-		if (access(command, F_OK) == 0)
+		if (access(command, X_OK) == 0) // ou F_OK ? perror apres peut etre
 			return (command);
 		free(command);
 		i++;
