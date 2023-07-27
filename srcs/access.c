@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   access.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 20:18:50 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 21:41:55 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 		command = NULL;
 		i++;
 	}
+	free_array(path);
 	return (NULL);
 }
 
