@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 09:53:03 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 12:47:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,8 @@ char	*make_dollars(char *str, t_expv *expv, int mode)
 		if (*str == '$' && *(str + 1) == '?')
 			// new_str = str_exit_code(new_str, expv, exp);
 			new_str = get_expanded_str2(exp, new_str);
-		else if (*str == '$' && *(str + 1) && !is_in_set(*(str + 1), " \t\n\"\'<>|")) // is in charset
+		// else if (*str == '$' && *(str + 1) && !is_in_set(*(str + 1), " \t\n\"\'<>|")) // is in charset
+		else if (*str == '$' && *(str + 1) && !check_forbidden_character(str + 1, 0)) // is in charset
 		{
 			exp->name = get_var_name(str);
 			new_str = get_expanded_str(exp, new_str, expv);

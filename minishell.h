@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/26 18:19:00 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 12:39:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ t_cmd	*init_cmds(char *cmd_line);
 ///					builtins.c					  ///
 /////////////////////////////////////////////////////
 
-void	exec_builtin(t_cmd *cmd, t_expv *expv);
+// void	exec_builtin(t_cmd *cmd, t_expv *expv);
 
 /////////////////////////////////////////////////////
 ///					export.c					  ///
@@ -159,7 +159,16 @@ void	print_export_var(char *name, char *var);
 t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_expv *export, char *name, char *var, int mode);
-int		check_forbidden_character(char *str);
+int		check_forbidden_character(char *str, int entire_name);
+
+/* -------------------------------- builtins -------------------------------- */
+
+void	exec_builtin(t_cmd *cmd, t_expv *expv);
+int		check_n(t_cmd *cmd, int i);
+void	cd(char *directory, t_expv *expv);
+void	echo(t_cmd *cmd);
+void	pwd(void);
+char	*get_cd_name(void);
 
 /* ------------------------------ syntax_check ------------------------------ */
 

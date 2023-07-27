@@ -6,11 +6,11 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 11:19:44 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 12:45:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	print_export_var(char *name, char *var)
 {
@@ -72,7 +72,6 @@ void	change_var(t_expv *expv, char *name, char *var, int mode)
 	tmp = expv;
 	while (tmp && ft_strncmp(tmp->name, name, ft_strlen(name)))
 		tmp = tmp->next;
-	printf("name : %s, var : %s, mode : %d\n", name, var, mode);
 	if (tmp && mode == 0)
 	{
 		if (tmp->var)
@@ -92,24 +91,18 @@ void	change_var(t_expv *expv, char *name, char *var, int mode)
 	}
 }
 
-int	check_forbidden_character(char *str)
+int	check_forbidden_character(char *str, int entire_name)
 {
 	int	i;
 
 	if (str[0] != '_' && !ft_isalpha(str[0]))
-	{
-		ft_printf("minishell: export: `%s': not a valid identifier\n", str);
 		return (1);
-	}
 	i = 1;
-	while (str[i] && str[i] != '=')
+	while (str[i] && str[i] != '=' && entire_name)
 	{
 		if (!(str[i] == '+' && str[i + 1] == '=')
 			&& str[i] != '_' && !ft_isalnum(str[i]))
-		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n", str);
 			return (1);
-		}
 		i++;
 	}
 	return (0);

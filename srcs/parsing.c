@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/26 18:38:01 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 13:06:08 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,9 @@ void	split_pipe(t_expv *expv, t_cmd *cmds)
 		{
 			set_pipes(cmds[i].infile, cmds[i].outfile, pfd, p_out);
 			exec_cmd(&cmds[i], env, expv);
+			chld_status = cmds[i].status;
 			free_fork(expv, cmds, env);
-			exit(cmds[i].status); // exit code erreur du builtin
+			exit(chld_status); // exit code erreur du builtin
 		}
 		cmds[i].pid = pid;
 		if (p_out > 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:15:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 23:03:31 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 12:55:01 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 		i++;
 	}
 	free_array(cmd->path);
+	cmd->path = NULL;
 	return (NULL);
 }
