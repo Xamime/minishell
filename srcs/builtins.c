@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 22:53:10 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 11:08:54 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,9 @@ void	pwd(void)
 	}
 	ft_printf("%s\n", dir);
 	free(dir);
-	free(buf); // a tcheck
 }
 
-void	cd(char *cmd, t_expv *expv)
+void	cd(char *directory, t_expv *expv)
 {
 	char	*home;
 	char	*oldpwd;
@@ -42,7 +41,7 @@ void	cd(char *cmd, t_expv *expv)
 	home = ft_getenv("HOME", expv);
 	oldpwd = malloc(sizeof(char) * 4096);
 	oldpwd = getcwd(oldpwd, 4096); // a changer
-	if (cmd == NULL)
+	if (directory == NULL)
 	{
 		if (home)
 		{
@@ -50,15 +49,17 @@ void	cd(char *cmd, t_expv *expv)
 			update_pwd(expv, oldpwd);
 		}
 		else
-			printf("cd: HOME not set\n");
+			printf("minishell: cd: HOME not set\n");
 		return ;
 	}
-	remove_last_nl(cmd);
-	if (chdir(cmd) == -1)
-		ft_printf("no dir\n");
+	remove_last_nl(directory);
+	if (chdir(directory) == -1)
+	{
+		ft_printf("minishell: cd: %s: No such file or directory\n", directory);
+		free(oldpwd);
+	}
 	else
 		update_pwd(expv, oldpwd);
-	free(oldpwd); // a tcheck
 }
 
 int	check_n(t_cmd *cmd, int i)

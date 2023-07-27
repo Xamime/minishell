@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/26 18:43:38 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 11:22:40 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ static void	parse_export(t_cmd *cmd, t_expv **expv)
 				change_var(*expv, name, var, 1);
 			else if (var)
 				change_var(*expv, name, var, 0);
+			else
+				free(name);
 		}
 		else
 			cmd->status = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/26 18:30:32 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 09:53:03 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ static char	*get_expanded_str2(t_expansion *exp, char *tmp)
 	free(exp->var);
 	return (new_str);
 }
+
+//int is_valid_var_name
 
 char	*make_dollars(char *str, t_expv *expv, int mode)
 {

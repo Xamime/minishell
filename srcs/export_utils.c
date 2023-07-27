@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/26 18:54:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 11:19:44 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	set_var_line(char *line, char **name, char **var)
 		if (line[equal_index + 1])
 			*var = ft_substr(line, equal_index + 1, var_size);
 		else
-			*var = "";
+			*var = ft_strdup("");
 	}
 	else
 	{
@@ -72,20 +72,22 @@ void	change_var(t_expv *expv, char *name, char *var, int mode)
 	tmp = expv;
 	while (tmp && ft_strncmp(tmp->name, name, ft_strlen(name)))
 		tmp = tmp->next;
+	printf("name : %s, var : %s, mode : %d\n", name, var, mode);
 	if (tmp && mode == 0)
+	{
+		if (tmp->var)
+			free(tmp->var);
 		tmp->var = var;
+		free(name);
+	}
 	else if (tmp && mode == 1)
 	{
-		if (!var[0])
-		{
-			tmp->var = "";
-			return ;
-		}
 		to_free = tmp->var;
 		tmp->var = ft_strjoin(tmp->var, var);
 		if (to_free && to_free[0])
 			free(to_free);
-		free(var);
+		if (var)
+			free(var);
 		free(name);
 	}
 }
