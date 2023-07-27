@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 17:35:43 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 20:11:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,10 @@ void	execution(t_cmd *cmd, char **env, t_expv *expv)
 
 	command = get_access(cmd, expv);
 	if (!command)
-	{
-		ft_putstr_fd(cmd->cmd_name, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		cmd->status = 127;
 		return ;
-	}
 	else
 		execve(command, cmd->words, env);
+	free(command);
 }
 
 void	exec_cmd(t_cmd *cmd, char **env, t_expv *expv)
@@ -79,45 +75,6 @@ void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
 		dup2(fd_out, 1);
 		close(fd_out);
 	}
-}
-
-void	free_command(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	while (cmd->words && cmd->words[i])
-	{
-		free(cmd->words[i]);
-		i++;
-	}
-	i = 0;
-	while (cmd->path && cmd->path[i])
-	{
-		free(cmd->path[i]);
-		i++;
-	}
-	free(cmd->cmd);
-	cmd->cmd = NULL;
-	free(cmd->words);
-	free(cmd->path);
-	free_redirects(cmd->redirs);
-	cmd->words = NULL;
-}
-
-void	free_fork(t_expv *expv, t_cmd *cmds, char **env)
-{
-	int	i;
-
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		free_command(&cmds[i]);
-		i++;
-	}
-	freelist(expv);
-	free(cmds);
-	free_array(env);
 }
 
 void	split_pipe(t_expv *expv, t_cmd *cmds)

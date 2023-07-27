@@ -6,11 +6,11 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 17:47:20 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 18:28:03 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	close_fds(t_list *lst)
 {
@@ -58,7 +58,7 @@ void	better_lstclear(t_list *lst)
 	}
 }
 
-static void	unlink_heredocs(t_list *lst)
+void	unlink_heredocs(t_list *lst)
 {
 	t_list	*ptr;
 
@@ -68,28 +68,4 @@ static void	unlink_heredocs(t_list *lst)
 		unlink((char *)ptr->content);
 		ptr = ptr->next;
 	}
-}
-
-void	free_redirects(t_redir *redirs)
-{
-	better_lstclear(redirs->heredocs);
-	better_lstclear(redirs->infiles);
-	better_lstclear(redirs->outfiles);
-	unlink_heredocs(redirs->heredoc_names);
-	better_lstclear(redirs->heredoc_names);
-	free(redirs);
-}
-
-char	*get_path(t_expv *expv)
-{
-	t_expv	*tmp;
-
-	tmp = expv;
-	while (tmp)
-	{
-		if (!ft_strcmp(tmp->name, "PATH"))
-			break ;
-		tmp = tmp->next;
-	}
-	return (tmp->var);
 }

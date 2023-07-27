@@ -6,7 +6,7 @@
 #    By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/07/27 11:55:07 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/07/27 20:12:17 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,9 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/builtins/export.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/unset.c \
+		srcs/utils/utils1.c \
+		srcs/utils/utils2.c \
+		srcs/utils/free_utils.c \
 		srcs/exec.c \
 		srcs/expand.c \
 		srcs/expand2.c \
@@ -27,13 +30,12 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/new_split.c \
 		srcs/parsing.c \
 		srcs/parsing2.c \
+		srcs/access.c \
 		srcs/redirs.c \
 		srcs/redirs_utils.c \
 		srcs/split_quotes_utils.c \
 		srcs/split_quotes.c \
-		srcs/syntax_check.c \
-		srcs/utils1.c \
-		srcs/utils2.c
+		srcs/syntax_check.c
 
 NAME = minishell
 LIBFT_SRC = libft

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 14:56:00 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 18:48:14 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_cmd
 	char	*cmd_name;
 	char	*cmd;
 	char	**words;
-	char	**path;
 	int		infile;
 	int		outfile;
 	pid_t	pid;
@@ -82,7 +81,6 @@ int		is_builtin(char *cmd);
 
 char	*get_filename(char *str);
 void	better_lstclear(t_list *lst);
-char	*get_path(t_expv *expv);
 void	free_redirects(t_redir *redirs);
 void	close_fds(t_list *lst);
 
@@ -161,6 +159,7 @@ t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_expv *export, char *name, char *var, int mode);
 int		check_forbidden_character(char *str, int entire_name);
+void	unlink_heredocs(t_list *lst);
 
 /* -------------------------------- builtins -------------------------------- */
 

@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 17:12:25 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/27 18:21:53 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,6 @@ void	sig_info(void)
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
-}
-
-void	freelist(t_expv *export)
-{
-	t_expv *tmp;
-
-	while (export)
-	{
-		tmp = export;
-		export = export->next;
-		free(tmp->name);
-		free(tmp->var);
-		free(tmp);
-	}
-	free(export);
 }
 
 int	main(int ac, char **av, char **env)
