@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 18:48:14 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/28 12:19:26 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,12 @@ int		syntax_errors(char *cmd_line);
 /* ---------------------------------- exec ---------------------------------- */
 
 void	only_one_builtin(t_expv *expv, t_cmd *cmd);
+
+/* ------------------------------- exec_utils ------------------------------- */
+
+void	exec_cmd(t_cmd *cmd, char **env, t_expv *expv);
+char	**ft_get_env(t_expv *export);
+void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out);
 
 /////////////////////////////////////////////////////
 ///					utils1.c					  ///

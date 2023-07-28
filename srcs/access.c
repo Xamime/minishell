@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   access.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 21:41:55 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/28 10:56:20 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,19 @@ char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 		replace_address(&command, ft_strjoin(path[i], "/"));
 		replace_address(&command, ft_strjoin(command, name));
 		if (test_dir(command, cmd))
-		{
-			free(command);
-			free_array(path);
-			return (NULL);
-		}
+			break ;
 		if (!access(command, X_OK)) // ou F_OK ? perror apres peut etre
 		{
 			free_array(path);
 			return (command);
 		}
-		free(command);
-		command = NULL;
 		i++;
 	}
+	cmd->status = 127;
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	if (command)
+		free(command);
 	free_array(path);
 	return (NULL);
 }

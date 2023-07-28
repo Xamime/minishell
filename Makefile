@@ -6,7 +6,7 @@
 #    By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/07/27 20:12:17 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/07/28 12:21:08 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/utils/utils1.c \
 		srcs/utils/utils2.c \
 		srcs/utils/free_utils.c \
-		srcs/exec.c \
+		srcs/exec/exec.c \
+		srcs/exec/exec_utils.c \
 		srcs/expand.c \
 		srcs/expand2.c \
 		srcs/export_list_utils.c \

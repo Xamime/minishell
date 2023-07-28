@@ -3,78 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 21:40:47 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/28 12:34:55 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	**ft_get_env(t_expv *export)
+void	set_exit_code(t_cmd *cmds)
 {
-	int		size;
-	char	**env;
-	t_expv	*tmp;
-	int		i;
+	int	i;
 
 	i = 0;
-	tmp = export;
-	size = ft_expv_size(export);
-	env = malloc(sizeof(char *) * (size + 1));
-	while (tmp)
-	{
-		env[i] = ft_strdup(tmp->name);
-		replace_address(&env[i], ft_strjoin(env[i], "="));
-		replace_address(&env[i], ft_strjoin(env[i], tmp->var));
+	while (cmds[i + 1].cmd)
 		i++;
-		tmp = tmp->next;
+	// printf("exit code : %d\n", cmds[i].status % 255);
+	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		free_command(&cmds[i]);
+		i++;
 	}
-	env[i] = NULL;
-	return (env);
 }
 
-void	execution(t_cmd *cmd, char **env, t_expv *expv)
+void	wait_childs(t_cmd *cmds)
 {
-	char	*command;
+	int	i;
 
-	command = get_access(cmd, expv);
-	if (!command)
-		return ;
-	else
-		execve(command, cmd->words, env);
-	free(command);
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		if (!cmds[i].error)
+			waitpid(cmds[i].pid, &cmds[i].status, 0);
+		i++;
+	}
 }
 
-void	exec_cmd(t_cmd *cmd, char **env, t_expv *expv)
-{
-	if (is_builtin(cmd->cmd_name))
-		exec_builtin(cmd, expv);
-	else
-		execution(cmd, env, expv);
-}
-
-void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
+void	close_after_fork(t_cmd *cmds, int *pfd, int p_out, int index)
 {
 	if (p_out > 0)
-	{
-		dup2(p_out, 0);
 		close(p_out);
-	}
-	dup2(pfd[1], 1);
+	if (cmds[index].infile > -1) // si infile ou outfile = 0 ou 1 ?
+		close(cmds[index].infile);
+	if (cmds[index].outfile > -1)
+		close(cmds[index].outfile);
+	p_out = dup(pfd[0]);
 	close(pfd[1]);
 	close(pfd[0]);
-	if (fd_in > -1)
-	{
-		dup2(fd_in, 0);
-		close(fd_in);
-	}
-	if (fd_out > -1)
-	{
-		dup2(fd_out, 1);
-		close(fd_out);
-	}
 }
 
 void	split_pipe(t_expv *expv, t_cmd *cmds)
@@ -110,37 +88,13 @@ void	split_pipe(t_expv *expv, t_cmd *cmds)
 			}
 			cmds[i].pid = pid;
 		}
-		if (p_out > 0)
-			close(p_out);
-		if (cmds[i].infile > -1) // si infile ou outfile = 0 ou 1 ?
-			close(cmds[i].infile);
-		if (cmds[i].outfile > -1)
-			close(cmds[i].outfile);
-		p_out = dup(pfd[0]);
-		close(pfd[1]);
-		close(pfd[0]);
+		close_after_fork(cmds, pfd, p_out, i);
 		i++;
 	}
 	if (p_out > 0)
 		close(p_out);
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		if (!cmds[i].error)
-			waitpid(cmds[i].pid, &cmds[i].status, 0);
-		i++;
-	}
-	i = 0;
-	while (cmds[i + 1].cmd)
-		i++;
-	// printf("exit code : %d\n", cmds[i].status % 255);
-	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		free_command(&cmds[i]);
-		i++;
-	}
+	wait_childs(cmds);
+	set_exit_code(cmds);
 	free_array(env);
 }
 
