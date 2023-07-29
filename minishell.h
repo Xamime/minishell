@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
 /*   Updated: 2023/07/29 23:10:59 by jfarkas          ###   ########.fr       */
+=======
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
+/*   Updated: 2023/07/29 22:23:40 by mdesrose         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +67,8 @@ typedef struct s_expansion
 }	t_expansion;
 
 void	freelist(t_expv *expv);
+int	check_next_token(char *cmd_line);
+
 char	**ft_split_quotes(char *s, char c);
 
 /////////////////////////////////////////////////////
@@ -121,6 +130,7 @@ int		skip_and_copy(char *str, char *new_str, char c, int *j);
 int		nbwords(char *s, char c);
 int		is_in_set(char c, char *set);
 int		is_paired(char *str, char quote);
+int		skip_quote(char *str, char quote);
 char	*skip_to_char(char *str, char c);
 
 /////////////////////////////////////////////////////
