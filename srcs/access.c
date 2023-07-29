@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   access.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/28 10:56:20 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/28 21:15:23 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,31 +79,24 @@ char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 		replace_address(&command, ft_strjoin(path[i], "/"));
 		replace_address(&command, ft_strjoin(command, name));
 		if (test_dir(command, cmd))
-			break ;
-		if (!access(command, X_OK)) // ou F_OK ? perror apres peut etre
 		{
-			free_array(path);
-			return (command);
+			free(command);
+			return (NULL);
 		}
+		if (!access(command, X_OK)) // ou F_OK ? perror apres peut etre
+			return (command);
 		i++;
 	}
 	cmd->status = 127;
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(": command not found\n", 2);
-	if (command)
-		free(command);
-	free_array(path);
+	free(command);
 	return (NULL);
 }
 
 char	*get_access(t_cmd *cmd, t_expv *expv)
 {
 	char	**path;
-	int		i;
-	char	*tmp;
 	char	*command;
 
-	i = 0;
 	if (!cmd->cmd_name || !cmd->cmd_name[0])
 		return (NULL);
 	if (is_relative_path(cmd->cmd_name))
@@ -111,7 +104,15 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 	else
 	{
 		path = ft_split(ft_getenv("PATH", expv), ':');
-		return (test_absolute_path(cmd->cmd_name, path, cmd));
+		command = test_absolute_path(cmd->cmd_name, path, cmd);
+	}
+	free_array(path);
+	if (command)
+		return (command);
+	else if (cmd->status == 127)
+	{
+		ft_putstr_fd(cmd->cmd_name, 2);
+		ft_putstr_fd(": command not found\n", 2);
 	}
 	return (NULL);
 }

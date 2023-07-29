@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/28 12:21:19 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/28 20:47:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,31 @@ char	**ft_get_env(t_expv *export)
 	return (env);
 }
 
-void	exec_cmd(t_cmd *cmd, char **env, t_expv *expv)
+void	exec_cmd(t_cmd *cmds, char **env, t_expv *expv, int index)
 {
 	char	*command;
+	int		child_status;
 
-	if (is_builtin(cmd->cmd_name))
-		exec_builtin(cmd, expv);
+	if (is_builtin(cmds[index].cmd_name))
+		exec_builtin(&cmds[index], expv);
 	else
 	{
-		command = get_access(cmd, expv);
-		if (!command)
-			return ;
-		else
-			execve(command, cmd->words, env);
+		command = get_access(&cmds[index], expv);
+		if (command)
+			execve(command, cmds[index].words, env);
 		free(command);
 	}
+	child_status = cmds[index].status;
+	free_fork(expv, cmds, env);
+	exit(child_status); // exit code erreur du builtin
 }
 
-void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out)
+void	set_pipes(int fd_in, int fd_out, int *pfd, int pipe_out)
 {
-	if (p_out > 0)
+	if (pipe_out > 0)
 	{
-		dup2(p_out, 0);
-		close(p_out);
+		dup2(pipe_out, 0);
+		close(pipe_out);
 	}
 	dup2(pfd[1], 1);
 	close(pfd[1]);
