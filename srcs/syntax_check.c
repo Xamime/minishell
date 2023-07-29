@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/26 18:18:02 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/30 00:19:36 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,95 @@ int		is_empty(char *cmd_line)
 	return (1);
 }
 
+/*Return string without first found token*/
+char	*get_token(char *cmd_line, char **token)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while(cmd_line[i])
+	{
+		j = 0;
+		if (is_in_set(cmd_line[i], "\'\""))
+			i += skip_quote(&cmd_line[i], cmd_line[i]);
+		while (token[j])
+		{
+			if (cmd_line[i] == token[j][0] && cmd_line[i + 1] == token[j][1])
+				return (&cmd_line[i + 2]);
+			if (cmd_line[i] == token[j][0])
+				return (&cmd_line[i + 1]);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*is_token(char *str, char **token)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while(str[i])
+	{
+		j = 0;
+		while (token[j])
+		{
+			if (str[i] == token[j][0] && str[i + 1] == token[j][1])
+				return (token[j]);
+			if (str[i] == token[j][0] && !token[j][1])
+				return (token[j]);
+			j++;
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int	check_next_token(char *cmd_line)
+{
+	char	**token;
+	char	*str;
+	char	*syntax_error;
+	int		i;
+
+	i = 0;
+	token = ft_split("<<:>>:<:>:|",':');
+	str = get_token(cmd_line, token);
+	if (!str)
+		return (-1);
+	while (is_in_set(str[i], " \t\n"))
+		i++;
+	if (is_in_set(str[i], "<>|"))
+	{
+		syntax_error = is_token(&str[i], token);
+		printf("syn_err = %s\n",syntax_error);
+		return (1);
+	}
+	free_array(token);
+	return (0);
+}
+
+int	check_single_quote(char *cmd_line)
+{
+	int	i;
+
+	i = 0;
+	while (cmd_line[i])
+	{
+		if (is_in_set(cmd_line[i], "\'\""))
+		{
+			if (!is_paired(&cmd_line[i], cmd_line[i]))
+				return (1);
+			i += skip_quote(&cmd_line[i], cmd_line[i]);
+		}
+		i++;
+	}
+	return (0);
+}
+
 /*Return 1 if there is syntax error */
 int	syntax_errors(char *cmd_line)
 {
@@ -83,6 +172,14 @@ int	syntax_errors(char *cmd_line)
 	i = 0;
 	if (is_empty(cmd_line))
 		return (-1);
+	if (check_single_quote(cmd_line))
+		return (1);
+	while (check_next_token(&cmd_line[i]) == 0)
+	{
+		if (!cmd_line[i])
+			break;
+		i++;
+	}
 	error = syntax_redir(cmd_line);
 	if (error && !is_in_set(cmd_line[0], "&|);"))
 		error = 1;

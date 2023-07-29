@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:37:21 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/25 15:03:10 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/29 22:22:45 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,14 @@ char	*skip_to_char(char *str, char c)
 	while (*str && *str != c)
 		str++;
 	return (str);
+}
+
+int	skip_quote(char *str, char quote)
+{
+	int	i;
+
+	i = 1;
+	while (str[i] && str[i] != quote)
+		i++;
+	return (i);
 }
