@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 17:54:23 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/30 00:15:27 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,98 +56,46 @@ void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index)
 	close(pfd[0]);
 }
 
-void	random_function(t_cmd *cmds, t_expv *expv, int *pipe_out, int index)
+void	set_cmd(t_cmd *cmd, t_expv **expv, int *pipe_out, char **env)
 {
 	int		pfd[2];
-	char	**env;
-	int		child_status;
+	t_cmd	*cmds;
 	pid_t	pid;
 
-	env = ft_get_env(expv);
+	cmds = cmd - cmd->id;
 	if (pipe(pfd) == -1)
 		ft_putstr_fd("error pipe 1\n", 2);
-	if (!cmds[index + 1].cmd)
+	if (!(cmd + 1)->cmd)
 		dup2(1, pfd[1]);
-	if (!cmds[index].error)
+	if (!cmd->error)
 	{
 		pid = fork();
 		if (pid == -1)
 			perror("fork");
 		else if (pid == 0)
 		{
-			set_pipes(cmds[index].infile, cmds[index].outfile, pfd, *pipe_out);
-			exec_cmd(cmds, env, expv, index);
-			child_status = cmds[index].status;
-			free_fork(expv, cmds, env);
-			exit(child_status); // exit code erreur du builtin
+			set_pipes(cmd->infile, cmd->outfile, pfd, *pipe_out);
+			exec_cmd(cmds, env, expv, cmd->id);
 		}
-		cmds[index].pid = pid;
+		cmd->pid = pid;
 	}
-	close_after_fork(cmds, pfd, pipe_out, index);
-	free_array(env);
+	close_after_fork(cmds, pfd, pipe_out, cmd->id);
 }
 
-// void	random_function2()
-// {
-// 	int	i;
-// 	int	pipe_out;
-
-// 	i = 0;
-// 	while (cmds[i].cmd)
-// 	{
-// 		if (pipe(pfd) == -1)
-// 			ft_putstr_fd("error pipe 1\n", 2);
-// 		if (!cmds[i + 1].cmd)
-// 			dup2(1, pfd[1]);
-// 		if (!cmds[i].error)
-// 		{
-// 			pid = fork();
-// 			if (pid == -1)
-// 				perror("fork");
-// 			else if (pid == 0)
-// 			{
-// 				set_pipes(cmds[i].infile, cmds[i].outfile, pfd, pipe_out);
-// 				exec_cmd(cmds, env, expv, i);
-// 			}
-// 			cmds[i].pid = pid;
-// 		}
-// 		close_after_fork(cmds, pfd, &pipe_out, i);
-// 		i++;
-// 	}
-// }
-
-void	split_pipe(t_expv *expv, t_cmd *cmds)
+void	split_pipe(t_expv **expv, t_cmd *cmds)
 {
 	int		i;
 	int		pfd[2];
 	pid_t	pid;
 	int		pipe_out;
-	int		chld_status;
 	char	**env;
 
 	i = 0;
 	pipe_out = 0;
-	env = ft_get_env(expv);
+	env = ft_get_env(*expv);
 	while (cmds[i].cmd)
 	{
-		// random_function(cmds, expv, &pipe_out, i);
-		if (pipe(pfd) == -1)
-			ft_putstr_fd("error pipe 1\n", 2);
-		if (!cmds[i + 1].cmd)
-			dup2(1, pfd[1]);
-		if (!cmds[i].error)
-		{
-			pid = fork();
-			if (pid == -1)
-				perror("fork");
-			else if (pid == 0)
-			{
-				set_pipes(cmds[i].infile, cmds[i].outfile, pfd, pipe_out);
-				exec_cmd(cmds, env, expv, i);
-			}
-			cmds[i].pid = pid;
-		}
-		close_after_fork(cmds, pfd, &pipe_out, i);
+		set_cmd(&cmds[i], expv, &pipe_out, env);
 		i++;
 	}
 	wait_childs(cmds);

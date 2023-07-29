@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:04:17 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 23:08:03 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,23 +78,23 @@ void	print_env(t_expv *expv) // a bouger
 	}
 }
 
-void	exec_builtin(t_cmd *cmd, t_expv *expv)
+void	exec_builtin(t_cmd *cmd, t_expv **expv)
 {
 	if (!ft_strcmp(cmd->cmd_name, "pwd"))
 		pwd();
 	else if (!ft_strcmp(cmd->cmd_name, "cd"))
-		cd(cmd->words[1], expv);
+		cd(cmd->words[1], *expv);
 	else if (!ft_strcmp(cmd->cmd_name, "echo"))
 		echo(cmd);
 	else if (!ft_strcmp(cmd->cmd_name, "exit")) // a changer
 	{
-		freelist(expv);
+		freelist(*expv);
 		exit(0);
 	}
 	else if (!ft_strcmp(cmd->cmd_name, "env"))
-		print_env(expv);
+		print_env(*expv);
 	else if (!ft_strcmp(cmd->cmd_name, "export"))
-		export(cmd, &expv);
+		export(cmd, expv);
 	else if (!ft_strcmp(cmd->cmd_name, "unset"))
-		unset(cmd, &expv);
+		unset(cmd, expv);
 }

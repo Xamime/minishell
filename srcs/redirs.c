@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 17:47:32 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/30 00:15:12 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	heredoc_name(t_cmd *cmd, char **filename)
 	while (1)
 	{
 		tmp = ft_itoa(i);
-		try = ft_strjoin(*filename, tmp);
 		replace_address(&try, ft_strjoin(*filename, tmp));
 		fd = open(try, O_RDONLY);
 		free(tmp);

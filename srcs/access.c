@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   access.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/28 21:15:23 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 22:49:28 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 
 	i = 0;
 	command = NULL;
-	while (path[i])
+	while (path && path[i])
 	{
 		replace_address(&command, ft_strjoin(path[i], "/"));
 		replace_address(&command, ft_strjoin(command, name));

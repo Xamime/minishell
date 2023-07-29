@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/28 20:47:06 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 23:10:41 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**ft_get_env(t_expv *export)
 	return (env);
 }
 
-void	exec_cmd(t_cmd *cmds, char **env, t_expv *expv, int index)
+void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 {
 	char	*command;
 	int		child_status;
@@ -44,13 +44,13 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv *expv, int index)
 		exec_builtin(&cmds[index], expv);
 	else
 	{
-		command = get_access(&cmds[index], expv);
+		command = get_access(&cmds[index], *expv);
 		if (command)
 			execve(command, cmds[index].words, env);
 		free(command);
 	}
 	child_status = cmds[index].status;
-	free_fork(expv, cmds, env);
+	free_fork(*expv, cmds, env);
 	exit(child_status); // exit code erreur du builtin
 }
 

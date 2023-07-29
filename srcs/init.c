@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/28 10:56:44 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 20:22:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_cmd	*init_cmds(char *cmd_line)
 		cmds[i].pid = -1; // a verif
 		cmds[i].status = 0; // a verif
 		cmds[i].error = 0;
+		cmds[i].id = i;
 		i++;
 	}
 	cmds[i].cmd = NULL;

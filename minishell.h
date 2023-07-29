@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/28 20:40:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 23:10:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_cmd
 	pid_t	pid;
 	int		status;
 	int		error;
+	int		id;
 	t_redir	*redirs;
 }				t_cmd;
 
@@ -128,7 +129,7 @@ char	*skip_to_char(char *str, char c);
 
 int		parse_cmd(t_cmd *cmd, t_expv *expv);
 void	replace_address(char **addr1, char *addr2);
-void	split_pipe(t_expv *expv, t_cmd *cmds);
+void	split_pipe(t_expv **expv, t_cmd *cmds);
 
 /////////////////////////////////////////////////////
 ///					init.c						  ///
@@ -163,7 +164,7 @@ void	unlink_heredocs(t_list *lst);
 
 /* -------------------------------- builtins -------------------------------- */
 
-void	exec_builtin(t_cmd *cmd, t_expv *expv);
+void	exec_builtin(t_cmd *cmd, t_expv **expv);
 int		check_n(t_cmd *cmd, int i);
 void	cd(char *directory, t_expv *expv);
 void	echo(t_cmd *cmd);
@@ -176,11 +177,11 @@ int		syntax_errors(char *cmd_line);
 
 /* ---------------------------------- exec ---------------------------------- */
 
-void	only_one_builtin(t_expv *expv, t_cmd *cmd);
+void	only_one_builtin(t_expv **expv, t_cmd *cmd);
 
 /* ------------------------------- exec_utils ------------------------------- */
 
-void	exec_cmd(t_cmd *cmds, char **env, t_expv *expv, int index);
+void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index);
 char	**ft_get_env(t_expv *export);
 void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 18:20:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 21:41:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/30 00:15:08 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_array(char **array)
 	int	i;
 
 	i = 0;
-	while (array[i])
+	while (array && array[i])
 	{
 		free(array[i]);
 		i++;

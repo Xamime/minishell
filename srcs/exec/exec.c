@@ -6,13 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:24:32 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/28 12:21:35 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 23:08:58 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	only_one_builtin(t_expv *expv, t_cmd *cmd)
+void	only_one_builtin(t_expv **expv, t_cmd *cmd)
 {
 	int	real_in;
 	int	real_out;

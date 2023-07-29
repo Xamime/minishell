@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 18:21:53 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/29 23:05:48 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int	main(int ac, char **av, char **env)
 			for (int i = 0; cmds[i].cmd; i++)
 				parse_cmd(&cmds[i], export);
 			if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
-				only_one_builtin(export, cmds);
+				only_one_builtin(&export, cmds);
 			else
-				split_pipe(export, cmds);
+				split_pipe(&export, cmds);
 			free(cmds); // ?? normalement ca free toutes les commandes
 		}
 		else if (error > 0)
