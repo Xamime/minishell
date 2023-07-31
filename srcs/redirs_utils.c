@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 23:26:10 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 00:47:49 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_heredocs(t_cmd *cmds)
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
-				filename = get_filename(&cmds[i].cmd[j], NULL);
+				filename = get_filename(&cmds[i].cmd[j], NULL, NULL);
 				limiter = ft_strdup(filename); // bizarre
 				*fd = heredoc_name(&cmds[i], &filename);
 				while (1)

@@ -6,11 +6,12 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:37:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 15:25:03 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 00:43:45 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include "errno.h"
 
 void	cd(char *directory, t_expv *expv)
 {
@@ -33,9 +34,7 @@ void	cd(char *directory, t_expv *expv)
 	remove_last_nl(directory);
 	if (chdir(directory) == -1)
 	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(directory, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		printf_fd(2, "minishell: %s\n", strerror(errno));
 		free(oldpwd);
 	}
 	else

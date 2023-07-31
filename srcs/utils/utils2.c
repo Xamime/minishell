@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 23:39:30 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 00:47:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,40 @@ void	close_fds(t_list *lst)
 	}
 }
 
-char	*get_filename(char *str, t_expv *expv)
+int	check_ambiguous_redirect(char *str, t_expv *expv)
+{
+	int		i;
+	int		before_sep_nb;
+	int		after_sep_nb;
+	char	*new_str;
+
+	i = 0;
+	before_sep_nb = 0;
+	after_sep_nb = 0;
+	while (str && str[i])
+	{
+		if (is_in_set(str[i], " \t\n"))
+			before_sep_nb++;
+		i++;
+	}
+	new_str = make_dollars(str, expv, 0);
+	i = 0;
+	while (new_str && new_str[i])
+	{
+		if (is_in_set(new_str[i], " \t\n"))
+			after_sep_nb++;
+		i++;
+	}
+	free(new_str);
+	if (before_sep_nb < after_sep_nb)
+	{
+		printf_fd(2, "minishell: %s: ambiguous redirect\n", str);
+		return (1);
+	}
+	return (0);
+}
+
+char	*get_filename(char *str, t_expv *expv, t_cmd *cmd)
 {
 	int		size;
 	char	*filename;
@@ -43,7 +76,8 @@ char	*get_filename(char *str, t_expv *expv)
 			size++;
 	}
 	filename = ft_substr(str, 0, size);
-	// check_ambiguous redirect
+	if (check_ambiguous_redirect(filename, expv))
+		cmd->status = 1;
 	replace_address(&filename, make_dollars(filename, expv, 0));
 	replace_address(&filename, make_dollars(filename, expv, 1));
 	replace_address(&filename, set_without_quotes(filename));

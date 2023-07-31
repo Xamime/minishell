@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 23:18:30 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 00:24:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,12 @@ int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 	int		*fd;
 	char	*filename;
 
-	filename = get_filename(str, expv);
+	filename = get_filename(str, expv, cmd);
+	if (cmd->status == 1)
+	{
+		free(filename);
+		return (1);
+	}
 	fd = malloc(sizeof(int));
 	*fd = 0;
 	if (*str == '>' && *(str + 1) != '>')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 23:59:53 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 00:48:09 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		is_builtin(char *cmd);
 ///					utils2.c					  ///
 /////////////////////////////////////////////////////
 
-char	*get_filename(char *str, t_expv *expv);
+char	*get_filename(char *str, t_expv *expv, t_cmd *cmd);
 void	better_lstclear(t_list *lst);
 void	free_redirects(t_redir *redirs);
 void	close_fds(t_list *lst);
