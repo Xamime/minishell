@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:40:57 by mdesrose         ###   ########.fr       */
-=======
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:51:41 by jfarkas          ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 22:49:27 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:36:42 by mdesrose         ###   ########.fr       */
-=======
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:00:08 by jfarkas          ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 22:49:07 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +19,6 @@ void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
 
-<<<<<<< HEAD
-	printf("coucou\n");
-=======
->>>>>>> refs/remotes/origin/master
 	printf("exit\n");
 	freelist(export);
 	exit(0);

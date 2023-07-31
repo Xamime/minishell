@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:52:25 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:50:47 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	set_exit_code(t_cmd *cmds)
 	while (cmds[i + 1].cmd)
 		i++;
 	// printf("exit code : %d\n", cmds[i].status % 255);
-	EXIT_CODE = cmds[i].status/* % 255*/; // peut etre cast mais jsp en quoi
+	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
 	i = 0;
 	while (cmds[i].cmd)
 	{
