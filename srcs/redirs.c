@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/30 00:28:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 16:11:18 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,26 @@ int	add_redirect(t_redir *redirs, char *str)
 	return (0);
 }
 
+int	find_last_infile(char *str)
+{
+	int		i;
+	char	quote;
+
+	i = ft_strlen(str) - 1;
+	while (str[i] && str[i] != '<' && i > 0)
+	{
+		if (is_in_set(str[i], "\"\'"))
+		{
+			quote = str[i];
+			i--;
+			while (i > 0 && str[i] != quote)
+				i--;
+		}
+		i--;
+	}
+	return (i);
+}
+
 void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 {
 	t_list	*heredoc;
@@ -102,9 +122,12 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	infile = ft_lstlast((*redirs)->infiles);
 	heredoc = ft_lstlast((*redirs)->heredocs);
 	outfile = ft_lstlast((*redirs)->outfiles);
-	i = ft_strlen(str) - 1;
-	while (str[i] && str[i] != '<' && i > 0)
-		i--;
+	// i = ft_strlen(str) - 1;
+	// while (str[i] && str[i] != '<' && i > 0)
+	// {
+	// 	i--;
+	// }
+	i = find_last_infile(str);
 	if (i > 0 && str[i - 1] && str[i - 1] == '<')
 	{
 		cmd->infile = *(int *)heredoc->content;
@@ -130,6 +153,8 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd)
 	while (*str)
 	{
 		// mettre de quoi skip les quotes
+		if (is_in_set(*str, "\"\'"))
+			str = skip_to_char(str, *str);
 		if (*str == '<' || *str == '>')
 		{
 			bool = 1;
@@ -141,8 +166,8 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd)
 				str++;
 			while (*str && !is_in_set(*str, " \t\n<>"))
 			{
-				// if (is_in_set(*str, "\"\'"))
-				// 	str = skip_to_char(str, *str);
+				if (is_in_set(*str, "\"\'"))
+					str = skip_to_char(str, *str);
 				str++;
 			}
 		}

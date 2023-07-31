@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/30 00:15:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 16:11:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,18 @@ char	*get_filename(char *str)
 
 	while (is_in_set(*str, "<>"))
 		str++;
-	while (is_in_set(*str, " \t\n"))
-	{
-		// if (is_in_set(*str, "\"\'"))
-		// 	str = skip_to_char(str, *str);
+	while (is_in_set(*str, " \t\n")) // expand puis remove quotes
 		str++;
-	}
 	size = 0;
 	while (str[size] && !is_in_set(str[size], " \t\n<>"))
-		size++;
+	{
+		if (is_in_set(str[size], "\"\'"))
+			size += skip_quote(&str[size], str[size]);
+		else
+			size++;
+	}
 	filename = ft_substr(str, 0, size);
+	// replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
 	return (filename);
 }
 

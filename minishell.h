@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 14:28:07 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 17:42:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_expansion
 void	freelist(t_expv *expv);
 char	*check_next_token(char *cmd_line, char *syntax_errors);
 
-char	**ft_split_quotes(char *s, char c);
+char	**ft_split_quotes(char *s, char* charset);
 
 /////////////////////////////////////////////////////
 ///					expand.c					  ///
@@ -120,7 +120,7 @@ int		skip_and_copy(char *str, char *new_str, char c, int *j);
 ///					split_quotes_utils.c		  ///
 /////////////////////////////////////////////////////
 
-int		nbwords(char *s, char c);
+int		nbwords(char *s, char *charset);
 int		is_in_set(char c, char *set);
 int		is_paired(char *str, char quote);
 int		skip_quote(char *str, char quote);

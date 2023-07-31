@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:03:09 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/13 22:38:03 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 01:37:34 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	ft_len(char *s, char *set)
+static int	ft_len(char *s, char *charset)
 {
 	size_t	i;
 	char	quote;
 
 	i = 0;
-	while (*s && *s != ' ')
+	while (*s && !is_in_set(*s, charset))
 	{
-		if (is_in_set(*s, set) && is_paired(s, *s))
+		if (*s && is_in_set(*s, "\'\"") && is_paired(s, *s))
 		{
 			quote = *s;
 			s++;
@@ -37,16 +37,16 @@ static int	ft_len(char *s, char *set)
 	return (i);
 }
 
-static char	*word(char *s, char c)
+static char	*word(char *s, char* charset)
 {
 	int		i;
 	char	*str;
 
 	i = 0;
-	str = malloc(sizeof(char) * (ft_len(s, "\'\"") + 1));
+	str = malloc(sizeof(char) * (ft_len(s, charset) + 1));
 	if (str == NULL)
 		return (NULL);
-	while (i < ft_len(s, "\'\""))
+	while (i < ft_len(s, charset))
 	{
 		str[i] = s[i];
 		i++;
@@ -55,51 +55,51 @@ static char	*word(char *s, char c)
 	return (str);
 }
 
-int	nbwords(char *s, char c)
+int	nbwords(char *s, char *charset)
 {
 	int	i;
 
 	i = 0;
-	while (*s == c && ft_isprint(*s + 1))
+	while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
 		s++;
 	while (*s != '\0')
 	{
 		i++;
-		while (*s && *s != c)
+		while (*s && !is_in_set(*s, charset))
 		{
 			if (is_in_set(*s, "\'\"") && is_paired(s, *s))
 				s = skip_to_char(s, *s);
 			s++;
 		}
-		while (*s == c && ft_isprint(*s + 1))
+		while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
 			s++;
 	}
 	return (i);
 }
 
-static void	fill_array(char **str, char *s, char c)
+static void	fill_array(char **str, char *s, char* charset)
 {
 	int	i;
 
 	i = 0;
-	while (*s == c && ft_isprint(*s + 1))
+	while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
 		s++;
 	while (*s != '\0')
 	{
-		str[i] = word(s, c);
+		str[i] = word(s, charset);
 		i++;
-		while (*s != '\0' && *s != c)
+		while (*s != '\0' && !is_in_set(*s, charset))
 		{
 			if (is_in_set(*s, "\'\"") && is_paired(s, *s))
 				s = skip_to_char(s, *s);
 			s++;
 		}
-		while (*s == c && ft_isprint(*s + 1))
+		while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
 			s++;
 	}
 }
 
-char	**ft_split_quotes(char *s, char c)
+char	**ft_split_quotes(char *s, char* charset)
 {
 	int		i;
 	char	**str;
@@ -107,11 +107,11 @@ char	**ft_split_quotes(char *s, char c)
 	// faut split sur " \t\n"
 	if (s == NULL)
 		return (NULL);
-	i = nbwords(s, c);
+	i = nbwords(s, charset);
 	str = malloc(sizeof(char *) * (i + 1));
 	if (str == NULL)
 		return (NULL);
 	str[i] = NULL;
-	fill_array(str, s, c);
+	fill_array(str, s, charset);
 	return (str);
 }

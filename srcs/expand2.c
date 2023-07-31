@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:35:03 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:51:28 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 16:11:22 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	skip_and_copy(char *str, char *new_str, char c, int *j)
 		new_str[i] = str[i];
 		i++;
 	}
-	(*j) += i;
+	if (j)
+		(*j) += i;
 	return (i);
 }
 

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 17:25:26 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 17:39:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int	syntax_errors(char *cmd_line)
 	char	*syntax_error;
 
 	i = 0;
+	error = 0;
 	if (is_empty(cmd_line))
 		return (-1);
 	if (check_single_quote(cmd_line))

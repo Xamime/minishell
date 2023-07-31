@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 17:23:45 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 17:39:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int	EXIT_CODE;
 void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
+
+
+	printf("coucou\n");
 	printf("exit\n");
 	// while (cmds && cmds[i].cmd)
 	// {
@@ -76,6 +79,7 @@ int	main(int ac, char **av, char **env)
 	{
 		sig_info();
 		cmd = readline("Minishell -> ");
+		sig_info();
 		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
 			ctrl_d(export, cmds);
 		add_history(cmd);
@@ -93,8 +97,6 @@ int	main(int ac, char **av, char **env)
 				split_pipe(&export, cmds);
 			free(cmds); // ?? normalement ca free toutes les commandes
 		}
-		else if (error > 0)
-			free(cmd);
 		else
 			free(cmd);
 	}

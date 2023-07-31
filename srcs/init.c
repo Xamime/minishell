@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 20:22:59 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 01:33:23 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_cmd	*init_cmds(char *cmd_line)
 	int		i;
 
 	i = 0;
-	sub_shells = ft_split(cmd_line, '|'); // NON
+	sub_shells = ft_split_quotes(cmd_line, "|"); // NON
 	while (sub_shells[i])
 		i++;
 	cmds = malloc(sizeof(t_cmd) * (i + 1));
