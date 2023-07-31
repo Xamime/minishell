@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:32:55 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 23:13:56 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*get_filename(char *str, t_expv *expv)
 	while (str[size] && !is_in_set(str[size], " \t\n<>"))
 	{
 		if (is_in_set(str[size], "\"\'"))
-			size += skip_quote(&str[size], str[size]);
+			size += skip_quote(&str[size], str[size]) - 1;
 		else
 			size++;
 	}
