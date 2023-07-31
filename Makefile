@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+         #
+#    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/07/28 12:21:08 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/07/30 20:35:47 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/export_list_utils.c \
 		srcs/init.c \
 		srcs/main.c \
-		srcs/new_split.c \
 		srcs/parsing.c \
 		srcs/parsing2.c \
 		srcs/access.c \

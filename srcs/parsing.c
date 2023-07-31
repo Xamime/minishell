@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/30 00:15:27 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 02:41:24 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 		cmd->error = 1;
 	replace_address(&cmd->cmd, remove_redir(cmd));
 	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
-	splitted = ft_split_quotes(cmd->cmd, ' ');
+	splitted = ft_split_quotes(cmd->cmd, " \t\n");
 	if (!splitted[0])
 		cmd->error = 2;
 	while (splitted[i])

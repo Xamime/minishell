@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/30 00:19:36 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 02:56:20 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,25 +170,26 @@ int	syntax_errors(char *cmd_line)
 	int	error;
 
 	i = 0;
+	error = 0;
 	if (is_empty(cmd_line))
 		return (-1);
-	if (check_single_quote(cmd_line))
-		return (1);
-	while (check_next_token(&cmd_line[i]) == 0)
-	{
-		if (!cmd_line[i])
-			break;
-		i++;
-	}
-	error = syntax_redir(cmd_line);
-	if (error && !is_in_set(cmd_line[0], "&|);"))
-		error = 1;
-	// while(cmd_line && cmd_line[i])
+	// if (check_single_quote(cmd_line))
+	// 	return (1);
+	// while (check_next_token(&cmd_line[i]) == 0)
 	// {
-	// 	if (!error && !is_in_set(cmd_line[i], " \t\n"))
-	// 		error = 1;
+	// 	if (!cmd_line[i])
+	// 		break;
 	// 	i++;
 	// }
+	// error = syntax_redir(cmd_line);
+	// if (error && !is_in_set(cmd_line[0], "&|);"))
+	// 	error = 1;
+	// // while(cmd_line && cmd_line[i])
+	// // {
+	// // 	if (!error && !is_in_set(cmd_line[i], " \t\n"))
+	// // 		error = 1;
+	// // 	i++;
+	// // }
 	if (error)
 		EXIT_CODE = 2;
 	return (error);
