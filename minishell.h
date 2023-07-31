@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
 /*   Updated: 2023/07/31 21:40:57 by mdesrose         ###   ########.fr       */
+=======
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
+/*   Updated: 2023/07/31 21:51:41 by jfarkas          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +90,7 @@ int		is_builtin(char *cmd);
 ///					utils2.c					  ///
 /////////////////////////////////////////////////////
 
-char	*get_filename(char *str);
+char	*get_filename(char *str, t_expv *expv);
 void	better_lstclear(t_list *lst);
 void	free_redirects(t_redir *redirs);
 void	close_fds(t_list *lst);
@@ -94,7 +101,7 @@ void	close_fds(t_list *lst);
 
 int		secure_open(char *mode, char *filename);
 int		heredoc_name(t_cmd *cmd, char **filename);
-int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd);
+int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv);
 
 /////////////////////////////////////////////////////
 ///					redirs_utils.c				  ///
@@ -220,5 +227,6 @@ char	*ft_getenv(char *str, t_expv *export); // on a une autre fonction avec le m
 void	update_pwd(t_expv *export, char *oldpwd);
 
 void	free_fork(t_expv *expv, t_cmd *cmds, char **env);
+void	close_next_cmds_fds(t_cmd *cmds);
 
 #endif

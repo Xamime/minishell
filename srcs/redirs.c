@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 16:11:18 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:36:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ int	secure_open(char *mode, char *filename)
 	return (fd);
 }
 
-int	add_redirect(t_redir *redirs, char *str)
+int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 {
 	int		*fd;
 	char	*filename;
 
-	filename = get_filename(str);
+	filename = get_filename(str, expv);
 	fd = malloc(sizeof(int));
 	*fd = 0;
 	if (*str == '>' && *(str + 1) != '>')
@@ -84,6 +84,7 @@ int	add_redirect(t_redir *redirs, char *str)
 	free(filename);
 	if (*fd == -1)
 	{
+		cmd->status = 1;
 		free(fd);
 		return (1);
 	}
@@ -143,7 +144,7 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	close_fds((*redirs)->infiles);
 }
 
-int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd)
+int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv)
 {
 	char	*tmp;
 	int		bool;
@@ -158,7 +159,7 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd)
 		if (*str == '<' || *str == '>')
 		{
 			bool = 1;
-			if (add_redirect(*redirs, str))
+			if (add_redirect(*redirs, str, expv, cmd))
 				return (1);
 			while (*str && is_in_set(*str, "<>"))
 				str++;

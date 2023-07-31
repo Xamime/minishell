@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:03:09 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 01:37:34 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 19:11:44 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	nbwords(char *s, char *charset)
 	int	i;
 
 	i = 0;
-	while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
+	while (*s && is_in_set(*s, charset))
 		s++;
 	while (*s != '\0')
 	{
@@ -71,18 +71,18 @@ int	nbwords(char *s, char *charset)
 				s = skip_to_char(s, *s);
 			s++;
 		}
-		while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
+		while (*s && is_in_set(*s, charset))
 			s++;
 	}
 	return (i);
 }
 
-static void	fill_array(char **str, char *s, char* charset)
+static void	fill_array(char **str, char *s, char *charset)
 {
 	int	i;
 
 	i = 0;
-	while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
+	while (*s && is_in_set(*s, charset))
 		s++;
 	while (*s != '\0')
 	{
@@ -94,7 +94,7 @@ static void	fill_array(char **str, char *s, char* charset)
 				s = skip_to_char(s, *s);
 			s++;
 		}
-		while (*s && is_in_set(*s, charset) && ft_isprint(*s + 1))
+		while (*s && is_in_set(*s, charset))
 			s++;
 	}
 }

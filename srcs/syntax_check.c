@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
 /*   Updated: 2023/07/31 22:31:12 by mdesrose         ###   ########.fr       */
+=======
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
+/*   Updated: 2023/07/31 19:05:09 by jfarkas          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +92,25 @@ int	check_next_token(char *cmd_line, char **syntax_error)
 	if (!str)
 	{
 		free_array(token);
+<<<<<<< HEAD
 		return (0);
+=======
+		return ("NULL");
+>>>>>>> refs/remotes/origin/master
 	}
 	while (is_in_set(str[i], " \t\n"))
 		i++;
 	if (is_in_set(str[i], "<>|"))
 	{
+<<<<<<< HEAD
 		*syntax_error = ft_strdup(is_token(&str[i], token));
 		free_array(token);
 		return (1);
+=======
+		syntax_error = is_token(&str[i], token);
+		free_array(token);
+		return (syntax_error);
+>>>>>>> refs/remotes/origin/master
 	}
 	free_array(token);
 	return (0);

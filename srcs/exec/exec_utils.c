@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
 /*   Updated: 2023/07/31 20:26:04 by mdesrose         ###   ########.fr       */
+=======
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
+/*   Updated: 2023/07/31 21:43:04 by jfarkas          ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +32,13 @@ char	**ft_get_env(t_expv *export)
 	env = malloc(sizeof(char *) * (size + 1));
 	while (tmp)
 	{
-		env[i] = ft_strdup(tmp->name);
-		replace_address(&env[i], ft_strjoin(env[i], "="));
-		replace_address(&env[i], ft_strjoin(env[i], tmp->var));
-		i++;
+		if (tmp->var)
+		{
+			env[i] = ft_strdup(tmp->name);
+			replace_address(&env[i], ft_strjoin(env[i], "="));
+			replace_address(&env[i], ft_strjoin(env[i], tmp->var));
+			i++;
+		}
 		tmp = tmp->next;
 	}
 	env[i] = NULL;
@@ -40,6 +50,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 	char	*command;
 	int		child_status;
 
+	close_next_cmds_fds(cmds);
 	if (is_builtin(cmds[index].cmd_name))
 		exec_builtin(&cmds[index], expv, env);
 	else
