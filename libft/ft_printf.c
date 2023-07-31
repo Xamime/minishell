@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:07:50 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 19:08:41 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 22:57:34 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	ft_loop(int fd, const char *s, va_list *args, int *count)
 	{
 		if (s[i] != '%')
 		{
-			write(1, &s[i], 1);
+			write(fd, &s[i], 1);
 			(*count)++;
 		}
 		if (s[i] == '%')
