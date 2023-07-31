@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:07:50 by mdesrose          #+#    #+#             */
-/*   Updated: 2022/10/05 16:33:46 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 14:14:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
+
 
 static void	ft_loop(const char *s, va_list *args, int *count)
 {
@@ -31,8 +31,8 @@ static void	ft_loop(const char *s, va_list *args, int *count)
 		i++;
 	}
 }
-
-int	ft_printf(const char *str, ...)
+/*printf fd*/
+int	ft_printf(int fd, const char *str, ...)
 {
 	va_list	args;
 	int		count;

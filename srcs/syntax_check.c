@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/30 00:19:36 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 17:25:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,28 +121,27 @@ char	*is_token(char *str, char **token)
 	return (NULL);
 }
 
-int	check_next_token(char *cmd_line)
+char	*check_next_token(char *cmd_line, char *syntax_error)
 {
 	char	**token;
 	char	*str;
-	char	*syntax_error;
 	int		i;
 
 	i = 0;
 	token = ft_split("<<:>>:<:>:|",':');
 	str = get_token(cmd_line, token);
 	if (!str)
-		return (-1);
+		return ("NULL");
 	while (is_in_set(str[i], " \t\n"))
 		i++;
 	if (is_in_set(str[i], "<>|"))
 	{
 		syntax_error = is_token(&str[i], token);
 		printf("syn_err = %s\n",syntax_error);
-		return (1);
+		return (syntax_error);
 	}
 	free_array(token);
-	return (0);
+	return (NULL);
 }
 
 int	check_single_quote(char *cmd_line)
@@ -166,15 +165,16 @@ int	check_single_quote(char *cmd_line)
 /*Return 1 if there is syntax error */
 int	syntax_errors(char *cmd_line)
 {
-	int	i;
-	int	error;
+	int		i;
+	int		error;
+	char	*syntax_error;
 
 	i = 0;
 	if (is_empty(cmd_line))
 		return (-1);
 	if (check_single_quote(cmd_line))
 		return (1);
-	while (check_next_token(&cmd_line[i]) == 0)
+	while ((syntax_error = check_next_token(&cmd_line[i], syntax_error)) == 0)
 	{
 		if (!cmd_line[i])
 			break;
@@ -183,13 +183,11 @@ int	syntax_errors(char *cmd_line)
 	error = syntax_redir(cmd_line);
 	if (error && !is_in_set(cmd_line[0], "&|);"))
 		error = 1;
-	// while(cmd_line && cmd_line[i])
-	// {
-	// 	if (!error && !is_in_set(cmd_line[i], " \t\n"))
-	// 		error = 1;
-	// 	i++;
-	// }
 	if (error)
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token", 2);
+		printf(" `%s'\n", syntax_error); // faire un printf fd
 		EXIT_CODE = 2;
+	}
 	return (error);
 }

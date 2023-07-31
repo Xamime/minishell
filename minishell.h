@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 23:10:59 by jfarkas          ###   ########.fr       */
-=======
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 22:23:40 by mdesrose         ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 14:28:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +60,7 @@ typedef struct s_expansion
 }	t_expansion;
 
 void	freelist(t_expv *expv);
-int	check_next_token(char *cmd_line);
+char	*check_next_token(char *cmd_line, char *syntax_errors);
 
 char	**ft_split_quotes(char *s, char c);
 

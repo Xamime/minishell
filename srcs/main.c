@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/29 23:05:48 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/07/29 23:02:11 by mdesrose         ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 17:23:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +94,7 @@ int	main(int ac, char **av, char **env)
 			free(cmds); // ?? normalement ca free toutes les commandes
 		}
 		else if (error > 0)
-		{
-			ft_putstr_fd("syntax error\n", 2);
 			free(cmd);
-		}
 		else
 			free(cmd);
 	}
