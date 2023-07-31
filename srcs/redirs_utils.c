@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 20:57:20 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 16:11:26 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	set_heredocs(t_cmd *cmds)
 		while (cmds[i].cmd[j])
 		{
 			// mettre de quoi skip les quotes aussi
+			if (is_in_set(cmds[i].cmd[j], "\"\'"))
+				j += skip_quote(&cmds[i].cmd[j], cmds[i].cmd[j]);
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
@@ -90,6 +92,8 @@ char	*str_without_redir(char *str, char* cmd, int redirs_size)
 	str = malloc(sizeof(char) * ft_strlen(cmd) - redirs_size + 1);
 	while (cmd[i + j])
 	{
+		if (is_in_set(cmd[i + j], "\"\'"))
+			i += skip_and_copy(&cmd[i + j], &str[i], cmd[i + j], NULL);
 		if (cmd[i + j] == '<' || cmd[i + j] == '>')
 		{
 			while (cmd[i + j] && is_in_set(cmd[i + j], "<>"))
@@ -97,7 +101,11 @@ char	*str_without_redir(char *str, char* cmd, int redirs_size)
 			while (cmd[i + j] && is_in_set(cmd[i + j], " \t\n"))
 				j++;
 			while (cmd[i + j] && !is_in_set(cmd[i + j], " \t\n<>"))
+			{
+				if (is_in_set(cmd[i + j], "\"\'"))
+					j += skip_quote(&cmd[i + j], cmd[i + j]);
 				j++;
+			}
 		}
 		if (cmd[i + j] && !is_in_set(cmd[i + j], "<>"))
 		{
@@ -119,6 +127,8 @@ char	*remove_redir(t_cmd	*cmd)
 	redirs_size = 0;
 	while (*str)
 	{
+		if (is_in_set(*str, "\"\'"))
+			str = skip_to_char(str, *str);
 		if (*str == '<' || *str == '>')
 		{
 			j = 0;
@@ -127,13 +137,19 @@ char	*remove_redir(t_cmd	*cmd)
 			while (*(str + j) && is_in_set(*(str + j), " \t\n"))
 				j++;
 			while (*(str + j) && !is_in_set(*(str + j), " \t\n<>"))
+			{
+				if (is_in_set(*str, "\"\'"))
+					j += skip_quote(str, *str);
 				j++;
+			}
 			str += j;
 			redirs_size += j;
 		}
 		if (*str && !is_in_set(*str, "<>"))
 			str++;
 	}
+	printf("redirs_size : %d\n", redirs_size);
 	str = str_without_redir(str, cmd->cmd, redirs_size);
+	printf("str : %s\n", str);
 	return (str);
 }

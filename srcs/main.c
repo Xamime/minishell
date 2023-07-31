@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 02:56:03 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 14:14:43 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ int	EXIT_CODE;
 void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
+
+
+	printf("coucou\n");
 	printf("exit\n");
 	// while (cmds && cmds[i].cmd)
 	// {
@@ -76,6 +79,7 @@ int	main(int ac, char **av, char **env)
 	{
 		sig_info();
 		cmd = readline("Minishell -> ");
+		sig_info();
 		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
 			ctrl_d(export, cmds);
 		add_history(cmd);
