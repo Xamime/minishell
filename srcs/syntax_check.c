@@ -3,62 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 17:39:49 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:31:12 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	syntax_redir2(char *cmd_line)
-{
-	int	i;
-	int tru;
-
-	tru = 0;
-	i = 0;
-	while (cmd_line && cmd_line[i])
-	{
-		while (is_in_set(cmd_line[i], "<>"))
-		{
-			tru = 1;
-			i++;
-		}
-		while (cmd_line[i] == ' ')
-			i++;
-		if (tru && is_in_set(cmd_line[i], "<>"))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	syntax_redir(char *cmd_line)
-{
-	int	i;
-
-	i = 0;
-	//if (is_in_set(cmd_line[0], "<>"))
-
-	while (cmd_line && cmd_line[i])
-	{
-		if (is_in_set(cmd_line[i], "<>") && is_in_set(cmd_line[i + 1], "<>")
-		&& is_in_set(cmd_line[i + 2], "<>"))
-			return (1);
-		if (is_in_set(cmd_line[i], "<>") && is_in_set(cmd_line[i + 1], "<>"))
-		{
-			i += 2;
-			while (cmd_line[i] == ' ')
-				i++;
-		}
-		if (!cmd_line[i] || is_in_set(cmd_line[i], "\n\0") )//|| syntax_redir2(cmd_line))
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 int		is_empty(char *cmd_line)
 {
@@ -121,7 +73,7 @@ char	*is_token(char *str, char **token)
 	return (NULL);
 }
 
-char	*check_next_token(char *cmd_line, char *syntax_error)
+int	check_next_token(char *cmd_line, char **syntax_error)
 {
 	char	**token;
 	char	*str;
@@ -131,17 +83,20 @@ char	*check_next_token(char *cmd_line, char *syntax_error)
 	token = ft_split("<<:>>:<:>:|",':');
 	str = get_token(cmd_line, token);
 	if (!str)
-		return ("NULL");
+	{
+		free_array(token);
+		return (0);
+	}
 	while (is_in_set(str[i], " \t\n"))
 		i++;
 	if (is_in_set(str[i], "<>|"))
 	{
-		syntax_error = is_token(&str[i], token);
-		printf("syn_err = %s\n",syntax_error);
-		return (syntax_error);
+		*syntax_error = ft_strdup(is_token(&str[i], token));
+		free_array(token);
+		return (1);
 	}
 	free_array(token);
-	return (NULL);
+	return (0);
 }
 
 int	check_single_quote(char *cmd_line)
@@ -175,19 +130,17 @@ int	syntax_errors(char *cmd_line)
 		return (-1);
 	if (check_single_quote(cmd_line))
 		return (1);
-	while ((syntax_error = check_next_token(&cmd_line[i], syntax_error)) == 0)
+	while ((error = check_next_token(&cmd_line[i], &syntax_error)) == 0)
 	{
 		if (!cmd_line[i])
 			break;
+		if (is_in_set(cmd_line[i], "\'\""))
+			i += skip_quote(&cmd_line[i], cmd_line[i]);
 		i++;
 	}
-	error = syntax_redir(cmd_line);
-	if (error && !is_in_set(cmd_line[0], "&|);"))
-		error = 1;
 	if (error)
 	{
-		ft_putstr_fd("bash: syntax error near unexpected token", 2);
-		printf(" `%s'\n", syntax_error); // faire un printf fd
+		printf_fd(2, "bash: syntax error near unexpected token `%s'\n", syntax_error);
 		EXIT_CODE = 2;
 	}
 	return (error);

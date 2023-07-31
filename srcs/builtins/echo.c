@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:38:16 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 16:59:33 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 19:28:18 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	echo(t_cmd *cmd)
 	i = j;
 	while (cmd->words[j])
 	{
-		ft_printf("%s", cmd->words[j]);
+		printf("%s", cmd->words[j]);
 		if (cmd->words[j + 1])
-			ft_printf(" ");
+			printf(" ");
 		j++;
 	}
 	if (i < 2)
-		ft_printf("\n");
+		printf("\n");
 }

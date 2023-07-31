@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 17:42:55 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 21:40:57 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ typedef struct s_expansion
 	int		mode;
 }	t_expansion;
 
+void	ft_exit(char **env, t_cmd *cmds, t_expv **expv);
 void	freelist(t_expv *expv);
-char	*check_next_token(char *cmd_line, char *syntax_errors);
+int		check_next_token(char *cmd_line, char **syntax_errors);
 
 char	**ft_split_quotes(char *s, char* charset);
 
@@ -167,7 +168,7 @@ void	unlink_heredocs(t_list *lst);
 
 /* -------------------------------- builtins -------------------------------- */
 
-void	exec_builtin(t_cmd *cmd, t_expv **expv);
+void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env);
 int		check_n(t_cmd *cmd, int i);
 void	cd(char *directory, t_expv *expv);
 void	echo(t_cmd *cmd);

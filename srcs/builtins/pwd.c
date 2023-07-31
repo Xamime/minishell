@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:36:44 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/27 12:00:33 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 19:28:31 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@ void	pwd(void)
 	char	*dir;
 
 	dir = get_cd_name();
-	ft_printf("%s\n", dir);
+	printf("%s\n", dir);
 	free(dir);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:45:36 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 19:28:26 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	print_export_var(char *name, char *var)
 {
 	if (var)
-		ft_printf("declare -x %s=%c%s%c\n", name, '"', var, '"');
+		printf("declare -x %s=%c%s%c\n", name, '"', var, '"');
 	else
-		ft_printf("declare -x %s\n", name);
+		printf("declare -x %s\n", name);
 }
 
 t_expv	*find_min_ascii(t_expv *expv, t_expv *sorted)

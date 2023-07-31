@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 23:08:03 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 21:41:22 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	print_env(t_expv *expv) // a bouger
 	while (tmp)
 	{
 		if (tmp->var)
-			ft_printf("%s=%s\n", tmp->name, tmp->var);
+			printf("%s=%s\n", tmp->name, tmp->var);
 		tmp = tmp->next;
 	}
 }
 
-void	exec_builtin(t_cmd *cmd, t_expv **expv)
+void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env)
 {
 	if (!ft_strcmp(cmd->cmd_name, "pwd"))
 		pwd();
@@ -88,8 +88,8 @@ void	exec_builtin(t_cmd *cmd, t_expv **expv)
 		echo(cmd);
 	else if (!ft_strcmp(cmd->cmd_name, "exit")) // a changer
 	{
-		freelist(*expv);
-		exit(0);
+		ft_exit(env, cmd, expv);
+		//exit(0);
 	}
 	else if (!ft_strcmp(cmd->cmd_name, "env"))
 		print_env(*expv);

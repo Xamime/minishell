@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 17:39:50 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:36:42 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,9 @@ void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
 
-
 	printf("coucou\n");
 	printf("exit\n");
-	// while (cmds && cmds[i].cmd)
-	// {
-	// 	free(cmds[i].cmd);
-	// 	i++;
-	// }
-	// free(cmds);
 	freelist(export);
-	// free(export);
-	// free(data);
 	exit(0);
 }
 
@@ -47,7 +38,6 @@ void	listen(int sig, siginfo_t *info, void *unused)
 	}
 	else if (sig == SIGQUIT)
 	{
-		printf("yo\n");
 		return ;
 	}
 }
@@ -61,6 +51,33 @@ void	sig_info(void)
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
+}
+
+void	ft_exit(char **env, t_cmd *cmds, t_expv **expv)
+{
+	int	code;
+	int	i;
+
+	i = 0;
+	if (cmds->words[1] && cmds->words[2])
+	{
+		printf_fd(2, "minishell: exit: too many arguments\n");
+		freelist(*expv);
+		exit(1);
+	}
+	while (cmds->words[1] && cmds->words[1][i])
+	{
+		if (!ft_isdigit(cmds->words[1][i]) && !is_in_set(cmds->words[1][i], "+-"))
+		{
+			printf_fd(2, "minishell: exit: %s: numeric argument required\n", cmds->words[1]);
+			freelist(*expv);
+			exit(2);
+		}
+		i++;
+	}
+	code = ft_atoi(cmds->words[1]);
+	freelist(*expv);
+	exit(code % 256);
 }
 
 int	main(int ac, char **av, char **env)
@@ -80,7 +97,7 @@ int	main(int ac, char **av, char **env)
 		sig_info();
 		cmd = readline("Minishell -> ");
 		sig_info();
-		if (!cmd || !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
+		if (!cmd) //|| !ft_strcmp(cmd, "exit") /*|| cmd[0] == '\0'*/)
 			ctrl_d(export, cmds);
 		add_history(cmd);
 		error = syntax_errors(cmd);

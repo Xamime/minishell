@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:24:32 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 14:31:08 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 20:29:21 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	only_one_builtin(t_expv **expv, t_cmd *cmd)
 	if (cmd->outfile > -1)
 		dup2(cmd->outfile, 1);
 	if (!cmd->error)
-		exec_builtin(cmd, expv);
+		exec_builtin(cmd, expv, NULL);
 	free_command(cmd);
 	dup2(real_in, 0);
 	close(real_in);

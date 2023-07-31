@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 02:57:13 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 20:26:04 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 	int		child_status;
 
 	if (is_builtin(cmds[index].cmd_name))
-		exec_builtin(&cmds[index], expv);
+		exec_builtin(&cmds[index], expv, env);
 	else
 	{
 		command = get_access(&cmds[index], *expv);
@@ -51,6 +51,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 	}
 	child_status = cmds[index].status;
 	free_fork(*expv, cmds, env);
+	//if (ft_strcmp(cmds->cmd_name, "exit"))
 	exit(child_status); // exit code erreur du builtin
 }
 

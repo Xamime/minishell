@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 16:11:26 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 21:30:40 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,8 +148,8 @@ char	*remove_redir(t_cmd	*cmd)
 		if (*str && !is_in_set(*str, "<>"))
 			str++;
 	}
-	printf("redirs_size : %d\n", redirs_size);
+	//printf("redirs_size : %d\n", redirs_size);
 	str = str_without_redir(str, cmd->cmd, redirs_size);
-	printf("str : %s\n", str);
+	//printf("str : %s\n", str);
 	return (str);
 }
