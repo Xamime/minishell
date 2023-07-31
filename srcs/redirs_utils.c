@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:30:40 by mdesrose         ###   ########.fr       */
-=======
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:35:21 by jfarkas          ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 23:04:02 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,14 +148,8 @@ char	*remove_redir(t_cmd	*cmd)
 		if (*str && !is_in_set(*str, "<>"))
 			str++;
 	}
-<<<<<<< HEAD
-	//printf("redirs_size : %d\n", redirs_size);
-	str = str_without_redir(str, cmd->cmd, redirs_size);
-	//printf("str : %s\n", str);
-=======
 	// printf("redirs_size : %d\n", redirs_size);
 	str = str_without_redir(str, cmd->cmd, redirs_size);
 	// printf("str : %s\n", str);
->>>>>>> refs/remotes/origin/master
 	return (str);
 }
