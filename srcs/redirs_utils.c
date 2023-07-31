@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 16:11:26 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 22:35:21 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_heredocs(t_cmd *cmds)
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
 			{
 				fd = malloc(sizeof(int));
-				filename = get_filename(&cmds[i].cmd[j]);
+				filename = get_filename(&cmds[i].cmd[j], NULL);
 				limiter = ft_strdup(filename); // bizarre
 				*fd = heredoc_name(&cmds[i], &filename);
 				while (1)
@@ -148,8 +148,8 @@ char	*remove_redir(t_cmd	*cmd)
 		if (*str && !is_in_set(*str, "<>"))
 			str++;
 	}
-	printf("redirs_size : %d\n", redirs_size);
+	// printf("redirs_size : %d\n", redirs_size);
 	str = str_without_redir(str, cmd->cmd, redirs_size);
-	printf("str : %s\n", str);
+	// printf("str : %s\n", str);
 	return (str);
 }

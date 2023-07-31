@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 17:39:50 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 21:00:08 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	ctrl_d(t_expv *export, t_cmd *cmds)
 {
 	int i = 0;
 
-
-	printf("coucou\n");
 	printf("exit\n");
 	// while (cmds && cmds[i].cmd)
 	// {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 02:41:24 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/07/31 21:52:25 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	set_exit_code(t_cmd *cmds)
 	while (cmds[i + 1].cmd)
 		i++;
 	// printf("exit code : %d\n", cmds[i].status % 255);
-	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
+	EXIT_CODE = cmds[i].status/* % 255*/; // peut etre cast mais jsp en quoi
 	i = 0;
 	while (cmds[i].cmd)
 	{
@@ -122,7 +122,7 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 	i = 0;
 	// parse syntax errors
 	// initialiser new_cmd
-	if (parse_redir(cmd->cmd, &cmd->redirs, cmd))
+	if (parse_redir(cmd->cmd, &cmd->redirs, cmd, expv))
 		cmd->error = 1;
 	replace_address(&cmd->cmd, remove_redir(cmd));
 	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));

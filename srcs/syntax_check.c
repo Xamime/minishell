@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 17:39:49 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/31 19:05:09 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,13 +131,16 @@ char	*check_next_token(char *cmd_line, char *syntax_error)
 	token = ft_split("<<:>>:<:>:|",':');
 	str = get_token(cmd_line, token);
 	if (!str)
+	{
+		free_array(token);
 		return ("NULL");
+	}
 	while (is_in_set(str[i], " \t\n"))
 		i++;
 	if (is_in_set(str[i], "<>|"))
 	{
 		syntax_error = is_token(&str[i], token);
-		printf("syn_err = %s\n",syntax_error);
+		free_array(token);
 		return (syntax_error);
 	}
 	free_array(token);
