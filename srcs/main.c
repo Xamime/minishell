@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:49:07 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 23:17:04 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	sig_info(void)
 
 void	ft_exit(char **env, t_cmd *cmds, t_expv **expv)
 {
-	int	code;
-	int	i;
+	long long	code;
+	int			i;
 
 	i = 0;
 	if (cmds->words[1] && cmds->words[2])
@@ -74,7 +74,12 @@ void	ft_exit(char **env, t_cmd *cmds, t_expv **expv)
 		}
 		i++;
 	}
-	code = ft_atoi(cmds->words[1]);
+	code = ft_atoll(cmds->words[1]);
+	// {
+
+	// 	freelist(*expv);
+	// 	exit(2);
+	// }
 	freelist(*expv);
 	exit(code % 256);
 }

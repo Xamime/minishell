@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:53:28 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:59:55 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/07/31 23:05:09 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_atoi(const char *nptr)
 	return (nbr * neg);
 }
 
-int	ft_atoll(const char *nptr)
+long long	ft_atoll(const char *nptr)
 {
 	int			i;
 	long long	nbr;
