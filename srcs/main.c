@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/31 23:17:04 by mdesrose         ###   ########.fr       */
-=======
-/*   Updated: 2023/07/31 23:20:24 by jfarkas          ###   ########.fr       */
->>>>>>> refs/remotes/origin/master
+/*   Updated: 2023/07/31 23:59:34 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,38 +50,6 @@ void	sig_info(void)
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
-}
-
-void	ft_exit(char **env, t_cmd *cmds, t_expv **expv)
-{
-	long long	code;
-	int			i;
-
-	i = 0;
-	if (cmds->words[1] && cmds->words[2])
-	{
-		printf_fd(2, "minishell: exit: too many arguments\n");
-		freelist(*expv);
-		exit(1);
-	}
-	while (cmds->words[1] && cmds->words[1][i])
-	{
-		if (!ft_isdigit(cmds->words[1][i]) && !is_in_set(cmds->words[1][i], "+-"))
-		{
-			printf_fd(2, "minishell: exit: %s: numeric argument required\n", cmds->words[1]);
-			freelist(*expv);
-			exit(2);
-		}
-		i++;
-	}
-	code = ft_atoll(cmds->words[1]);
-	// {
-
-	// 	freelist(*expv);
-	// 	exit(2);
-	// }
-	freelist(*expv);
-	exit(code % 256);
 }
 
 int	main(int ac, char **av, char **env)

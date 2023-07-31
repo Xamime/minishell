@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 23:20:12 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 00:42:18 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*get_token(char *cmd_line, char **token)
 		while (token[j])
 		{
 			if (cmd_line[i] == token[j][0] && cmd_line[i + 1] == token[j][1])
-				return (&cmd_line[i + 2]);
-			if (cmd_line[i] == token[j][0])
 				return (&cmd_line[i + 1]);
+			if (cmd_line[i] == token[j][0])
+				return (&cmd_line[i]);
 			j++;
 		}
 		i++;
@@ -79,7 +79,7 @@ int	check_next_token(char *cmd_line, char **syntax_error)
 	char	*str;
 	int		i;
 
-	i = 0;
+	i = 1;
 	token = ft_split("<<:>>:<:>:|",':');
 	str = get_token(cmd_line, token);
 	if (!str)
@@ -89,7 +89,13 @@ int	check_next_token(char *cmd_line, char **syntax_error)
 	}
 	while (is_in_set(str[i], " \t\n"))
 		i++;
-	if (is_in_set(str[i], "<>|"))
+	if (str[0] == '|' && str[i] == '|')
+	{
+		*syntax_error = "|";
+		free_array(token);
+		return (1);
+	}
+	if (is_in_set(str[0], "<>") && is_in_set(str[i], "<>"))
 	{
 		*syntax_error = ft_strdup(is_token(&str[i], token));
 		free_array(token);
@@ -143,5 +149,6 @@ int	syntax_errors(char *cmd_line)
 		printf_fd(2, "bash: syntax error near unexpected token `%s'\n", syntax_error);
 		EXIT_CODE = 2;
 	}
+	free(syntax_error);
 	return (error);
 }

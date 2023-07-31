@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
+#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/07/30 20:35:47 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/08/01 00:05:33 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/builtins/export.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/unset.c \
+		srcs/builtins/exit.c \
 		srcs/utils/utils1.c \
 		srcs/utils/utils2.c \
 		srcs/utils/free_utils.c \

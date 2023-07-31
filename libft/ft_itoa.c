@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:54:47 by mdesrose          #+#    #+#             */
-/*   Updated: 2022/10/03 16:03:26 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 00:29:05 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include <stdlib.h>
 
 static int	ft_size(long long nb)
 {
@@ -56,5 +57,33 @@ char	*ft_itoa(int n)
 		nbr = nbr / 10;
 		i--;
 	}
+	return (str);
+}
+
+char	*ft_lltoa(long long n)
+{
+	char		*str;
+	long long	i;
+
+	i = ft_size(n);
+	str = malloc(sizeof(char) * i + 1);
+	if (str == NULL)
+		return (NULL);
+	if (n == 0)
+		str[0] = '0';
+	if (n < 0)
+	{
+		str[0] = '-';
+		n *= -1;
+	}
+	str[i] = '\0';
+	while (n > 0)
+	{
+		str[i - 1] = 48 + (n % 10);
+		n = n / 10;
+		i--;
+	}
+	// if (n == -9223372036854775808)
+	// 	str = "-9223372036854775808";
 	return (str);
 }
