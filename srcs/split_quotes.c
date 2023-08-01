@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:03:09 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 19:11:44 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 22:14:21 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_len(char *s, char *charset)
 	return (i);
 }
 
-static char	*word(char *s, char* charset)
+static char	*word(char *s, char *charset)
 {
 	int		i;
 	char	*str;
@@ -99,7 +99,7 @@ static void	fill_array(char **str, char *s, char *charset)
 	}
 }
 
-char	**ft_split_quotes(char *s, char* charset)
+char	**ft_split_quotes(char *s, char	*charset)
 {
 	int		i;
 	char	**str;

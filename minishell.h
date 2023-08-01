@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/01 00:48:09 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/08/01 00:00:17 by jfarkas          ###   ########.fr       */
->>>>>>> ddea1d7 (ambiguous redirects)
+/*   Updated: 2023/08/01 22:52:40 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +19,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 
-extern int	EXIT_CODE;
+extern int	g_exit_code;
 
 typedef struct s_redir
 {
@@ -65,9 +61,11 @@ typedef struct s_expansion
 
 void	ft_exit(char **env, t_cmd *cmds, t_expv **expv);
 void	freelist(t_expv *expv);
+int		check_single_quote(char *cmd_line);
+void	syntaxe_errors2(int error, char *err);
 int		check_next_token(char *cmd_line, char **syntax_errors);
 
-char	**ft_split_quotes(char *s, char* charset);
+char	**ft_split_quotes(char *s, char *charset);
 
 /////////////////////////////////////////////////////
 ///					expand.c					  ///
@@ -109,7 +107,7 @@ void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc);
 void	make_list(t_cmd *cmds, int *fd);
 void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs);
 char	*remove_redir(t_cmd	*cmd);
-char	*str_without_redir(char *str, char* cmd, int redirs_size);
+char	*str_without_redir(char *str, char *cmd, int redirs_size);
 
 /////////////////////////////////////////////////////
 ///					expand2.c					  ///
@@ -167,7 +165,7 @@ void	print_export_var(char *name, char *var);
 t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_expv *export, char *name, char *var, int mode);
-int		check_forbidden_character(char *str, int entire_name);
+int		check_forbidden_char(char *str, int entire_name);
 void	unlink_heredocs(t_list *lst);
 
 /* -------------------------------- builtins -------------------------------- */
@@ -220,7 +218,7 @@ t_expv	*ft_expv_new(char *var, char *name);
 void	ft_expv_add_back(t_expv **expv, t_expv *new);
 int		ft_expv_size(t_expv *expv);
 
-char	*ft_getenv(char *str, t_expv *export); // on a une autre fonction avec le meme nom mdr
+char	*ft_getenv(char *str, t_expv *export);
 void	update_pwd(t_expv *export, char *oldpwd);
 
 void	free_fork(t_expv *expv, t_cmd *cmds, char **env);

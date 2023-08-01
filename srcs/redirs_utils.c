@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/01 00:47:49 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/08/01 00:00:01 by jfarkas          ###   ########.fr       */
->>>>>>> ddea1d7 (ambiguous redirects)
+/*   Updated: 2023/08/01 21:17:07 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

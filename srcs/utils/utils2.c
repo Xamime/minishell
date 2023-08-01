@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/01 00:47:59 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/08/01 00:04:24 by jfarkas          ###   ########.fr       */
->>>>>>> ddea1d7 (ambiguous redirects)
+/*   Updated: 2023/08/01 21:27:29 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,20 +106,5 @@ void	unlink_heredocs(t_list *lst)
 	{
 		unlink((char *)ptr->content);
 		ptr = ptr->next;
-	}
-}
-
-void	close_next_cmds_fds(t_cmd *cmds)
-{
-	int	i;
-
-	i = 1;
-	while (cmds[i].cmd)
-	{
-		if (cmds[i].infile > -1)
-			close(cmds[i].infile);
-		if (cmds[i].outfile > -1)
-			close(cmds[i].outfile);
-		i++;
 	}
 }

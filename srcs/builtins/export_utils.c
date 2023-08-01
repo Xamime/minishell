@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 19:28:26 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:51:03 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	change_var(t_expv *expv, char *name, char *var, int mode)
 	}
 }
 
-int	check_forbidden_character(char *str, int entire_name)
+int	check_forbidden_char(char *str, int entire_name)
 {
 	int	i;
 

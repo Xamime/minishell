@@ -6,11 +6,13 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:38:16 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 19:28:18 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:15:05 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+static void	echo2(int idx, t_cmd *cmd);
 
 void	echo(t_cmd *cmd)
 {
@@ -29,17 +31,22 @@ void	echo(t_cmd *cmd)
 		if (check_n(cmd, i))
 			j++;
 		else
-			break;
+			break ;
 		i++;
 	}
 	i = j;
-	while (cmd->words[j])
-	{
-		printf("%s", cmd->words[j]);
-		if (cmd->words[j + 1])
-			printf(" ");
-		j++;
-	}
+	echo2(j, cmd);
 	if (i < 2)
 		printf("\n");
+}
+
+static void	echo2(int idx, t_cmd *cmd)
+{
+	while (cmd->words[idx])
+	{
+		printf("%s", cmd->words[idx]);
+		if (cmd->words[idx + 1])
+			printf(" ");
+		idx++;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 12:47:59 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:57:33 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ char	*str_exit_code(char *str, t_expv *expv, t_expansion *exp)
 
 	i = 0;
 	j = 0;
-	exit_code = ft_itoa(EXIT_CODE);
+	exit_code = ft_itoa(g_exit_code);
 	new_str = malloc(sizeof(char) * ft_strlen(str) + ft_strlen(exit_code));
 	exp->found_dollar = 0;
 	exp->in_double = 0;
-	//printf("exit_code : %s\n", exit_code);
 	while (str[i])
 	{
 		if ((str[i] == '\"' && exp->mode == 0)
@@ -139,7 +138,7 @@ static char	*get_expanded_str2(t_expansion *exp, char *tmp)
 	char	*new_str;
 
 	exp->name = "?";
-	exp->var = ft_itoa(EXIT_CODE);
+	exp->var = ft_itoa(g_exit_code);
 	new_str = new_string(exp, tmp);
 	free(tmp);
 	free(exp->var);
@@ -167,10 +166,8 @@ char	*make_dollars(char *str, t_expv *expv, int mode)
 		else if (*str == '\"' && mode == 1 && in_double)
 			in_double = 0;
 		if (*str == '$' && *(str + 1) == '?')
-			// new_str = str_exit_code(new_str, expv, exp);
 			new_str = get_expanded_str2(exp, new_str);
-		// else if (*str == '$' && *(str + 1) && !is_in_set(*(str + 1), " \t\n\"\'<>|")) // is in charset
-		else if (*str == '$' && *(str + 1) && !check_forbidden_character(str + 1, 0)) // is in charset
+		else if (*str == '$' && *(str + 1) && !check_forbidden_char(str + 1, 0))
 		{
 			exp->name = get_var_name(str);
 			new_str = get_expanded_str(exp, new_str, expv);

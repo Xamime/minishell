@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 18:20:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 21:30:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:05:03 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	freelist(t_expv *export)
 {
-	t_expv *tmp;
+	t_expv	*tmp;
 
 	while (export)
 	{
@@ -42,7 +42,7 @@ void	free_array(char **array)
 
 void	free_command(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->words && cmd->words[i])

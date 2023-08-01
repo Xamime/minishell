@@ -3,41 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/01 00:47:54 by jfarkas          ###   ########.fr       */
-=======
-/*   Updated: 2023/08/01 00:38:31 by jfarkas          ###   ########.fr       */
->>>>>>> ddea1d7 (ambiguous redirects)
+/*   Updated: 2023/08/01 22:53:02 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		is_empty(char *cmd_line)
-{
-	int	i;
-
-	i = 0;
-	while (cmd_line[i])
-	{
-		if (!is_in_set(cmd_line[i], " \t\n"))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-/*Return string without first found token*/
+/*Return string with first found token*/
 char	*get_token(char *cmd_line, char **token)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	while(cmd_line[i])
+	while (cmd_line[i])
 	{
 		j = 0;
 		if (is_in_set(cmd_line[i], "\'\""))
@@ -61,7 +43,7 @@ char	*is_token(char *str, char **token)
 	int	j;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		j = 0;
 		while (token[j])
@@ -77,25 +59,16 @@ char	*is_token(char *str, char **token)
 	return (NULL);
 }
 
-int	check_next_token(char *cmd_line, char **syntax_error)
+static int	ft_error(char *str, char **token, char **syntax_error)
 {
-	char	**token;
-	char	*str;
-	int		i;
+	int	i;
 
 	i = 1;
-	token = ft_split("<<:>>:<:>:|",':');
-	str = get_token(cmd_line, token);
-	if (!str)
-	{
-		free_array(token);
-		return (0);
-	}
 	while (is_in_set(str[i], " \t\n"))
 		i++;
 	if (str[0] == '|' && str[i] == '|')
 	{
-		*syntax_error = "|";
+		*syntax_error = ft_strdup("|");
 		free_array(token);
 		return (1);
 	}
@@ -105,25 +78,26 @@ int	check_next_token(char *cmd_line, char **syntax_error)
 		free_array(token);
 		return (1);
 	}
-	free_array(token);
 	return (0);
 }
 
-int	check_single_quote(char *cmd_line)
+int	check_next_token(char *cmd_line, char **syntax_error)
 {
-	int	i;
+	char	**token;
+	char	*str;
+	int		i;
 
-	i = 0;
-	while (cmd_line[i])
+	i = 1;
+	token = ft_split("<<:>>:<:>:|", ':');
+	str = get_token(cmd_line, token);
+	if (!str)
 	{
-		if (is_in_set(cmd_line[i], "\'\""))
-		{
-			if (!is_paired(&cmd_line[i], cmd_line[i]))
-				return (1);
-			i += skip_quote(&cmd_line[i], cmd_line[i]);
-		}
-		i++;
+		free_array(token);
+		return (0);
 	}
+	if (ft_error(str, token, syntax_error))
+		return (1);
+	free_array(token);
 	return (0);
 }
 
@@ -140,19 +114,15 @@ int	syntax_errors(char *cmd_line)
 		return (-1);
 	if (check_single_quote(cmd_line))
 		return (1);
-	while ((error = check_next_token(&cmd_line[i], &syntax_error)) == 0)
+	while (error == 0)
 	{
+		error = check_next_token(&cmd_line[i], &syntax_error);
 		if (!cmd_line[i])
-			break;
+			break ;
 		if (is_in_set(cmd_line[i], "\'\""))
 			i += skip_quote(&cmd_line[i], cmd_line[i]);
 		i++;
 	}
-	if (error)
-	{
-		printf_fd(2, "bash: syntax error near unexpected token `%s'\n", syntax_error);
-		EXIT_CODE = 2;
-	}
-	free(syntax_error);
+	syntaxe_errors2(error, syntax_error);
 	return (error);
 }

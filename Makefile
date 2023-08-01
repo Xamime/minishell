@@ -6,7 +6,7 @@
 #    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/08/01 00:05:33 by mdesrose         ###   ########.fr        #
+#    Updated: 2023/08/01 21:25:20 by mdesrose         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/builtins/exit.c \
 		srcs/utils/utils1.c \
 		srcs/utils/utils2.c \
+		srcs/utils/utils3.c \
 		srcs/utils/free_utils.c \
 		srcs/exec/exec.c \
 		srcs/exec/exec_utils.c \

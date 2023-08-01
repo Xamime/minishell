@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 01:33:23 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:41:02 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,10 @@ void	init_redirs(t_cmd *cmds)
 	}
 }
 
-t_cmd	*init_cmds(char *cmd_line)
+static void	init_cmds2(char **sub_shells, t_cmd *cmds)
 {
-	t_cmd	*cmds;
-	char	**sub_shells;
-	int		i;
+	int	i;
 
-	i = 0;
-	sub_shells = ft_split_quotes(cmd_line, "|"); // NON
-	while (sub_shells[i])
-		i++;
-	cmds = malloc(sizeof(t_cmd) * (i + 1));
 	i = 0;
 	while (sub_shells[i])
 	{
@@ -75,6 +68,20 @@ t_cmd	*init_cmds(char *cmd_line)
 		i++;
 	}
 	cmds[i].cmd = NULL;
+}
+
+t_cmd	*init_cmds(char *cmd_line)
+{
+	t_cmd	*cmds;
+	char	**sub_shells;
+	int		i;
+
+	i = 0;
+	sub_shells = ft_split_quotes(cmd_line, "|"); // NON
+	while (sub_shells[i])
+		i++;
+	cmds = malloc(sizeof(t_cmd) * (i + 1));
+	init_cmds2(sub_shells, cmds);
 	free(sub_shells);
 	free(cmd_line);
 	return (cmds);

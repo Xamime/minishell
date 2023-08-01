@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:24:32 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 20:29:21 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:58:30 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,5 @@ void	only_one_builtin(t_expv **expv, t_cmd *cmd)
 		close(cmd->infile);
 	if (cmd->outfile > -1)
 		close(cmd->outfile);
-	EXIT_CODE = cmd->status % 255;
+	g_exit_code = cmd->status % 255;
 }

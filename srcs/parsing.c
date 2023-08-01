@@ -6,28 +6,11 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 22:50:47 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:53:37 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-void	set_exit_code(t_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	while (cmds[i + 1].cmd)
-		i++;
-	// printf("exit code : %d\n", cmds[i].status % 255);
-	EXIT_CODE = cmds[i].status % 255; // peut etre cast mais jsp en quoi
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		free_command(&cmds[i]);
-		i++;
-	}
-}
 
 void	wait_childs(t_cmd *cmds)
 {
@@ -103,16 +86,6 @@ void	split_pipe(t_expv **expv, t_cmd *cmds)
 	free_array(env);
 }
 
-/*Replace addr1 by addr2, free addr1.*/
-void	replace_address(char **addr1, char *addr2)
-{
-	char	*tmp;
-
-	tmp = *addr1;
-	*addr1 = addr2;
-	free(tmp);
-}
-
 int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 {
 	char	**splitted;
@@ -120,8 +93,6 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 	int		i;
 
 	i = 0;
-	// parse syntax errors
-	// initialiser new_cmd
 	if (parse_redir(cmd->cmd, &cmd->redirs, cmd, expv))
 		cmd->error = 1;
 	replace_address(&cmd->cmd, remove_redir(cmd));

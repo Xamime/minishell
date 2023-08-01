@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:35:03 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 16:11:22 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:51:09 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*new_string(t_expansion *exp, char *str)
 		if (str[i] == '\"')
 			set_double_quotes(exp);
 		if (str[i] == '$' && !exp->found_dollar && str[i + 1]
-			&& (!check_forbidden_character(&str[i + 1], 0) || str[i + 1] == '?'))
+			&& (!check_forbidden_char(&str[i + 1], 0) || str[i + 1] == '?'))
 			add_var_value(exp, new_str, &i, &j);
 		new_str[j] = str[i];
 		if (str[i])

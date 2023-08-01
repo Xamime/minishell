@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   access.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 16:59:39 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:46:16 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,7 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 	if (!cmd->cmd_name || !cmd->cmd_name[0])
 	{
 		cmd->status = 127;
-		ft_putstr_fd(cmd->cmd_name, 2);
-		ft_putstr_fd(": command not found\n", 2);
+		printf_fd(2, "%s: command not found\n", cmd->cmd_name);
 		return (NULL);
 	}
 	if (is_relative_path(cmd->cmd_name))
@@ -115,9 +114,6 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 	if (command)
 		return (command);
 	else if (cmd->status == 127)
-	{
-		ft_putstr_fd(cmd->cmd_name, 2);
-		ft_putstr_fd(": command not found\n", 2);
-	}
+		printf_fd(2, "%s: command not found\n", cmd->cmd_name);
 	return (NULL);
 }

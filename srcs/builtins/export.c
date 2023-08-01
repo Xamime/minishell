@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/30 00:15:19 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/01 21:59:00 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	free_sorted(t_expv *sorted)
 {
-	t_expv *tmp;
+	t_expv	*tmp;
 
 	while (sorted)
 	{
@@ -50,7 +50,7 @@ static void	parse_export(char *str, t_cmd *cmd, t_expv **expv)
 	char	*name;
 	char	*var;
 
-	if (!check_forbidden_character(str, 1))
+	if (!check_forbidden_char(str, 1))
 	{
 		set_var_line(str, &name, &var);
 		if (!is_in(*expv, name))

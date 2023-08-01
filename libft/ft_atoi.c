@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 17:53:28 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 23:05:09 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/01 22:30:17 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,6 @@ long long	ft_atoll(const char *nptr)
 	}
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
-		// if (nbr * neg <= -2147483648)
-		// 	return (0);
-		// if (nbr * neg >= 2147483647)
-		// 	return (-1);
 		nbr = nbr * 10 + (nptr[i] - 48);
 		i++;
 	}
