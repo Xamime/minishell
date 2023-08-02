@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:38:16 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/01 21:15:05 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:39:47 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ void	echo(t_cmd *cmd)
 	i = j;
 	echo2(j, cmd);
 	if (i < 2)
-		printf("\n");
+		printf_fd(1, "\n");
 }
 
 static void	echo2(int idx, t_cmd *cmd)
 {
 	while (cmd->words[idx])
 	{
-		printf("%s", cmd->words[idx]);
+		printf_fd(1, "%s", cmd->words[idx]);
 		if (cmd->words[idx + 1])
-			printf(" ");
+			printf_fd(1, " ");
 		idx++;
 	}
 }

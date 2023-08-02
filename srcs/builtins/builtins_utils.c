@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/31 21:41:22 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:12:18 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,17 +78,17 @@ void	print_env(t_expv *expv) // a bouger
 	}
 }
 
-void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env)
+void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env, int *real_fds)
 {
 	if (!ft_strcmp(cmd->cmd_name, "pwd"))
-		pwd();
+		pwd(*expv);
 	else if (!ft_strcmp(cmd->cmd_name, "cd"))
 		cd(cmd->words[1], *expv);
 	else if (!ft_strcmp(cmd->cmd_name, "echo"))
 		echo(cmd);
 	else if (!ft_strcmp(cmd->cmd_name, "exit")) // a changer
 	{
-		ft_exit(env, cmd, expv);
+		ft_exit(env, cmd, expv, real_fds);
 		//exit(0);
 	}
 	else if (!ft_strcmp(cmd->cmd_name, "env"))

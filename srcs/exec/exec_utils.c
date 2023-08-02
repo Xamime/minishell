@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/07/31 23:20:34 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/02 14:40:35 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 
 	close_next_cmds_fds(cmds);
 	if (is_builtin(cmds[index].cmd_name))
-		exec_builtin(&cmds[index], expv, env);
+		exec_builtin(&cmds[index], expv, env, NULL);
 	else
 	{
 		command = get_access(&cmds[index], *expv);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 21:53:37 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:19:24 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 
 void	wait_childs(t_cmd *cmds)
 {
-	int	i;
+	int		i;
+	pid_t	wpid;
+	int		status;
 
 	i = 0;
-	while (cmds[i].cmd)
-	{
-		if (!cmds[i].error)
-			waitpid(cmds[i].pid, &cmds[i].status, 0);
+	while (cmds[i + 1].cmd)
 		i++;
-	}
+	waitpid(cmds[i].pid, &status, 0);
+	cmds[i].status = WEXITSTATUS(status);
+	wpid = 1;
+	while (wpid > 0)
+		wpid = wait(NULL);
 }
 
 void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+         #
+#    By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/08/01 21:25:20 by mdesrose         ###   ########.fr        #
+#    Updated: 2023/08/02 16:37:21 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,10 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/utils/free_utils.c \
 		srcs/exec/exec.c \
 		srcs/exec/exec_utils.c \
+		srcs/redirections/heredoc.c \
+		srcs/redirections/redirs_utils.c \
+		srcs/redirections/redirs.c \
+		srcs/redirections/remove_redirs.c \
 		srcs/expand.c \
 		srcs/expand2.c \
 		srcs/export_list_utils.c \
@@ -33,8 +37,6 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/parsing.c \
 		srcs/parsing2.c \
 		srcs/access.c \
-		srcs/redirs.c \
-		srcs/redirs_utils.c \
 		srcs/split_quotes_utils.c \
 		srcs/split_quotes.c \
 		srcs/syntax_check.c

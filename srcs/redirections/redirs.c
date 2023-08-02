@@ -6,66 +6,16 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 00:24:06 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/02 21:28:33 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-
-// Set Heredoc name, open and return fd
-int	heredoc_name(t_cmd *cmd, char **filename)
-{
-	int			fd;
-	int			i;
-	char		*tmp;
-	char		*try;
-
-	fd = 1;
-	i = 0;
-	try = NULL;
-	replace_address(filename, ft_strjoin("/tmp/", *filename));
-	while (1)
-	{
-		tmp = ft_itoa(i);
-		replace_address(&try, ft_strjoin(*filename, tmp));
-		fd = open(try, O_RDONLY);
-		free(tmp);
-		if (fd == -1 && errno == ENOENT)
-			break ;
-		else if (errno != EACCES)
-			close(fd);
-		i++;
-	}
-	fd = open(try, O_CREAT | O_WRONLY, 0644);
-	free(*filename);
-	*filename = try;
-	return (fd);
-}
-
-int	secure_open(char *mode, char *filename)
-{
-	int	fd;
-
-	fd = 0;
-	if (!ft_strcmp(mode, "outfile"))
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (!ft_strcmp(mode, "append"))
-		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else if (!ft_strcmp(mode, "infile"))
-		fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(filename);
-	}
-	//printf("%d, %s\n",fd,  get_next_line(fd));
-	return (fd);
-}
 
 int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 {
@@ -74,10 +24,7 @@ int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 
 	filename = get_filename(str, expv, cmd);
 	if (cmd->status == 1)
-	{
-		free(filename);
 		return (1);
-	}
 	fd = malloc(sizeof(int));
 	*fd = 0;
 	if (*str == '>' && *(str + 1) != '>')
@@ -87,35 +34,14 @@ int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 	else if (*str == '<' && *(str + 1) != '<')
 		open_last_file("infile", fd, filename, redirs);
 	free(filename);
-	if (*fd == -1)
+	if (*fd < 1)
+		free(fd);
+	if (*fd == 1)
 	{
 		cmd->status = 1;
-		free(fd);
 		return (1);
 	}
-	if (*fd == 0)
-		free(fd);
 	return (0);
-}
-
-int	find_last_infile(char *str)
-{
-	int		i;
-	char	quote;
-
-	i = ft_strlen(str) - 1;
-	while (str[i] && str[i] != '<' && i > 0)
-	{
-		if (is_in_set(str[i], "\"\'"))
-		{
-			quote = str[i];
-			i--;
-			while (i > 0 && str[i] != quote)
-				i--;
-		}
-		i--;
-	}
-	return (i);
 }
 
 void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
@@ -128,11 +54,6 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	infile = ft_lstlast((*redirs)->infiles);
 	heredoc = ft_lstlast((*redirs)->heredocs);
 	outfile = ft_lstlast((*redirs)->outfiles);
-	// i = ft_strlen(str) - 1;
-	// while (str[i] && str[i] != '<' && i > 0)
-	// {
-	// 	i--;
-	// }
 	i = find_last_infile(str);
 	if (i > 0 && str[i - 1] && str[i - 1] == '<')
 	{
@@ -149,6 +70,21 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 	close_fds((*redirs)->infiles);
 }
 
+static char	*go_to_next_redir(char *str)
+{
+	while (*str && is_in_set(*str, "<>"))
+		str++;
+	while (*str && is_in_set(*str, " \t\n"))
+		str++;
+	while (*str && !is_in_set(*str, " \t\n<>"))
+	{
+		if (is_in_set(*str, "\"\'"))
+			str = skip_to_char(str, *str);
+		str++;
+	}
+	return (str);
+}
+
 int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv)
 {
 	char	*tmp;
@@ -159,23 +95,14 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv)
 	while (*str)
 	{
 		// mettre de quoi skip les quotes
-		if (is_in_set(*str, "\"\'"))
+		if (*str && is_in_set(*str, "\"\'"))
 			str = skip_to_char(str, *str);
 		if (*str == '<' || *str == '>')
 		{
 			bool = 1;
 			if (add_redirect(*redirs, str, expv, cmd))
 				return (1);
-			while (*str && is_in_set(*str, "<>"))
-				str++;
-			while (*str && is_in_set(*str, " \t\n"))
-				str++;
-			while (*str && !is_in_set(*str, " \t\n<>"))
-			{
-				if (is_in_set(*str, "\"\'"))
-					str = skip_to_char(str, *str);
-				str++;
-			}
+			str = go_to_next_redir(str);
 		}
 		if (*str && !is_in_set(*str, "<>"))
 			str++;

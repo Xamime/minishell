@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:52:40 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 18:12:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_expansion
 	int		mode;
 }	t_expansion;
 
-void	ft_exit(char **env, t_cmd *cmds, t_expv **expv);
+void	ft_exit(char **env, t_cmd *cmds, t_expv **expv, int *real_fds);
 void	freelist(t_expv *expv);
 int		check_single_quote(char *cmd_line);
 void	syntaxe_errors2(int error, char *err);
@@ -170,11 +170,11 @@ void	unlink_heredocs(t_list *lst);
 
 /* -------------------------------- builtins -------------------------------- */
 
-void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env);
+void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env, int *real_fds);
 int		check_n(t_cmd *cmd, int i);
 void	cd(char *directory, t_expv *expv);
 void	echo(t_cmd *cmd);
-void	pwd(void);
+void	pwd(t_expv *expv);
 char	*get_cd_name(void);
 
 /* ------------------------------ syntax_check ------------------------------ */
@@ -223,5 +223,12 @@ void	update_pwd(t_expv *export, char *oldpwd);
 
 void	free_fork(t_expv *expv, t_cmd *cmds, char **env);
 void	close_next_cmds_fds(t_cmd *cmds);
+
+int		is_empty(char *cmd_line);
+void	syntaxe_errors2(int error, char *err);
+int		check_single_quote(char *cmd_line);
+int		check_ambiguous_redirect(char *str, t_expv *expv);
+void	set_exit_code(t_cmd *cmds);
+int		find_last_infile(char *str);
 
 #endif

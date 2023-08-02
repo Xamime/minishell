@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 21:57:33 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:08:20 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	remove_quotes(char *str, char *new_str, char quote) // oui y'a tjrs ce truc
 	char	*tmp;
 
 	tmp = str;
-	while (*str)
+	while (str && *str)
 	{
 		if (is_in_set(*str, "\"\'"))
 		{
@@ -80,7 +80,7 @@ char	*set_without_quotes(char *str)
 
 	size = ft_strlen(str);
 	tmp = str;
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		if (is_in_set(*tmp, "\"\'"))
 		{

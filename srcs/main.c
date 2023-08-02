@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:13:50 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:03:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ctrl_d(t_expv *export, t_cmd *cmds)
 	int	i;
 
 	i = 0;
-	printf("exit\n");
+	ft_putstr_fd("exit\n", 1);
 	freelist(export);
 	exit(0);
 }
