@@ -6,7 +6,7 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:52:40 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:17:27 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_expansion
 }	t_expansion;
 
 void	ft_exit(char **env, t_cmd *cmds, t_expv **expv);
+int		sig_info(int mode);
 void	freelist(t_expv *expv);
 int		check_single_quote(char *cmd_line);
 void	syntaxe_errors2(int error, char *err);

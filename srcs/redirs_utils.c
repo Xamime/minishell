@@ -6,12 +6,13 @@
 /*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 21:17:07 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:35:13 by mdesrose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <fcntl.h>
+
 
 void	set_heredocs(t_cmd *cmds)
 {
@@ -23,12 +24,12 @@ void	set_heredocs(t_cmd *cmds)
 	int		j;
 
 	i = 0;
+	sig_info(2);
 	while (cmds[i].cmd)
 	{
 		j = 0;
 		while (cmds[i].cmd[j])
 		{
-			// mettre de quoi skip les quotes aussi
 			if (is_in_set(cmds[i].cmd[j], "\"\'"))
 				j += skip_quote(&cmds[i].cmd[j], cmds[i].cmd[j]);
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
@@ -40,7 +41,14 @@ void	set_heredocs(t_cmd *cmds)
 				while (1)
 				{
 					tmp = readline("> ");
-					if (!ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
+					if (g_exit_code == 300)
+						break ;
+					if (!tmp)
+					{
+						printf_fd(2, "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+						break ;
+					}
+					if (tmp && !ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
 					ft_putchar_fd('\n', *fd);
@@ -52,6 +60,7 @@ void	set_heredocs(t_cmd *cmds)
 				free(limiter);
 				ft_lstadd_back(&cmds[i].redirs->heredocs, ft_lstnew(fd));
 				ft_lstadd_back(&cmds[i].redirs->heredoc_names, ft_lstnew(filename));
+				//sig_info(1);
 			}
 			j++;
 		}
