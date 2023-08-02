@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 16:21:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/02 16:35:41 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/02 21:54:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	set_heredocs(t_cmd *cmds)
 	int		j;
 
 	i = 0;
+	sig_info(2);
 	while (cmds[i].cmd)
 	{
 		j = 0;
@@ -70,7 +71,14 @@ void	set_heredocs(t_cmd *cmds)
 				while (1)
 				{
 					tmp = readline("> ");
-					if (!ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
+					if (g_exit_code == 300)
+						break ;
+					if (!tmp)
+					{
+						printf_fd(2, "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
+						break ;
+					}
+					if (tmp && !ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
 						break ;
 					ft_putstr_fd(tmp, *fd);
 					ft_putchar_fd('\n', *fd);
@@ -82,6 +90,7 @@ void	set_heredocs(t_cmd *cmds)
 				free(limiter);
 				ft_lstadd_back(&cmds[i].redirs->heredocs, ft_lstnew(fd));
 				ft_lstadd_back(&cmds[i].redirs->heredoc_names, ft_lstnew(filename));
+				//sig_info(1);
 			}
 			j++;
 		}
