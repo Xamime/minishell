@@ -6,12 +6,16 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/02 20:03:06 by jfarkas          ###   ########.fr       */
+=======
+/*   Updated: 2023/08/02 21:40:16 by mdesrose         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <signal.h>
+#include<signal.h>
 
 int	g_exit_code;
 
@@ -25,32 +29,44 @@ void	ctrl_d(t_expv *export, t_cmd *cmds)
 	exit(0);
 }
 
-void	listen(int sig, siginfo_t *info, void *unused)
+void	sig_handler(int sig)
 {
-	(void)info;
-	(void)unused;
 	if (sig == SIGINT)
-	{
-		write(2, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (sig == SIGQUIT)
-	{
-		return ;
+       printf("\nMinishell -> ");
+    // else if (sig == SIGQUIT)
+	// 	write(2, "\n", 1);
+	// 	rl_replace_line("", 0);
+	// 	rl_on_new_line();
+	// 	rl_redisplay();
+}
+
+void	sig_handler2(int sig)
+{
+	int	fd;
+
+	if (sig == SIGINT)
+    {
+		ft_putchar_fd('\n', 0);
+		// fd = dup(0);
+		// close(0);
+		g_exit_code = 300;
+		//write(2, "\n", 1);
+		//dup2(fd, 0);
+		//close(fd);
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// rl_redisplay();
 	}
 }
 
-void	sig_info(void)
+int	sig_info(int mode)
 {
-	struct sigaction	act;
-
-	act.sa_flags = SA_SIGINFO;
-	act.sa_sigaction = listen;
-	sigemptyset(&act.sa_mask);
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	signal(SIGQUIT, SIG_IGN);
+	if (mode == 1)
+		signal(SIGINT, sig_handler);/*ctrl c*/
+	else
+		signal(SIGINT, sig_handler2);
+	return (0);
 }
 
 static void	minishell(t_cmd *cmds, char *cmd, t_expv *export)
@@ -87,11 +103,13 @@ int	main(int ac, char **av, char **env)
 	t_expv	*export;
 	t_cmd	*cmds;
 
+	//signal(SIGINT,SIG_DFL);
 	(void)av;
 	if (ac > 1)
 		exit(127);
 	cmd = NULL;
 	cmds = NULL;
+	sig_info(1);
 	export = init_env(env);
 	while (1)
 	{

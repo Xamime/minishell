@@ -6,7 +6,11 @@
 /*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/08/02 18:12:32 by jfarkas          ###   ########.fr       */
+=======
+/*   Updated: 2023/08/02 20:17:27 by mdesrose         ###   ########.fr       */
+>>>>>>> refs/remotes/origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +63,12 @@ typedef struct s_expansion
 	int		mode;
 }	t_expansion;
 
+<<<<<<< HEAD
 void	ft_exit(char **env, t_cmd *cmds, t_expv **expv, int *real_fds);
+=======
+void	ft_exit(char **env, t_cmd *cmds, t_expv **expv);
+int		sig_info(int mode);
+>>>>>>> refs/remotes/origin/master
 void	freelist(t_expv *expv);
 int		check_single_quote(char *cmd_line);
 void	syntaxe_errors2(int error, char *err);
