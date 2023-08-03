@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 21:54:07 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/03 18:50:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include<signal.h>
+#include <signal.h>
 
 int	g_exit_code;
 
@@ -42,9 +42,9 @@ void	sig_handler2(int sig)
 
 	if (sig == SIGINT)
     {
-		ft_putchar_fd('\n', 0);
+		ft_putchar_fd('\n', 1);
 		// fd = dup(0);
-		// close(0);
+		//close(0);
 		g_exit_code = 300;
 		//write(2, "\n", 1);
 		//dup2(fd, 0);
@@ -57,11 +57,19 @@ void	sig_handler2(int sig)
 
 int	sig_info(int mode)
 {
+	struct sigaction act;
 	signal(SIGQUIT, SIG_IGN);
 	if (mode == 1)
-		signal(SIGINT, sig_handler);/*ctrl c*/
+		act.sa_handler =  &sig_handler;
 	else
-		signal(SIGINT, sig_handler2);
+		act.sa_handler = &sig_handler2;
+	sigfillset(&act.sa_mask);
+	act.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &act, NULL);
+	// {
+	// 	printf("not fail\n");
+	// }
+
 	return (0);
 }
 

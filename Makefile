@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/08/02 16:37:21 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/08/03 17:57:04 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/redirections/remove_redirs.c \
 		srcs/expand.c \
 		srcs/expand2.c \
+		srcs/expand3.c \
 		srcs/export_list_utils.c \
 		srcs/init.c \
 		srcs/main.c \

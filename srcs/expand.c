@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 17:08:20 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/03 17:50:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,107 +29,16 @@ static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 	return (new_str);
 }
 
-char	*get_var_name(char *str)
-{
-	char	*name;
-	int		i;
-
-	i = 1;
-	while (ft_isalnum(str[i]) || str[i] == '_')
-		i++;
-	name = ft_substr(str, 1, i - 1);
-	return (name);
-}
-
-void	remove_quotes(char *str, char *new_str, char quote) // oui y'a tjrs ce truc déguelasse
-{
-	char	*tmp;
-
-	tmp = str;
-	while (str && *str)
-	{
-		if (is_in_set(*str, "\"\'"))
-		{
-			quote = *str;
-			str++;
-			while (*str && *str != quote)
-			{
-				*new_str = *str;
-				str++;
-				new_str++;
-			}
-			if (*str)
-				str++;
-		}
-		if (*str && !is_in_set(*str, "\"\'"))
-		{
-			*new_str = *str;
-			str++;
-			new_str++;
-		}
-	}
-	new_str = tmp;
-}
-
-char	*set_without_quotes(char *str)
-{
-	char	*tmp;
-	int		size;
-	char	*new_str;
-	char	quote;
-
-	size = ft_strlen(str);
-	tmp = str;
-	while (tmp && *tmp)
-	{
-		if (is_in_set(*tmp, "\"\'"))
-		{
-			quote = *tmp;
-			tmp++;
-			size -= 2;
-			while (*tmp != quote)
-				tmp++;
-		}
-		tmp++;
-	}
-	new_str = ft_calloc(size + 1, sizeof(char));
-	// aled il faut de la place
-	remove_quotes(str, new_str, quote);
-	return (new_str);
-}
-
 char	*str_exit_code(char *str, t_expv *expv, t_expansion *exp)
 {
 	char	*new_str;
 	char	*exit_code;
-	int		i;
-	int		j;
 
-	i = 0;
-	j = 0;
 	exit_code = ft_itoa(g_exit_code);
 	new_str = malloc(sizeof(char) * ft_strlen(str) + ft_strlen(exit_code));
 	exp->found_dollar = 0;
 	exp->in_double = 0;
-	while (str[i])
-	{
-		if ((str[i] == '\"' && exp->mode == 0)
-			|| (str[i] == '\'' && !exp->in_double))
-			i += skip_and_copy(&str[i], &new_str[j], str[i], &j);
-		if (str[i] == '\"')
-			set_double_quotes(exp);
-		if (str[i] == '$' && !exp->found_dollar && str[i + 1] == '?')
-			{
-				ft_strlcat(new_str, exit_code, 60);
-				j += ft_strlen(exit_code);
-				i += 2;
-			}
-			//add_var_value(exp, new_str, &i, &j);
-		new_str[j] = str[i];
-		if (str[i])
-			i++;
-		j++;
-	}
+	new_str = new_str_exit(str, new_str, exit_code, exp);
 	return (new_str);
 }
 
@@ -145,18 +54,13 @@ static char	*get_expanded_str2(t_expansion *exp, char *tmp)
 	return (new_str);
 }
 
-//int is_valid_var_name
-
-char	*make_dollars(char *str, t_expv *expv, int mode)
+static char	*expand_var(char *str, t_expansion *exp, t_expv *expv, int mode)
 {
 	char		*new_str;
-	t_expansion	*exp;
 	int			in_double;
 
 	in_double = 0;
-	exp = malloc(sizeof(t_expansion));
 	new_str = ft_strdup(str);
-	exp->mode = mode;
 	while (str && *str)
 	{
 		if ((*str == '"' && exp->mode == 0) || (*str == '\'' && !in_double))
@@ -174,6 +78,17 @@ char	*make_dollars(char *str, t_expv *expv, int mode)
 		}
 		str++;
 	}
+	return (new_str);
+}
+
+char	*make_dollars(char *str, t_expv *expv, int mode)
+{
+	t_expansion	*exp;
+	char		*new_str;
+	
+	exp = malloc(sizeof(t_expansion));
+	exp->mode = mode;
+	new_str = expand_var(str, exp, expv, mode);
 	free(exp);
 	return (new_str);
 }
