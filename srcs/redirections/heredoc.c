@@ -3,97 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 16:21:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/02 21:54:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 19:15:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <fcntl.h>
-#include <errno.h>
 
-// Set Heredoc name, open and return fd
-int	heredoc_name(t_cmd *cmd, char **filename)
+int	write_heredoc(char *limiter, int fd, int exp_mode, t_expv *expv)
 {
-	int			fd;
-	int			i;
-	char		*tmp;
-	char		*try;
+	int		error;
+	char	*tmp;
 
-	fd = 1;
-	i = 0;
-	try = NULL;
-	replace_address(filename, ft_strjoin("/tmp/", *filename));
+	error = 0;
 	while (1)
 	{
-		tmp = ft_itoa(i);
-		replace_address(&try, ft_strjoin(*filename, tmp));
-		fd = open(try, O_RDONLY);
-		free(tmp);
-		if (fd == -1 && errno == ENOENT)
+		tmp = readline("> ");
+		if (g_exit_code == 256 || !tmp
+			|| (tmp && !ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1)))
+		{
+			if (g_exit_code == 256)
+			{
+				g_exit_code = 130;
+				error = 1;
+			}
+			else if (!tmp)
+				printf_fd(2, "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
 			break ;
-		else if (errno != EACCES)
-			close(fd);
-		i++;
+		}
+		putstr_heredoc(tmp, fd, exp_mode, expv);
 	}
-	fd = open(try, O_CREAT | O_WRONLY, 0644);
-	free(*filename);
-	*filename = try;
-	return (fd);
+	if (tmp)
+		free(tmp);
+	return (error);
 }
 
-void	set_heredocs(t_cmd *cmds)
+int	get_heredoc(t_cmd *cmds, int i, int j, t_expv *expv)
 {
 	int		*fd;
 	char	*filename;
-	char	*tmp;
 	char	*limiter;
+	int		success;
+	int		exp_mode;
+
+	success = 1;
+	exp_mode = 1;
+	sig_handler(2);
+	fd = malloc(sizeof(int));
+	filename = get_heredoc_filename(&cmds[i].cmd[j], &exp_mode);
+	limiter = ft_strdup(filename);
+	*fd = heredoc_name(&filename);
+	if (write_heredoc(limiter, *fd, exp_mode, expv))
+		success = 0;
+	close(*fd);
+	*fd = open(filename, O_RDONLY, 0644);
+	free(limiter);
+	ft_lstadd_back(&cmds[i].redirs->heredocs, ft_lstnew(fd));
+	ft_lstadd_back(&cmds[i].redirs->heredoc_names, ft_lstnew(filename));
+	sig_handler(0);
+	return (success);
+}
+
+int	set_heredocs(t_cmd *cmds, t_expv *expv)
+{
 	int		i;
 	int		j;
+	int		success;
 
 	i = 0;
-	sig_info(2);
-	while (cmds[i].cmd)
+	success = 1;
+	while (cmds[i].cmd && success)
 	{
 		j = 0;
-		while (cmds[i].cmd[j])
+		while (cmds[i].cmd[j] && success)
 		{
 			if (is_in_set(cmds[i].cmd[j], "\"\'"))
 				j += skip_quote(&cmds[i].cmd[j], cmds[i].cmd[j]);
 			if (cmds[i].cmd[j] == '<' && cmds[i].cmd[j + 1] == '<')
-			{
-				fd = malloc(sizeof(int));
-				filename = get_filename(&cmds[i].cmd[j], NULL, NULL);
-				limiter = ft_strdup(filename); // bizarre
-				*fd = heredoc_name(&cmds[i], &filename);
-				while (1)
-				{
-					tmp = readline("> ");
-					if (g_exit_code == 300)
-						break ;
-					if (!tmp)
-					{
-						printf_fd(2, "minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", limiter);
-						break ;
-					}
-					if (tmp && !ft_strncmp(tmp, limiter, ft_strlen(limiter) + 1))
-						break ;
-					ft_putstr_fd(tmp, *fd);
-					ft_putchar_fd('\n', *fd);
-					free(tmp);
-				}
-				close(*fd);
-				*fd = open(filename, O_RDONLY, 0644);
-				free(tmp);
-				free(limiter);
-				ft_lstadd_back(&cmds[i].redirs->heredocs, ft_lstnew(fd));
-				ft_lstadd_back(&cmds[i].redirs->heredoc_names, ft_lstnew(filename));
-				//sig_info(1);
-			}
+				success = get_heredoc(cmds, i, j, expv);
 			j++;
 		}
 		i++;
 	}
+	if (!success)
+	{
+		// TOUT close merci bien aurevoir (cmds precedente error 3 + close tout ça tout ça)
+		close_fds(cmds[i - 1].redirs->heredocs);
+		close(*(int *)ft_lstlast(cmds[i - 1].redirs->heredocs)->content);
+	}
+	return (success);
 }

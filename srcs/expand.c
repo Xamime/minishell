@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/03 17:50:46 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/03 22:48:30 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,7 @@ static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 	return (new_str);
 }
 
-char	*str_exit_code(char *str, t_expv *expv, t_expansion *exp)
-{
-	char	*new_str;
-	char	*exit_code;
-
-	exit_code = ft_itoa(g_exit_code);
-	new_str = malloc(sizeof(char) * ft_strlen(str) + ft_strlen(exit_code));
-	exp->found_dollar = 0;
-	exp->in_double = 0;
-	new_str = new_str_exit(str, new_str, exit_code, exp);
-	return (new_str);
-}
-
-static char	*get_expanded_str2(t_expansion *exp, char *tmp)
+static char	*get_exit_code(t_expansion *exp, char *tmp)
 {
 	char	*new_str;
 
@@ -70,7 +57,7 @@ static char	*expand_var(char *str, t_expansion *exp, t_expv *expv, int mode)
 		else if (*str == '\"' && mode == 1 && in_double)
 			in_double = 0;
 		if (*str == '$' && *(str + 1) == '?')
-			new_str = get_expanded_str2(exp, new_str);
+			new_str = get_exit_code(exp, new_str);
 		else if (*str == '$' && *(str + 1) && !check_forbidden_char(str + 1, 0))
 		{
 			exp->name = get_var_name(str);
@@ -85,7 +72,7 @@ char	*make_dollars(char *str, t_expv *expv, int mode)
 {
 	t_expansion	*exp;
 	char		*new_str;
-	
+
 	exp = malloc(sizeof(t_expansion));
 	exp->mode = mode;
 	new_str = expand_var(str, exp, expv, mode);

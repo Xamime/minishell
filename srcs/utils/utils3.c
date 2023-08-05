@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 21:25:06 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:52:31 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/05 19:07:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	syntaxe_errors2(int error, char *err)
 {
 	if (error)
 	{
-		printf_fd(2, "bash: syntax error near unexpected token `%s'\n", err);
+		printf_fd(2, "minishell: syntax error near unexpected token `%s'\n", err);
 		g_exit_code = 2;
 		free(err);
 	}
@@ -71,10 +71,20 @@ int	check_single_quote(char *cmd_line)
 		if (is_in_set(cmd_line[i], "\'\""))
 		{
 			if (!is_paired(&cmd_line[i], cmd_line[i]))
+			{
+				printf_fd(2, "minishell: unclosed quote `%c'\n", cmd_line[i]);
 				return (1);
+			}
 			i += skip_quote(&cmd_line[i], cmd_line[i]);
 		}
 		i++;
 	}
 	return (0);
+}
+
+void	ctrl_d(t_expv *export)
+{
+	ft_putstr_fd("exit\n", 1);
+	freelist(export);
+	exit(130);
 }

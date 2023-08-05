@@ -1,2 +1,2 @@
-1) >>> : leak sur syntax_errors
-2) exit -9789789789787787897897878978 ? verif
+1) invalid in: invalid in:
+2) ne pas enregistrer les commandes dans l'historique si elle est la même que la précedente

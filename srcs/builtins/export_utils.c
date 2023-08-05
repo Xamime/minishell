@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:44:46 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 21:51:03 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/05 00:58:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_export_var(char *name, char *var)
 {
 	if (var)
-		printf("declare -x %s=%c%s%c\n", name, '"', var, '"');
+		printf("declare -x %s=\"%s\"\n", name, var);
 	else
 		printf("declare -x %s\n", name);
 }
@@ -26,13 +26,13 @@ t_expv	*find_min_ascii(t_expv *expv, t_expv *sorted)
 	t_expv	*min;
 
 	ptr = expv;
-	while (is_in(sorted, ptr->name))
+	while (is_in_expv(sorted, ptr->name))
 		ptr = ptr->next;
 	min = ptr;
 	while (ptr)
 	{
 		if (ft_strncmp(ptr->name, min->name, ft_strlen(min->name)) < 0
-			&& !is_in(sorted, ptr->name))
+			&& !is_in_expv(sorted, ptr->name))
 			min = ptr;
 		ptr = ptr->next;
 	}

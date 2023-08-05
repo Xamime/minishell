@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/08/03 17:57:04 by marvin           ###   ########.fr        #
+#    Updated: 2023/08/05 19:04:14 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/builtins/cd.c \
 		srcs/builtins/echo.c \
+		srcs/builtins/env.c \
 		srcs/builtins/export_utils.c \
 		srcs/builtins/export_utils2.c \
 		srcs/builtins/export.c \
@@ -23,8 +24,11 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/utils/utils2.c \
 		srcs/utils/utils3.c \
 		srcs/utils/free_utils.c \
+		srcs/exec/access.c \
 		srcs/exec/exec.c \
 		srcs/exec/exec_utils.c \
+		srcs/redirections/heredoc_expansion_utils.c \
+		srcs/redirections/heredoc_utils.c \
 		srcs/redirections/heredoc.c \
 		srcs/redirections/redirs_utils.c \
 		srcs/redirections/redirs.c \
@@ -37,7 +41,7 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/main.c \
 		srcs/parsing.c \
 		srcs/parsing2.c \
-		srcs/access.c \
+		srcs/signal.c \
 		srcs/split_quotes_utils.c \
 		srcs/split_quotes.c \
 		srcs/syntax_check.c
@@ -46,7 +50,7 @@ NAME = minishell
 LIBFT_SRC = libft
 LIBFT = ${LIBFT_SRC}/libft.a
 CC = clang
-CFLAGS = -g #-lreadline #-Wall -Wextra -Werror -g
+CFLAGS = -g -Wall -Wextra -Werror
 OBJ = $(SRC:c=o)
 
 YELLOW=\033[0;33m

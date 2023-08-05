@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:46:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 21:28:02 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 19:06:49 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,8 @@ void	get_sep_nb(char *filename, int *before, int *after, t_expv *expv)
 
 int	check_ambiguous_redirect(char *filename, t_expv *expv)
 {
-	int		i;
 	int		before_sep_nb;
 	int		after_sep_nb;
-	char	*new_str;
 
 	before_sep_nb = 0;
 	after_sep_nb = 0;

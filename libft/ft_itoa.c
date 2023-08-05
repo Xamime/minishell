@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:54:47 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 16:11:08 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 14:57:46 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,16 @@ char	*ft_itoa(int n)
 	return (str);
 }
 
+#include <limits.h>
+#include "libft.h"
+
 char	*ft_lltoa(long long n)
 {
 	char		*str;
 	long long	i;
 
+	if (n == LLONG_MIN)
+		return (ft_strdup("-9223372036854775808"));
 	i = ft_size(n);
 	str = malloc(sizeof(char) * i + 1);
 	if (str == NULL)
@@ -83,7 +88,5 @@ char	*ft_lltoa(long long n)
 		n = n / 10;
 		i--;
 	}
-	// if (n == -9223372036854775808)
-	// 	str = "-9223372036854775808";
 	return (str);
 }

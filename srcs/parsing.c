@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 17:19:24 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 19:10:04 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+#include "signal.h"
+
+int		get_exit_code(int status, t_cmd *cmd)
+{
+	if (g_exit_code == 130)
+		return (g_exit_code);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			return (130);
+		else if (WTERMSIG(status) == SIGQUIT)
+			return (131);
+	}
+	else if (cmd->status)
+		return (cmd->status);
+	return (WEXITSTATUS(status));
+}
 
 void	wait_childs(t_cmd *cmds)
 {
@@ -19,20 +37,22 @@ void	wait_childs(t_cmd *cmds)
 	int		status;
 
 	i = 0;
+	status = 0;
 	while (cmds[i + 1].cmd)
 		i++;
 	waitpid(cmds[i].pid, &status, 0);
-	cmds[i].status = WEXITSTATUS(status);
+	g_exit_code = get_exit_code(status, &cmds[i]);
 	wpid = 1;
 	while (wpid > 0)
-		wpid = wait(NULL);
+		wpid = wait(&status);
 }
 
 void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index)
 {
+	// printf("infile : %d, outfile : %d\n", cmds[index].infile, cmds[index].outfile);
 	if (*p_out > 0)
 		close(*p_out);
-	if (cmds[index].infile > -1) // si infile ou outfile = 0 ou 1 ?
+	if (cmds[index].infile > -1)
 		close(cmds[index].infile);
 	if (cmds[index].outfile > -1)
 		close(cmds[index].outfile);
@@ -71,8 +91,6 @@ void	set_cmd(t_cmd *cmd, t_expv **expv, int *pipe_out, char **env)
 void	split_pipe(t_expv **expv, t_cmd *cmds)
 {
 	int		i;
-	int		pfd[2];
-	pid_t	pid;
 	int		pipe_out;
 	char	**env;
 
@@ -85,24 +103,25 @@ void	split_pipe(t_expv **expv, t_cmd *cmds)
 		i++;
 	}
 	wait_childs(cmds);
-	set_exit_code(cmds);
+	i = 0;
+	while (cmds[i].cmd)
+	{
+		free_command(&cmds[i]);
+		i++;
+	}
 	free_array(env);
 }
 
-int	parse_cmd(t_cmd	*cmd, t_expv *expv)
+void	load_cmd(char **splitted, t_cmd *cmd, t_expv *expv)
 {
-	char	**splitted;
-	char	*tmp;
-	int		i;
+	int	i;
 
 	i = 0;
-	if (parse_redir(cmd->cmd, &cmd->redirs, cmd, expv))
-		cmd->error = 1;
-	replace_address(&cmd->cmd, remove_redir(cmd));
-	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
-	splitted = ft_split_quotes(cmd->cmd, " \t\n");
 	if (!splitted[0])
-		cmd->error = 2;
+	{
+		if (!cmd->error)
+			cmd->error = 2;
+	}
 	while (splitted[i])
 	{
 		replace_address(&splitted[i], make_dollars(splitted[i], expv, 1));
@@ -114,5 +133,20 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv)
 	else
 		cmd->cmd_name = "";
 	cmd->words = splitted;
+}
+
+int	parse_cmd(t_cmd	*cmd, t_expv *expv, int h_success)
+{
+	char	**splitted;
+
+	if (!h_success || (h_success && parse_redir(cmd->cmd, &cmd->redirs, cmd, expv)))
+	{
+		if (!cmd->error)
+			cmd->error = 1;
+	}
+	replace_address(&cmd->cmd, remove_redir(cmd));
+	replace_address(&cmd->cmd, make_dollars(cmd->cmd, expv, 0));
+	splitted = ft_split_quotes(cmd->cmd, " \t\n");
+	load_cmd(splitted, cmd, expv);
 	return (0);
 }

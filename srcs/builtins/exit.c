@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 23:56:07 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/02 17:04:22 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 14:58:24 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-// static void	ft_exit2(char *str, t_expv **expv, t_cmd *cmds);
 
 static int	check_exit_errors(t_cmd *cmd)
 {
@@ -40,9 +38,9 @@ static int	check_exit_errors(t_cmd *cmd)
 
 static int	check_code(t_cmd *cmd, int *err)
 {
-	char	*str;
-	int		code;
-	int		i;
+	char		*str;
+	long long	code;
+	int			i;
 
 	code = ft_atoll(cmd->words[1]);
 	str = ft_lltoa(code);
@@ -59,17 +57,22 @@ static int	check_code(t_cmd *cmd, int *err)
 	return (code);
 }
 
-static void	free_and_close(char **env, t_cmd *cmds, t_expv *expv, int *real_fds)
+static void	free_and_close(char **env, t_cmd *cmds, t_expv *expv, int *fds)
 {
 	free_fork(expv, cmds, env);
-	if (real_fds)
+	if (fds)
 	{
-		close(real_fds[0]);
-		close(real_fds[1]);
+		close(fds[0]);
+		close(fds[1]);
+		if (fds[2] > -1)
+			close(fds[2]);
+		if (fds[3] > -1)
+			close(fds[3]);
+		free(fds);
 	}
 }
 
-void	ft_exit(char **env, t_cmd *cmd, t_expv **expv, int *real_fds)
+void	ft_exit(char **env, t_cmd *cmd, t_expv **expv, int *fds)
 {
 	long long	code;
 	int			err;
@@ -87,24 +90,8 @@ void	ft_exit(char **env, t_cmd *cmd, t_expv **expv, int *real_fds)
 		cmd->status = 1;
 		return ;
 	}
-	free_and_close(env, cmds, *expv, real_fds);
+	free_and_close(env, cmds, *expv, fds);
 	if (err)
 		exit(err);
 	exit((unsigned char)code);
-}
-
-void	set_exit_code(t_cmd *cmds)
-{
-	int	i;
-
-	i = 0;
-	while (cmds[i + 1].cmd)
-		i++;
-	g_exit_code = cmds[i].status;
-	i = 0;
-	while (cmds[i].cmd)
-	{
-		free_command(&cmds[i]);
-		i++;
-	}
 }

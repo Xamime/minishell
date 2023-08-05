@@ -3,25 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:11:45 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/27 18:25:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 00:50:24 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	remove_last_nl(char *str)
-{
-	int	i;
-
-	i = ft_strlen(str);
-	if (str[i - 1] == '\n')
-		str[i - 1] = 0;
-}
-
-int	is_in(t_expv *list, char *str)
+int	is_in_expv(t_expv *list, char *str)
 {
 	int		found;
 	t_expv	*ptr;

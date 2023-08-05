@@ -12,34 +12,6 @@
 
 #include "../minishell.h"
 
-char	*new_str_exit(char *str, char *new_str, char *exit_code, t_expansion *exp)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if ((str[i] == '\"' && exp->mode == 0)
-			|| (str[i] == '\'' && !exp->in_double))
-			i += skip_and_copy(&str[i], &new_str[j], str[i], &j);
-		if (str[i] == '\"')
-			set_double_quotes(exp);
-		if (str[i] == '$' && !exp->found_dollar && str[i + 1] == '?')
-			{
-				ft_strlcat(new_str, exit_code, 60);
-				j += ft_strlen(exit_code);
-				i += 2;
-			}
-		new_str[j] = str[i];
-		if (str[i])
-			i++;
-		j++;
-	}
-	return (new_str);
-}
-
 char	*get_var_name(char *str)
 {
 	char	*name;

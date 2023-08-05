@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:36:44 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/02 18:13:59 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 19:05:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	pwd(t_expv *expv)
+void	pwd()
 {
 	char	*dir;
 
-	dir = ft_getenv("PWD", expv);
+	dir = get_cd_name();
 	printf("%s\n", dir);
+	free(dir);
 }

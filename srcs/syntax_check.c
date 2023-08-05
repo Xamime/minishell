@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/01 22:53:02 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/05 19:11:33 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ char	*get_token(char *cmd_line, char **token)
 			i += skip_quote(&cmd_line[i], cmd_line[i]);
 		while (token[j])
 		{
-			if (cmd_line[i] == token[j][0] && cmd_line[i + 1] == token[j][1])
+			if (cmd_line[i] == token[j][0]
+				&& cmd_line[i + 1] && cmd_line[i + 1] == token[j][1])
 				return (&cmd_line[i + 1]);
 			if (cmd_line[i] == token[j][0])
 				return (&cmd_line[i]);
@@ -48,7 +49,8 @@ char	*is_token(char *str, char **token)
 		j = 0;
 		while (token[j])
 		{
-			if (str[i] == token[j][0] && str[i + 1] == token[j][1])
+			if (str[i] == token[j][0]
+				&& str[i + 1] && str[i + 1] == token[j][1])
 				return (token[j]);
 			if (str[i] == token[j][0] && !token[j][1])
 				return (token[j]);
@@ -66,9 +68,12 @@ static int	ft_error(char *str, char **token, char **syntax_error)
 	i = 1;
 	while (is_in_set(str[i], " \t\n"))
 		i++;
-	if (str[0] == '|' && str[i] == '|')
+	if (is_token(&str[0], token) && (!str[i] || str[i] == '|'))
 	{
-		*syntax_error = ft_strdup("|");
+		if (!str[i])
+			*syntax_error = ft_strdup("newline");
+		else
+			*syntax_error = ft_strdup("|");
 		free_array(token);
 		return (1);
 	}
@@ -85,9 +90,7 @@ int	check_next_token(char *cmd_line, char **syntax_error)
 {
 	char	**token;
 	char	*str;
-	int		i;
 
-	i = 1;
 	token = ft_split("<<:>>:<:>:|", ':');
 	str = get_token(cmd_line, token);
 	if (!str)
@@ -113,7 +116,12 @@ int	syntax_errors(char *cmd_line)
 	if (is_empty(cmd_line))
 		return (-1);
 	if (check_single_quote(cmd_line))
-		return (1);
+		return (2);
+	if (cmd_line[0] == '|')
+	{
+		syntax_error = ft_strdup("|");
+		error = 2;
+	}
 	while (error == 0)
 	{
 		error = check_next_token(&cmd_line[i], &syntax_error);

@@ -3,98 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/03 18:50:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/08/05 19:09:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <signal.h>
 
 int	g_exit_code;
 
-void	ctrl_d(t_expv *export, t_cmd *cmds)
+static void	parse_and_exec(t_cmd *cmds, int h_success, t_expv *expv)
 {
 	int	i;
 
 	i = 0;
-	ft_putstr_fd("exit\n", 1);
-	freelist(export);
-	exit(0);
-}
-
-void	sig_handler(int sig)
-{
-	if (sig == SIGINT)
-       printf("\nMinishell -> ");
-    // else if (sig == SIGQUIT)
-	// 	write(2, "\n", 1);
-	// 	rl_replace_line("", 0);
-	// 	rl_on_new_line();
-	// 	rl_redisplay();
-}
-
-void	sig_handler2(int sig)
-{
-	int	fd;
-
-	if (sig == SIGINT)
-    {
-		ft_putchar_fd('\n', 1);
-		// fd = dup(0);
-		//close(0);
-		g_exit_code = 300;
-		//write(2, "\n", 1);
-		//dup2(fd, 0);
-		//close(fd);
-		// rl_replace_line("", 0);
-		// rl_on_new_line();
-		// rl_redisplay();
+	while (cmds[i].cmd)
+	{
+		parse_cmd(&cmds[i], expv, h_success);
+		i++;
 	}
-}
-
-int	sig_info(int mode)
-{
-	struct sigaction act;
-	signal(SIGQUIT, SIG_IGN);
-	if (mode == 1)
-		act.sa_handler =  &sig_handler;
+	if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
+		only_one_builtin(&expv, cmds);
 	else
-		act.sa_handler = &sig_handler2;
-	sigfillset(&act.sa_mask);
-	act.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &act, NULL);
-	// {
-	// 	printf("not fail\n");
-	// }
-
-	return (0);
+		split_pipe(&expv, cmds);
 }
 
-static void	minishell(t_cmd *cmds, char *cmd, t_expv *export)
+static void	minishell(t_cmd *cmds, char *cmd, t_expv *expv)
 {
 	int		error;
-	int		i;
+	int		h_success;
 
-	i = 0;
-	add_history(cmd);
+	if (cmd[0])
+		add_history(cmd);
 	error = syntax_errors(cmd);
 	if (!error)
 	{
 		cmds = init_cmds(cmd);
 		init_redirs(cmds);
-		set_heredocs(cmds);
-		while (cmds[i].cmd)
-		{
-			parse_cmd(&cmds[i], export);
-			i++;
-		}
-		if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
-			only_one_builtin(&export, cmds);
-		else
-			split_pipe(&export, cmds);
+		h_success = set_heredocs(cmds, expv);
+		parse_and_exec(cmds, h_success, expv);
 		free(cmds);
 	}
 	else
@@ -107,19 +56,19 @@ int	main(int ac, char **av, char **env)
 	t_expv	*export;
 	t_cmd	*cmds;
 
-	//signal(SIGINT,SIG_DFL);
 	(void)av;
 	if (ac > 1)
 		exit(127);
 	cmd = NULL;
 	cmds = NULL;
-	sig_info(1);
 	export = init_env(env);
 	while (1)
 	{
+		sig_handler(0);
 		cmd = readline("Minishell -> ");
+		sig_handler(1);
 		if (!cmd)
-			ctrl_d(export, cmds);
+			ctrl_d(export);
 		minishell(cmds, cmd, export);
 	}
 	rl_clear_history();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 16:15:22 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 21:59:00 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/05 19:05:12 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static void	free_sorted(t_expv *sorted)
 static void	export_print(t_expv *expv)
 {
 	t_expv	*sorted;
-	t_expv	*ptr;
 	t_expv	*min;
 	int		expv_size;
 	int		i;
@@ -53,7 +52,7 @@ static void	parse_export(char *str, t_cmd *cmd, t_expv **expv)
 	if (!check_forbidden_char(str, 1))
 	{
 		set_var_line(str, &name, &var);
-		if (!is_in(*expv, name))
+		if (!is_in_expv(*expv, name))
 			ft_expv_add_back(expv, ft_expv_new(var, name));
 		else if (var && ft_strstr(str, "+="))
 			change_var(*expv, name, var, 1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/02 14:40:35 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/05 13:04:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ char	**ft_get_env(t_expv *export)
 	return (env);
 }
 
+#include <signal.h>
+
 void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 {
 	char	*command;
@@ -48,6 +50,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 		exec_builtin(&cmds[index], expv, env, NULL);
 	else
 	{
+		signal(SIGPIPE, SIG_DFL);
 		command = get_access(&cmds[index], *expv);
 		if (command)
 			execve(command, cmds[index].words, env);
@@ -55,8 +58,7 @@ void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 	}
 	child_status = cmds[index].status;
 	free_fork(*expv, cmds, env);
-	//if (ft_strcmp(cmds->cmd_name, "exit"))
-	exit(child_status); // exit code erreur du builtin
+	exit(child_status);
 }
 
 void	set_pipes(int fd_in, int fd_out, int *pfd, int pipe_out)
