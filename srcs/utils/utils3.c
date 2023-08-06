@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 21:25:06 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 19:07:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:45:57 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	syntaxe_errors2(int error, char *err)
 {
 	if (error)
 	{
-		printf_fd(2, "minishell: syntax error near unexpected token `%s'\n", err);
+		printf_fd(2, "minishell: ");
+		printf_fd(2, "syntax error near unexpected token `%s'\n", err);
 		g_exit_code = 2;
 		free(err);
 	}

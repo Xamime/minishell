@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 19:10:04 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:35:47 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "signal.h"
 
-int		get_exit_code(int status, t_cmd *cmd)
+int	get_exit_code(int status, t_cmd *cmd)
 {
 	if (g_exit_code == 130)
 		return (g_exit_code);
@@ -49,7 +49,7 @@ void	wait_childs(t_cmd *cmds)
 
 void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index)
 {
-	// printf("infile : %d, outfile : %d\n", cmds[index].infile, cmds[index].outfile);
+// printf("in : %d, out : %d\n", cmds[index].infile, cmds[index].outfile);
 	if (*p_out > 0)
 		close(*p_out);
 	if (cmds[index].infile > -1)
@@ -139,7 +139,8 @@ int	parse_cmd(t_cmd	*cmd, t_expv *expv, int h_success)
 {
 	char	**splitted;
 
-	if (!h_success || (h_success && parse_redir(cmd->cmd, &cmd->redirs, cmd, expv)))
+	if (!h_success
+		|| (h_success && parse_redir(cmd->cmd, &cmd->redirs, cmd, expv)))
 	{
 		if (!cmd->error)
 			cmd->error = 1;

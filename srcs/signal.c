@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 18:52:45 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 19:10:43 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:15:29 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ static void	parent_sigint_handler(int sig)
 {
 	(void)sig;
 	g_exit_code = 130;
-	rl_replace_line("", 0);
-	rl_on_new_line();
 	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -28,7 +28,8 @@ static void	heredoc_sigint_handler(int sig)
 {
 	(void)sig;
 	g_exit_code = 256;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	close(0);
+	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line();
 }

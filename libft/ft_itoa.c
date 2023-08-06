@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:54:47 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 14:57:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:34:16 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdlib.h>
+#include <limits.h>
 
 static int	ft_size(long long nb)
 {
@@ -59,9 +61,6 @@ char	*ft_itoa(int n)
 	}
 	return (str);
 }
-
-#include <limits.h>
-#include "libft.h"
 
 char	*ft_lltoa(long long n)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:37:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 14:05:28 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 23:03:45 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ static void	update_pwd(t_expv *expv, char *oldpwd)
 	{
 		if (ft_getenv("PWD", expv))
 		{
-			change_var(expv, ft_strdup("OLDPWD"), oldpwd, 1);
-			change_var(expv, ft_strdup("PWD"), get_cd_name(), 0);
+			change_var(expv, ft_strdup("OLDPWD"), oldpwd, 0);
+			change_var(expv, ft_strdup("PWD"), get_cwd_name(), 0);
 		}
 		else
 			change_var(expv, ft_strdup("OLDPWD"), NULL, 0);
 	}
+	else
+		free(oldpwd);
 }
 
 static int	cd_home(char *home, char *oldpwd, t_cmd *cmd, t_expv *expv)
@@ -37,6 +39,7 @@ static int	cd_home(char *home, char *oldpwd, t_cmd *cmd, t_expv *expv)
 	}
 	ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 	cmd->status = 1;
+	free(oldpwd);
 	return (1);
 }
 
@@ -52,15 +55,15 @@ void	cd(char *directory, t_cmd *cmd, t_expv *expv)
 		return ;
 	}
 	home = ft_getenv("HOME", expv);
-	oldpwd = get_cd_name();
+	oldpwd = get_cwd_name();
 	if (directory == NULL && cd_home(home, oldpwd, cmd, expv))
 		return ;
-	if (chdir(directory) == -1)
+	if (directory && chdir(directory) == -1)
 	{
 		cmd->status = 1;
 		printf_fd(2, "minishell: cd: %s\n", strerror(errno));
 		free(oldpwd);
 	}
-	else
+	else if (directory)
 		update_pwd(expv, oldpwd);
 }

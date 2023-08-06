@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 13:04:36 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:31:23 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <signal.h>
 
 char	**ft_get_env(t_expv *export)
 {
@@ -37,8 +38,6 @@ char	**ft_get_env(t_expv *export)
 	env[i] = NULL;
 	return (env);
 }
-
-#include <signal.h>
 
 void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index)
 {

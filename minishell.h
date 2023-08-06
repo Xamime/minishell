@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 19:08:09 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:55:10 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ void	ft_exit(char **env, t_cmd *cmds, t_expv **expv, int *real_fds);
 void	export(t_cmd *cmd, t_expv **expv);
 void	cd(char *directory, t_cmd *cmd, t_expv *expv);
 void	echo(t_cmd *cmd);
-void	pwd();
+void	pwd(void);
 void	unset(t_cmd *cmd, t_expv **export);
 
 /* ------------------------------ builtin utils ----------------------------- */
 
-char	*get_cd_name(void);
+char	*get_cwd_name(void);
 void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env, int *real_fds);
 
 char	*ft_getenv(char *str, t_expv *export);

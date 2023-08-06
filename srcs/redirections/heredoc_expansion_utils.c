@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_expansion_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 17:33:58 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 17:48:46 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 22:40:25 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ char	*get_expanded_str_heredoc(char *str, t_expv *expv)
 	{
 		if (str[i] == '$' && str[i + 1] == '?')
 			new_str = get_exit_code_heredoc(exp, new_str);
-		else if (str[i] == '$' && str[i + 1] && !check_forbidden_char(&str[i + 1], 0))
+		else if (str[i] == '$' && str[i + 1]
+			&& !check_forbidden_char(&str[i + 1], 0))
 		{
 			exp->name = get_var_name(&str[i]);
 			new_str = get_expanded_str(exp, new_str, expv);

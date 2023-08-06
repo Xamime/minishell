@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 19:09:05 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/06 20:44:41 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 int	g_exit_code;
 
-static void	parse_and_exec(t_cmd *cmds, int h_success, t_expv *expv)
+static void	parse_and_exec(t_cmd *cmds, int h_success, t_expv **expv)
 {
 	int	i;
 
 	i = 0;
 	while (cmds[i].cmd)
 	{
-		parse_cmd(&cmds[i], expv, h_success);
+		parse_cmd(&cmds[i], *expv, h_success);
 		i++;
 	}
 	if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
-		only_one_builtin(&expv, cmds);
+		only_one_builtin(expv, cmds);
 	else
-		split_pipe(&expv, cmds);
+		split_pipe(expv, cmds);
 }
 
-static void	minishell(t_cmd *cmds, char *cmd, t_expv *expv)
+static void	minishell(t_cmd *cmds, char *cmd, t_expv **expv)
 {
 	int		error;
 	int		h_success;
@@ -42,7 +42,7 @@ static void	minishell(t_cmd *cmds, char *cmd, t_expv *expv)
 	{
 		cmds = init_cmds(cmd);
 		init_redirs(cmds);
-		h_success = set_heredocs(cmds, expv);
+		h_success = set_heredocs(cmds, *expv);
 		parse_and_exec(cmds, h_success, expv);
 		free(cmds);
 	}
@@ -69,7 +69,7 @@ int	main(int ac, char **av, char **env)
 		sig_handler(1);
 		if (!cmd)
 			ctrl_d(export);
-		minishell(cmds, cmd, export);
+		minishell(cmds, cmd, &export);
 	}
 	rl_clear_history();
 	freelist(export);
