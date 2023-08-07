@@ -6,13 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:09:27 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:16:10 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:29:44 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	load_cmd(char **splitted, t_cmd *cmd, t_expv *expv)
+static void	load_cmd(char **splitted, t_cmd *cmd, t_expv *expv)
 {
 	int	i;
 

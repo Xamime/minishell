@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:42:11 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:24:29 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/wait.h>
+# include <sys/types.h>
 
 extern int	g_exit_code;
 
@@ -36,10 +36,10 @@ typedef struct s_cmd
 	char	**words;
 	int		infile;
 	int		outfile;
-	pid_t	pid;
 	int		status;
 	int		error;
 	int		id;
+	pid_t	pid;
 	t_redir	*redirs;
 }				t_cmd;
 
@@ -63,7 +63,7 @@ typedef struct s_expansion
 /*                                  builtins                                  */
 /* -------------------------------------------------------------------------- */
 
-void	print_env(t_expv *expv);
+void	print_env(t_cmd *cmd, t_expv *expv);
 void	ft_exit(char **env, t_cmd *cmds, t_expv **expv, int *real_fds);
 void	export(t_cmd *cmd, t_expv **expv);
 void	cd(char *directory, t_cmd *cmd, t_expv *expv);
@@ -76,8 +76,6 @@ void	unset(t_cmd *cmd, t_expv **export);
 char	*get_cwd_name(void);
 void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env, int *real_fds);
 
-char	*ft_getenv(char *str, t_expv *export);
-
 /* ------------------------------ export utils ------------------------------ */
 
 void	print_export_var(char *name, char *var);
@@ -85,6 +83,7 @@ t_expv	*find_min_ascii(t_expv *export, t_expv *sorted);
 void	set_var_line(char *line, char **name, char **var);
 void	change_var(t_expv *export, char *name, char *var, int mode);
 int		check_forbidden_char(char *str, int entire_name);
+char	*ft_get_env_var(char *str, t_expv *export);
 
 /* ---------------------------- export list utils --------------------------- */
 
@@ -115,26 +114,21 @@ void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index);
 
 char	*get_filename(char *str, t_expv *expv, t_cmd *cmd);
 void	better_lstclear(t_list *lst);
-void	free_redirects(t_redir *redirs);
 void	close_fds(t_list *lst);
-int		secure_open(char *mode, char *filename);
 int		parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv);
+void	check_infile(t_list *infile, t_cmd *cmd, t_list *heredoc);
+void	add_file(char *type, int *fd, char *filename, t_redir *redirs);
+char	*remove_redir(t_cmd	*cmd);
+int		find_last_infile(char *str);
+
+/* --------------------------------- heredoc -------------------------------- */
 
 int		set_heredocs(t_cmd *cmds, t_expv *expv);
 char	*get_expanded_str_heredoc(char *str, t_expv *expv);
 char	*get_heredoc_filename(char *str, int *exp_mode);
 void	putstr_heredoc(char *tmp, int fd, int exp_mode, t_expv *expv);
 int		heredoc_name(char **filename);
-
-void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc);
-void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs);
-char	*remove_redir(t_cmd	*cmd);
-char	*str_without_redir(char *str, char *cmd, int redirs_size);
 void	unlink_heredocs(t_list *lst);
-int		check_ambiguous_redirect(char *str, t_expv *expv);
-int		find_last_infile(char *str);
-
-void	make_list(t_cmd *cmds, int *fd);
 
 /* -------------------------------------------------------------------------- */
 /*                                  expansion                                 */
@@ -163,6 +157,7 @@ int		is_in_expv(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
 void	free_array(char **array);
 void	free_command(t_cmd *cmd);
+void	replace_address(char **addr1, char *addr2);
 void	ctrl_d(t_expv *export);
 
 /* -------------------------------------------------------------------------- */
@@ -170,8 +165,7 @@ void	ctrl_d(t_expv *export);
 /* -------------------------------------------------------------------------- */
 
 int		check_single_quote(char *cmd_line);
-void	syntaxe_errors2(int error, char *err);
-int		check_next_token(char *cmd_line, char **syntax_errors);
+void	print_syntax_error(int error, char *err);
 int		syntax_errors(char *cmd_line);
 int		is_empty(char *cmd_line);
 
@@ -180,8 +174,7 @@ int		is_empty(char *cmd_line);
 /* -------------------------------------------------------------------------- */
 
 int		parse_cmd(t_cmd *cmd, t_expv *expv, int h_success);
-void	replace_address(char **addr1, char *addr2);
-void	split_pipe(t_expv **expv, t_cmd *cmds);
+void	exec_pipes(t_expv **expv, t_cmd *cmds);
 
 /* ---------------------------------- split --------------------------------- */
 

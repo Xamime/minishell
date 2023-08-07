@@ -6,18 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:36:39 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:15:39 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <errno.h>
 
-int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
+static int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 {
 	int		*fd;
 	char	*filename;
@@ -28,11 +23,11 @@ int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 	fd = malloc(sizeof(int));
 	*fd = 0;
 	if (*str == '>' && *(str + 1) != '>')
-		open_last_file("outfile", fd, filename, redirs);
+		add_file("outfile", fd, filename, redirs);
 	else if (*str == '>' && *(str + 1) == '>')
-		open_last_file("append", fd, filename, redirs);
+		add_file("append", fd, filename, redirs);
 	else if (*str == '<' && *(str + 1) != '<')
-		open_last_file("infile", fd, filename, redirs);
+		add_file("infile", fd, filename, redirs);
 	free(filename);
 	if (*fd == -1)
 	{
@@ -45,7 +40,7 @@ int	add_redirect(t_redir *redirs, char *str, t_expv *expv, t_cmd *cmd)
 	return (0);
 }
 
-void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd, int err)
+static void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd)
 {
 	t_list	*heredoc;
 	t_list	*infile;
@@ -63,13 +58,31 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd, int err)
 			close(*(int *)infile->content);
 	}
 	else if (i >= 0)
-		check_redirect(infile, cmd, heredoc);
+		check_infile(infile, cmd, heredoc);
 	if (outfile)
 		cmd->outfile = *(int *)outfile->content;
 	close_fds((*redirs)->outfiles);
 	close_fds((*redirs)->heredocs);
 	close_fds((*redirs)->infiles);
-	if (err == 1 && heredoc)
+}
+
+static void	close_all(t_redir *redirs)
+{
+	t_list	*heredoc;
+	t_list	*infile;
+	t_list	*outfile;
+
+	infile = ft_lstlast(redirs->infiles);
+	heredoc = ft_lstlast(redirs->heredocs);
+	outfile = ft_lstlast(redirs->outfiles);
+	close_fds(redirs->outfiles);
+	close_fds(redirs->heredocs);
+	close_fds(redirs->infiles);
+	if (infile)
+		close(*(int *)infile->content);
+	if (outfile)
+		close(*(int *)outfile->content);
+	if (heredoc)
 		close(*(int *)heredoc->content);
 }
 
@@ -104,7 +117,7 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv)
 			bool = 1;
 			if (*(str + 1) != '<' && add_redirect(*redirs, str, expv, cmd))
 			{
-				set_redirect(redirs, tmp, cmd, 1);
+				close_all(*redirs);
 				return (1);
 			}
 			str = go_to_next_redir(str);
@@ -113,6 +126,6 @@ int	parse_redir(char *str, t_redir **redirs, t_cmd *cmd, t_expv *expv)
 			str++;
 	}
 	if (bool == 1)
-		set_redirect(redirs, tmp, cmd, 0);
+		set_redirect(redirs, tmp, cmd);
 	return (0);
 }

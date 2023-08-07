@@ -6,14 +6,14 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 01:15:55 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:29:22 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
 /*Return string with first found token*/
-char	*get_token(char *cmd_line, char **token)
+static char	*get_token(char *cmd_line, char **token)
 {
 	int		i;
 	int		j;
@@ -38,7 +38,7 @@ char	*get_token(char *cmd_line, char **token)
 	return (NULL);
 }
 
-char	*is_token(char *str, char **token)
+static char	*is_token(char *str, char **token)
 {
 	int	i;
 	int	j;
@@ -86,7 +86,7 @@ static int	ft_error(char *str, char **token, char **syntax_error)
 	return (0);
 }
 
-int	check_next_token(char *cmd_line, char **syntax_error)
+static int	check_next_token(char *cmd_line, char **syntax_error)
 {
 	char	**token;
 	char	*str;
@@ -131,6 +131,6 @@ int	syntax_errors(char *cmd_line)
 			i += skip_quote(&cmd_line[i], cmd_line[i]);
 		i++;
 	}
-	syntaxe_errors2(error, syntax_error);
+	print_syntax_error(error, syntax_error);
 	return (error);
 }

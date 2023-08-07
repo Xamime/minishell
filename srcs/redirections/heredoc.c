@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 16:21:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/06 22:40:00 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:28:30 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_sig_int(int fd)
 	return (1);
 }
 
-int	write_heredoc(char *limiter, int fd, int exp_mode, t_expv *expv)
+static int	write_heredoc(char *limiter, int fd, int exp_mode, t_expv *expv)
 {
 	int		error;
 	char	*tmp;
@@ -49,7 +49,7 @@ int	write_heredoc(char *limiter, int fd, int exp_mode, t_expv *expv)
 	return (error);
 }
 
-int	get_heredoc(t_cmd *cmds, int i, int j, t_expv *expv)
+static int	get_heredoc(t_cmd *cmds, int i, int j, t_expv *expv)
 {
 	int		*fd;
 	char	*filename;
@@ -82,8 +82,11 @@ static void	close_all(t_cmd *cmds)
 	i = 0;
 	while (cmds[i].cmd)
 	{
-		close_fds(cmds[i].redirs->heredocs);
-		close(*(int *)ft_lstlast(cmds[i].redirs->heredocs)->content);
+		if (cmds[i].redirs->heredocs)
+		{
+			close_fds(cmds[i].redirs->heredocs);
+			close(*(int *)ft_lstlast(cmds[i].redirs->heredocs)->content);
+		}
 		i++;
 	}
 }

@@ -6,14 +6,33 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:35:59 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:15:39 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <fcntl.h>
 
-void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
+static int	secure_open(char *mode, char *filename)
+{
+	int	fd;
+
+	fd = 0;
+	if (!ft_strcmp(mode, "outfile"))
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (!ft_strcmp(mode, "append"))
+		fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (!ft_strcmp(mode, "infile"))
+		fd = open(filename, O_RDONLY);
+	if (fd == -1)
+	{
+		printf_fd(2, "minishell: ");
+		perror(filename);
+	}
+	return (fd);
+}
+
+void	add_file(char *type, int *fd, char *filename, t_redir *redirs)
 {
 	*fd = secure_open(type, filename);
 	if (*fd == -1)
@@ -26,7 +45,7 @@ void	open_last_file(char *type, int *fd, char *filename, t_redir *redirs)
 		ft_lstadd_back(&redirs->infiles, ft_lstnew(fd));
 }
 
-void	check_redirect(t_list *infile, t_cmd *cmd, t_list *heredoc)
+void	check_infile(t_list *infile, t_cmd *cmd, t_list *heredoc)
 {
 	if (infile)
 	{
@@ -54,23 +73,4 @@ int	find_last_infile(char *str)
 		i--;
 	}
 	return (i);
-}
-
-int	secure_open(char *mode, char *filename)
-{
-	int	fd;
-
-	fd = 0;
-	if (!ft_strcmp(mode, "outfile"))
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (!ft_strcmp(mode, "append"))
-		fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else if (!ft_strcmp(mode, "infile"))
-		fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-		printf_fd(2, "minishell: %s: ", filename);
-		perror(filename);
-	}
-	return (fd);
 }

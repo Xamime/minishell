@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 01:15:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 01:16:48 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:21:33 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_empty(char *cmd_line)
 	return (1);
 }
 
-void	syntaxe_errors2(int error, char *err)
+void	print_syntax_error(int error, char *err)
 {
 	if (error)
 	{

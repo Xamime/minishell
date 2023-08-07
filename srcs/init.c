@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:48:13 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 18:56:20 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:25:33 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static void	init_cmds2(char **sub_shells, t_cmd *cmds)
 		cmds[i].cmd_name = NULL;
 		cmds[i].infile = -1;
 		cmds[i].outfile = -1;
-		cmds[i].pid = -1; // a verif
-		cmds[i].status = 0; // a verif
+		cmds[i].pid = -1;
+		cmds[i].status = 0;
 		cmds[i].error = 0;
 		cmds[i].id = i;
 		i++;
@@ -77,7 +77,7 @@ t_cmd	*init_cmds(char *cmd_line)
 	int		i;
 
 	i = 0;
-	sub_shells = ft_split_quotes(cmd_line, "|"); // NON
+	sub_shells = ft_split_quotes(cmd_line, "|");
 	while (sub_shells[i])
 		i++;
 	cmds = malloc(sizeof(t_cmd) * (i + 1));

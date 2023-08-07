@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:45:02 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:23:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	parse_and_exec(t_cmd *cmds, int h_success, t_expv **expv)
 	if (!cmds[1].cmd && cmds[0].cmd_name && is_builtin(cmds[0].cmd_name))
 		only_one_builtin(expv, cmds);
 	else
-		split_pipe(expv, cmds);
+		exec_pipes(expv, cmds);
 }
 
 static void	minishell(t_cmd *cmds, char *cmd, t_expv **expv)

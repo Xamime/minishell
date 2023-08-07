@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/06 22:55:10 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 15:53:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exec_builtin(t_cmd *cmd, t_expv **expv, char **env, int *real_fds)
 	else if (!ft_strcmp(cmd->cmd_name, "exit"))
 		ft_exit(env, cmd, expv, real_fds);
 	else if (!ft_strcmp(cmd->cmd_name, "env"))
-		print_env(*expv);
+		print_env(cmd, *expv);
 	else if (!ft_strcmp(cmd->cmd_name, "export"))
 		export(cmd, expv);
 	else if (!ft_strcmp(cmd->cmd_name, "unset"))

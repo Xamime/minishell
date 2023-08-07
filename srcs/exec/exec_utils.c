@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 12:17:30 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 01:09:35 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:30:31 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ int	get_exit_code(int status, t_cmd *cmd)
 
 void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index)
 {
-// printf("in : %d, out : %d\n", cmds[index].infile, cmds[index].outfile);
 	if (*p_out > 0)
 		close(*p_out);
 	if (cmds[index].infile > -1)

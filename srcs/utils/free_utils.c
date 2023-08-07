@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 18:20:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/01 21:05:03 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:10:50 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,16 @@ void	free_array(char **array)
 	free(array);
 }
 
+static void	free_redirects(t_redir *redirs)
+{
+	better_lstclear(redirs->heredocs);
+	better_lstclear(redirs->infiles);
+	better_lstclear(redirs->outfiles);
+	unlink_heredocs(redirs->heredoc_names);
+	better_lstclear(redirs->heredoc_names);
+	free(redirs);
+}
+
 void	free_command(t_cmd *cmd)
 {
 	int	i;
@@ -70,14 +80,4 @@ void	free_fork(t_expv *expv, t_cmd *cmds, char **env)
 	freelist(expv);
 	free(cmds);
 	free_array(env);
-}
-
-void	free_redirects(t_redir *redirs)
-{
-	better_lstclear(redirs->heredocs);
-	better_lstclear(redirs->infiles);
-	better_lstclear(redirs->outfiles);
-	unlink_heredocs(redirs->heredoc_names);
-	better_lstclear(redirs->heredoc_names);
-	free(redirs);
 }

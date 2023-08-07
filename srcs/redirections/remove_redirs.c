@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_redirs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 16:28:09 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/02 21:21:42 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:16:32 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	go_to_next_redir_it(char *str)
 	return (i);
 }
 
-char	*str_without_redir(char *str, char *cmd, int redirs_size)
+static char	*str_without_redir(char *str, char *cmd, int redirs_size)
 {
 	int	i;
 	int	j;

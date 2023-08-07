@@ -6,13 +6,13 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 01:37:20 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 01:39:12 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:17:13 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	get_sep_nb(char *filename, int *before, int *after, t_expv *expv)
+static void	get_sep_nb(char *filename, int *before, int *after, t_expv *expv)
 {
 	int		i;
 	char	*new_str;
@@ -35,7 +35,7 @@ void	get_sep_nb(char *filename, int *before, int *after, t_expv *expv)
 	free(new_str);
 }
 
-int	check_ambiguous_redirect(char *filename, t_expv *expv)
+static int	check_ambiguous_redirect(char *filename, t_expv *expv)
 {
 	int		before_sep_nb;
 	int		after_sep_nb;

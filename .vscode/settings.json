@@ -5,7 +5,8 @@
         "wait.h": "c",
         "readline.h": "c",
         "limits.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "history.h": "c"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/clang"
 }

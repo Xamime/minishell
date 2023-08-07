@@ -6,14 +6,14 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 19:58:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 00:49:21 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:07:50 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 #include <fcntl.h>
 
-int	test_dir(char *str, t_cmd *cmd)
+static int	test_dir(char *str, t_cmd *cmd)
 {
 	int	fd;
 	int	is_dir;
@@ -35,7 +35,7 @@ int	test_dir(char *str, t_cmd *cmd)
 	return (is_dir);
 }
 
-char	*test_relative_path(char *str, t_cmd *cmd)
+static char	*test_relative_path(char *str, t_cmd *cmd)
 {
 	if (test_dir(str, cmd))
 		return (NULL);
@@ -58,7 +58,7 @@ char	*test_relative_path(char *str, t_cmd *cmd)
 	return (NULL);
 }
 
-int	is_relative_path(char *str)
+static int	is_relative_path(char *str)
 {
 	if (str[0] == '/')
 		return (1);
@@ -67,7 +67,7 @@ int	is_relative_path(char *str)
 	return (0);
 }
 
-char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
+static char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 {
 	int		i;
 	char	*command;
@@ -83,7 +83,7 @@ char	*test_absolute_path(char *name, char **path, t_cmd *cmd)
 			free(command);
 			return (NULL);
 		}
-		if (!access(command, X_OK)) // ou F_OK ? perror apres peut etre
+		if (!access(command, X_OK))
 			return (command);
 		i++;
 	}
@@ -107,7 +107,7 @@ char	*get_access(t_cmd *cmd, t_expv *expv)
 		return (test_relative_path(cmd->cmd_name, cmd));
 	else
 	{
-		path = ft_split(ft_getenv("PATH", expv), ':');
+		path = ft_split(ft_get_env_var("PATH", expv), ':');
 		command = test_absolute_path(cmd->cmd_name, path, cmd);
 	}
 	free_array(path);

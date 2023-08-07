@@ -6,11 +6,12 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 13:24:32 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 01:06:15 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:23:07 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+#include <sys/wait.h>
 
 static void	wait_childs(t_cmd *cmds)
 {
@@ -55,7 +56,7 @@ static void	set_cmd(t_cmd *cmd, t_expv **expv, int *pipe_out, char **env)
 	close_after_fork(cmds, pfd, pipe_out, cmd->id);
 }
 
-void	split_pipe(t_expv **expv, t_cmd *cmds)
+void	exec_pipes(t_expv **expv, t_cmd *cmds)
 {
 	int		i;
 	int		pipe_out;

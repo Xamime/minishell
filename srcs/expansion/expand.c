@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 01:43:06 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:03:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 {
 	char	*new_str;
 
-	exp->var = ft_getenv(exp->name, expv);
+	exp->var = ft_get_env_var(exp->name, expv);
 	if (exp->var)
 		new_str = new_string(exp, tmp);
 	else
