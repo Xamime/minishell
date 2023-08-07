@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 18:52:45 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/06 22:15:29 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:12:36 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <signal.h>
-#include <sys/ioctl.h>
 
 static void	parent_sigint_handler(int sig)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:03:09 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:14:21 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/07 01:16:01 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static int	ft_len(char *s, char *charset)
 {
@@ -55,7 +55,7 @@ static char	*word(char *s, char *charset)
 	return (str);
 }
 
-int	nbwords(char *s, char *charset)
+static int	nbwords(char *s, char *charset)
 {
 	int	i;
 
@@ -104,7 +104,6 @@ char	**ft_split_quotes(char *s, char	*charset)
 	int		i;
 	char	**str;
 
-	// faut split sur " \t\n"
 	if (s == NULL)
 		return (NULL);
 	i = nbwords(s, charset);

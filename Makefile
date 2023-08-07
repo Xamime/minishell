@@ -6,7 +6,7 @@
 #    By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/11 15:50:28 by mdesrose          #+#    #+#              #
-#    Updated: 2023/08/05 19:04:14 by jfarkas          ###   ########.fr        #
+#    Updated: 2023/08/07 01:47:19 by jfarkas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,37 +20,38 @@ SRC = 	srcs/builtins/builtins_utils.c \
 		srcs/builtins/pwd.c \
 		srcs/builtins/unset.c \
 		srcs/builtins/exit.c \
-		srcs/utils/utils1.c \
-		srcs/utils/utils2.c \
-		srcs/utils/utils3.c \
-		srcs/utils/free_utils.c \
 		srcs/exec/access.c \
 		srcs/exec/exec.c \
 		srcs/exec/exec_utils.c \
+		srcs/expansion/expand_utils.c \
+		srcs/expansion/expand.c \
+		srcs/expansion/remove_quotes.c \
+		srcs/parsing/parsing.c \
+		srcs/parsing/split_quotes_utils.c \
+		srcs/parsing/split_quotes.c \
+		srcs/parsing/syntax_check_utils.c \
+		srcs/parsing/syntax_check.c \
 		srcs/redirections/heredoc_expansion_utils.c \
 		srcs/redirections/heredoc_utils.c \
 		srcs/redirections/heredoc.c \
 		srcs/redirections/redirs_utils.c \
+		srcs/redirections/redirs_utils2.c \
 		srcs/redirections/redirs.c \
 		srcs/redirections/remove_redirs.c \
-		srcs/expand.c \
-		srcs/expand2.c \
-		srcs/expand3.c \
-		srcs/export_list_utils.c \
+		srcs/utils/export_list_utils.c \
+		srcs/utils/utils1.c \
+		srcs/utils/utils2.c \
+		srcs/utils/utils3.c \
+		srcs/utils/free_utils.c \
 		srcs/init.c \
 		srcs/main.c \
-		srcs/parsing.c \
-		srcs/parsing2.c \
 		srcs/signal.c \
-		srcs/split_quotes_utils.c \
-		srcs/split_quotes.c \
-		srcs/syntax_check.c
 
 NAME = minishell
 LIBFT_SRC = libft
 LIBFT = ${LIBFT_SRC}/libft.a
 CC = clang
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror -Wunreachable-code
 OBJ = $(SRC:c=o)
 
 YELLOW=\033[0;33m

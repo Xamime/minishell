@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 11:42:51 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 12:36:32 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:35:59 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ int	secure_open(char *mode, char *filename)
 		printf_fd(2, "minishell: %s: ", filename);
 		perror(filename);
 	}
-	//printf("%d, %s\n",fd,  get_next_line(fd));
 	return (fd);
 }

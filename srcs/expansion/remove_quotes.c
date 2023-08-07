@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand3.c                                          :+:      :+:    :+:   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 17:47:57 by marvin            #+#    #+#             */
-/*   Updated: 2023/08/03 17:47:57 by marvin           ###   ########.fr       */
+/*   Created: 2023/08/07 00:59:49 by jfarkas           #+#    #+#             */
+/*   Updated: 2023/08/07 00:59:49 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-char	*get_var_name(char *str)
-{
-	char	*name;
-	int		i;
-
-	i = 1;
-	while (ft_isalnum(str[i]) || str[i] == '_')
-		i++;
-	name = ft_substr(str, 1, i - 1);
-	return (name);
-}
+#include "../../minishell.h"
 
 static void	remove_quotes(char *str, char *new_str, char quote, char *tmp)
 {

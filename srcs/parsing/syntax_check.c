@@ -6,11 +6,11 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 22:29:57 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/05 19:11:33 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:15:55 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 /*Return string with first found token*/
 char	*get_token(char *cmd_line, char **token)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:07:14 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/06 22:55:10 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:42:11 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	close_next_cmds_fds(t_cmd *cmds);
 void	exec_cmd(t_cmd *cmds, char **env, t_expv **expv, int index);
 char	**ft_get_env(t_expv *export);
 void	set_pipes(int fd_in, int fd_out, int *pfd, int p_out);
+int		get_exit_code(int status, t_cmd *cmd);
+void	close_after_fork(t_cmd *cmds, int *pfd, int *p_out, int index);
 
 /* -------------------------------------------------------------------------- */
 /*                                redirections                                */
@@ -143,7 +145,6 @@ char	*set_without_quotes(char *str);
 char	*make_dollars(char *str, t_expv *expv, int mode);
 char	*new_string(t_expansion *exp, char *str);
 char	*set_new_str(t_expansion *exp, char *str);
-void	set_double_quotes(t_expansion *exp);
 void	add_var_value(t_expansion *exp, char *new_str, int *i, int *j);
 int		skip_and_copy(char *str, char *new_str, char c, int *j);
 
@@ -160,7 +161,6 @@ void	sig_handler(int mode);
 void	freelist(t_expv *expv);
 int		is_in_expv(t_expv *list, char *str);
 int		ft_strchrlen(char *str, char c);
-int		check_plus_one(char c);
 void	free_array(char **array);
 void	free_command(t_cmd *cmd);
 void	ctrl_d(t_expv *export);
@@ -186,7 +186,6 @@ void	split_pipe(t_expv **expv, t_cmd *cmds);
 /* ---------------------------------- split --------------------------------- */
 
 char	**ft_split_quotes(char *s, char *charset);
-int		nbwords(char *s, char *charset);
 int		is_in_set(char c, char *set);
 int		is_paired(char *str, char quote);
 int		skip_quote(char *str, char quote);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 11:15:40 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/06 20:44:41 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:45:02 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,4 @@ int	main(int ac, char **av, char **env)
 			ctrl_d(export);
 		minishell(cmds, cmd, &export);
 	}
-	rl_clear_history();
-	freelist(export);
 }

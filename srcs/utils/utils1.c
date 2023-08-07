@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:11:45 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 00:50:24 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:13:58 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	is_in_expv(t_expv *list, char *str)
 	return (found);
 }
 
-// return len from 0 to the char
 int	ft_strchrlen(char *str, char c)
 {
 	int	i;
@@ -42,11 +41,4 @@ int	ft_strchrlen(char *str, char c)
 	if (str[i] == c)
 		return (i);
 	return (-1);
-}
-
-int	check_plus_one(char c)
-{
-	if (!is_in_set(c, " \t\n"))
-		return (1);
-	return (0);
 }

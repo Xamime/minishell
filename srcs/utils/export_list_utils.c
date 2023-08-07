@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfarkas <jfarkas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 18:51:44 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/07/29 22:52:09 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:47:37 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	del_one(t_expv **list, t_expv *to_del)
 {

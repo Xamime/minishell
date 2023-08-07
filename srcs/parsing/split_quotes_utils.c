@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   split_quotes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdesrose <mdesrose@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 12:37:21 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/01 22:30:36 by mdesrose         ###   ########.fr       */
+/*   Updated: 2023/08/07 01:16:05 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 // Return True if in set
 int	is_in_set(char c, char *set)

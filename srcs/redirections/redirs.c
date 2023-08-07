@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 16:08:34 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/05 15:24:12 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:36:39 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,6 @@ void	set_redirect(t_redir **redirs, char *str, t_cmd *cmd, int err)
 	if (err == 1 && heredoc)
 		close(*(int *)heredoc->content);
 }
-
-// void	close_all(t_redir *redirs)
-// {
-// 	t_list	*heredoc;
-// 	t_list	*infile;
-// 	t_list	*outfile;
-
-// 	infile = ft_lstlast(redirs->infiles);
-// 	heredoc = ft_lstlast(redirs->heredocs);
-// 	outfile = ft_lstlast(redirs->outfiles);
-// 	close_fds(redirs->outfiles);
-// 	close_fds(redirs->heredocs);
-// 	close_fds(redirs->infiles);
-// }
 
 static char	*go_to_next_redir(char *str)
 {

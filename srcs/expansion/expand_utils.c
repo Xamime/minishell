@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand2.c                                          :+:      :+:    :+:   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 18:35:03 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/03 22:48:43 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:00:11 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
+
+static void	set_double_quotes(t_expansion *exp)
+{
+	if (exp->mode == 1 && !exp->in_double)
+		exp->in_double = 1;
+	else if (exp->mode == 1 && exp->in_double)
+		exp->in_double = 0;
+}
+
+void	add_var_value(t_expansion *exp, char *new_str, int *i, int *j)
+{
+	(*i) += ft_strlen(exp->name) + 1;
+	ft_strlcat(new_str, exp->var, ft_strlen(exp->var) + (*j) + 1);
+	(*j) += ft_strlen(exp->var);
+	exp->found_dollar = 1;
+}
 
 int	skip_and_copy(char *str, char *new_str, char c, int *j)
 {
@@ -70,20 +86,4 @@ char	*set_new_str(t_expansion *exp, char *str)
 	name_s = ft_strlen(exp->name);
 	new_str = ft_calloc(sizeof(char), (str_s - (name_s + 1) + var_s + 1));
 	return (new_str);
-}
-
-void	set_double_quotes(t_expansion *exp)
-{
-	if (exp->mode == 1 && !exp->in_double)
-		exp->in_double = 1;
-	else if (exp->mode == 1 && exp->in_double)
-		exp->in_double = 0;
-}
-
-void	add_var_value(t_expansion *exp, char *new_str, int *i, int *j)
-{
-	(*i) += ft_strlen(exp->name) + 1;
-	ft_strlcat(new_str, exp->var, ft_strlen(exp->var) + (*j) + 1);
-	(*j) += ft_strlen(exp->var);
-	exp->found_dollar = 1;
 }

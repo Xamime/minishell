@@ -6,11 +6,23 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 19:44:19 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/03 22:48:30 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 01:43:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
+
+char	*get_var_name(char *str)
+{
+	char	*name;
+	int		i;
+
+	i = 1;
+	while (ft_isalnum(str[i]) || str[i] == '_')
+		i++;
+	name = ft_substr(str, 1, i - 1);
+	return (name);
+}
 
 static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 {
@@ -29,7 +41,7 @@ static char	*get_expanded_str(t_expansion *exp, char *tmp, t_expv *expv)
 	return (new_str);
 }
 
-static char	*get_exit_code(t_expansion *exp, char *tmp)
+static char	*str_exit_code(t_expansion *exp, char *tmp)
 {
 	char	*new_str;
 
@@ -57,7 +69,7 @@ static char	*expand_var(char *str, t_expansion *exp, t_expv *expv, int mode)
 		else if (*str == '\"' && mode == 1 && in_double)
 			in_double = 0;
 		if (*str == '$' && *(str + 1) == '?')
-			new_str = get_exit_code(exp, new_str);
+			new_str = str_exit_code(exp, new_str);
 		else if (*str == '$' && *(str + 1) && !check_forbidden_char(str + 1, 0))
 		{
 			exp->name = get_var_name(str);
