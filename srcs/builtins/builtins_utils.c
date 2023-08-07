@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 13:06:33 by mdesrose          #+#    #+#             */
-/*   Updated: 2023/08/07 15:53:31 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 18:01:00 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_cwd_name(void)
 	char	*buf;
 	int		size;
 
-	size = 50;
+	size = 10;
 	dir = NULL;
 	buf = NULL;
 	while (dir == NULL)
@@ -28,7 +28,7 @@ char	*get_cwd_name(void)
 			free(buf);
 		buf = malloc(sizeof(char) * size);
 		dir = getcwd(buf, size);
-		if (!dir && errno == ENOENT)
+		if (!dir && errno != ERANGE)
 		{
 			free(buf);
 			break ;
