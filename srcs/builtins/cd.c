@@ -6,7 +6,7 @@
 /*   By: jfarkas <jfarkas@student.42angouleme.fr    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 11:37:39 by jfarkas           #+#    #+#             */
-/*   Updated: 2023/08/07 06:26:18 by jfarkas          ###   ########.fr       */
+/*   Updated: 2023/08/07 14:16:06 by jfarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	cd(char *directory, t_cmd *cmd, t_expv *expv)
 	}
 	home = ft_getenv("HOME", expv);
 	oldpwd = get_cwd_name();
-	// if (directory == NULL && cd_home(home, oldpwd, cmd, expv))
-	// 	return ;
+	if (directory == NULL && cd_home(home, oldpwd, cmd, expv))
+		return ;
 	if (directory && chdir(directory) == -1)
 	{
 		cmd->status = 1;
